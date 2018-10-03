@@ -8,6 +8,13 @@
 	      <input v-model="variable" type="text">
 	      <button @click="somefunc()">Click me!</button>
 	    </div>
+	    <div>
+	    	Big Data List:
+    		<ul>
+    			<li v-for="item in bigdata">{{item.last}}, {{item.first}}</li>
+    		</ul>
+	    </div>
+
 	  </body>
 	</html>
   </div>
@@ -17,7 +24,12 @@
     name: 'deals',
     data() {
     	return {
-    		variable: null
+    		variable: null,
+    		bigdata: [
+    			{ first: 'Carter', last: 'Bourette' },
+    			{ first: 'Avery', last: 'Speller' },
+    			{ first: 'Kevin', last: 'Prince' }
+    		]
     	}
     },
     methods: {
@@ -25,7 +37,9 @@
         this.$electron.shell.openExternal(link)
       },
       somefunc() {
-      	alert(this.variable)
+      	var splitty = this.variable.split(' ')
+      	this.bigdata.push({ first: splitty[0], last: splitty[1]})
+      	this.variable = ''
       }
     }
   }
