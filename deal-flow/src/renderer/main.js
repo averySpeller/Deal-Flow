@@ -1,5 +1,8 @@
 import Vue from 'vue'
 import axios from 'axios'
+import VueCarousel from 'vue-carousel';
+
+Vue.use(VueCarousel);
 
 import App from './App'
 import router from './router'
