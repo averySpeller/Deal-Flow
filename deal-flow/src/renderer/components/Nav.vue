@@ -1,6 +1,9 @@
 <template>
   <div>
-    <button class="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #offcanvas-push">Nav bar</button>
+    <el-row :gutter="20">
+      <el-button class="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #offcanvas-push">Nav bar</el-button>
+    </el-row>
+
     <nav>
 
       <div id="offcanvas-push" uk-offcanvas="mode: push; overlay: true; flip: true">

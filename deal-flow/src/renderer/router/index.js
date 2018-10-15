@@ -1,12 +1,21 @@
+//libraries
 import Vue from 'vue'
 import Router from 'vue-router'
+// @import url("//unpkg.com/element-ui@2.4.8/lib/theme-chalk/index.css");
+
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+import axios from 'axios';
+//Pages
 import  Contacts from '@/pages/Contacts'
 import  Login from '@/pages/Login'
 import  Organizations from '@/pages/Organizations'
 import  Settings from '@/pages/Settings'
 import  Dashboard from '@/pages/Dashboard'
 import  Deals from '@/pages/Deals'
+
 Vue.use(Router)
+Vue.use(ElementUI);
 
 export default new Router({
   routes: [
