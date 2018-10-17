@@ -64,6 +64,11 @@ export default {
           id: 5,
           text: 'Settings',
           page:'/Settings'
+        },
+        {
+          id: 6,
+          text: 'Contact Catalogue',
+          page:'/ContactCatalogue'
         }
       ]
     }
