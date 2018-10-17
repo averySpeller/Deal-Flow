@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import  Contacts from '@/pages/Contacts'
+import  ContactCatalogue from '@/pages/ContactCatalogue'
 import  Login from '@/pages/Login'
 import  Organizations from '@/pages/Organizations'
 import  Settings from '@/pages/Settings'
@@ -48,6 +49,11 @@ export default new Router({
       path: '/Dashboard',
       name: 'Dashboard',
       component: Dashboard
+    },
+    {
+      path: '/ContactCatalogue',
+      name: 'ContactCatalogue',
+      component: ContactCatalogue
     }
   ]
 })
