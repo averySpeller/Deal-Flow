@@ -10,4 +10,7 @@ class Utils:
 
     def fetch_payload(req):
         """ Get nested falcon parameters. """
-        return json.load(req.bounded_stream)
+        try:
+            return json.load(req.bounded_stream)
+        except json.decoder.JSONDecodeError:
+            return None

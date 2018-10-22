@@ -14,11 +14,23 @@ class RQLParser:
 
     def __init__(self, request=None):
         self.request = request
-        self.url_query = None
         self.reserved = ['includes', 'fields', 'order', 'group', 'limit']
+
+        self.url_params = None
         self.payload = None
-        # print(Utils.fetch_query_string(req))
-        # print(Utils.fetch_payload(req))
+
+        self.fields = None
+        self.includes = None
+        self.order = None
+        self.group = None
+        self.limit = None
+
+        self.url_query = Utils.fetch_query_string(request)
+        self.payload = Utils.fetch_payload(request)
+
+
+    def get_payload(self):
+        return self.payload
 
 
     # -------------------------------------------

@@ -28,7 +28,7 @@ class Contact(Model):
 class Contacts(Resource):
     model = Contact
 
-    def on_post(self, req, res):
+    def on_post_collection(self, req, res):
         res = self.default_response(req, res)
 
     def on_get(self, req, res, contactID):

@@ -11,31 +11,27 @@
 
 class Model:
 
-    # data = [
-    #     'contact': [
-    #         { 'contactID': 10, 'first': 'Bobby', 'Last':'Joe' },
-    #         { 'contactID': 11, 'first': 'Avery', 'Last':'Speller' },
-    #         { 'contactID': 12, 'first': 'Kevin', 'Last':'Prince' }
-    #     ],
-    #     'contactorganization': [
-    #         { 'contactorganizationid': 1, 'contactID': 10}
-    #     ]
-    # ]
-
-    def __init__(self, id=None, parser=None):
+    def __init__(self, id=None, parser=None, auto_save=False):
         self._dao = DAO()
 
         self._id = id
         self._documents = {}
         self._properties = {}
         self._parser = parser
+        self._error_state = False
+        self._auto_save = auto_save
 
-        print('created ' + type(self).__name__)
+        print('instantiated ' + type(self).__name__)
 
 
+    # -------------------------------------------
+    # Purpose: Override the default get accessor in the model class
+    #           to search the class property values.
+    # Passed-in: Instance, var name.
     def __getattr__(self, name):
         if name in (self.__class__._properties.keys()):
             try:
+                self._fetch_document(name)
                 return self._properties[name]
             except KeyError:
                 return None
@@ -43,45 +39,83 @@ class Model:
             return super().__getattribute__(name)
 
 
+    # -------------------------------------------
+    # Purpose: Override the default set accessor in the model class
+    #           to search the class property values.
+    # Passed-in: Instance, var name, and property value.
     def __setattr__(self, name, value):
+        print('in set attr')
         if name in (self.__class__._properties.keys()):
+            self._invalidate_document(name)
             self._properties[name] = value
-            # raise AttributeError("%s is an immutable attribute.")
         else:
+            if name[0] is not '_':
+                self._error()
+                # raise ValueError
             super().__setattr__(name, value)
 
 
-    def _fetch_document(self):
+    def _invalidate_document(self, property):
         pass
 
-    def _fetch_property(self):
+    def _fetch_document(self, property):
+
+        # If record is stale
+
+            # get the records
+
+            # Determine document
+            # ...
+
+        # Else
+            # return
+
+        # Populate the document using the DAO
+        self._dao.fetch_document(document)
+
         pass
 
     def serialize(self):
-        # for attribute in self.__class__._properties.keys():
-        #     getattr(self, attribute)
+
+        # Iterate the property list and retrieve the values
+        for property in self.__class__._properties.keys():
+            property_value = getattr(self, property)
+
+        # HACK: hm, we retrieve all those values just to throw away the output
+        #       and populate the instance _properties.
         return self._properties
 
-    def response_status(self):
-        pass
+    def _error(self, title=None, msg=None):
+        # TODO: Write an error document to return when the model gets serialized
+        self._error_state = True
 
-    def set_map(self, map):
-        pass
-        # foreach in map: self.attr_set(key, value)
+    def is_error_state(self):
+        return self._error_state
+
+    def set_map(self, map=None):
+        # Parse a given map or fetch it from the request
+        if not map:
+            map = self._parser.get_payload()
+
+        print(map)
+
+        for key,value in map.items():
+            print('setting %s to %s' % (key,value))
+            setattr(self, key, value)
 
     #
     # DANGER ZONE
     #
     def delete(self, soft=False):
+        # self._dao.delete()
         pass
 
     def save(self):
         pass
+        # self._dao.create()
         # if updating
 
         # if creating
-
-
 
 class ModelCollection:
 
@@ -91,10 +125,10 @@ class ModelCollection:
         self._data_model = model
         self._model_list = []
 
-    def _create_model():
+    def _create_model(self):
         return self._data_model()
 
-    def populate(dao):
+    def populate(self, dao):
         pass
 
     def serialize(self):
@@ -109,7 +143,7 @@ class _Document:
 
 class Property:
 
-    def __init__(self, name, type, document=None, **kwargs):
+    def __init__(self, name, type, relation=None, document=None, **kwargs):
         print('registering property: ' + name)
 
         self.document = document
@@ -137,6 +171,7 @@ class DAO:
     def __init__(self, bulk=False):
         self._connection = None
         self._is_bulk = bulk
+        self.result_buffer = []
 
     def _connect(self):
         pass
@@ -146,5 +181,18 @@ class DAO:
     def _store_map(self, relation, map):
         pass
 
-    def fetch_document(self):
+    def fetch_from_buffer(self):
+        return None if len(self.result_buffer) == 0 else self.result_buffer.pop(0)
+
+
+    def create(self, relation, payload):
+        pass
+
+    def read(self, relation, id):
+        pass
+
+    def update(self, relation, id, payload):
+        pass
+
+    def delete(self, relation, id):
         pass
