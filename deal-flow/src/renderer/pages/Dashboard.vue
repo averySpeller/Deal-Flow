@@ -25,6 +25,16 @@
         </slide>
       </carousel>
     </div>
+    <div id="slider2">
+      <h2>Jobs</h2>
+      <el-carousel :interval="4000" type="card" height="200px">
+        <el-carousel-item v-for="company in companies">
+          <!-- <img v-bind:src="company.logo" height="200" width="200"/> -->
+          <h3>{{company.name}}</h3>
+          {{company.valuation}}
+        </el-carousel-item>
+      </el-carousel>
+    </div>
   </div>
 </template>
 
@@ -48,4 +58,19 @@ export default {
 }
 </script>
 <style>
+  .el-carousel__item h3 {
+    color: #475669;
+    font-size: 14px;
+    opacity: 0.75;
+    line-height: 200px;
+    margin: 0;
+  }
+
+  .el-carousel__item:nth-child(2n) {
+    background-color: #99a9bf;
+  }
+
+  .el-carousel__item:nth-child(2n+1) {
+    background-color: #d3dce6;
+  }
 </style>

@@ -98,7 +98,7 @@
         this.errors= "";
         setTimeout(()=>{
            this.finishLogging()
-        },3000);
+        },2000);
 
       },
       onSubmit() {
