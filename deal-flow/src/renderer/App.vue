@@ -46,6 +46,11 @@
         var myRequest = this.url.concat(path)
         console.log(myRequest);
         return myRequest
+      },
+      createDeleteRequest(path){
+        var myRequest = this.url.concat(path)
+        console.log(myRequest);
+        return myRequest
       }
     },
   }

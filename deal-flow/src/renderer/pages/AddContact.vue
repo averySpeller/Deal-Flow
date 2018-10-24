@@ -58,7 +58,8 @@
       </el-col>
     </el-row>
 
-    <button @click="addContact()">Add contact!</button>
+    <button @click="addContact()">Add contact!</button><br>
+    <button @click="goBack()" class="uk-button uk-button-secondary uk-button-large uk-margin">GO BACK</button>
   </div>
 
 </template>
@@ -84,6 +85,11 @@ export default {
     }
   },
   methods: {
+      goBack () {
+        window.history.length > 1
+          ? this.$router.go(-1)
+          : this.$router.push('/')
+      },
     addContact(){
       var splitty = this.name.split(' ');
       this.form.first = splitty[0];
@@ -94,6 +100,9 @@ export default {
 
       axios.post('http://24.138.161.30:5000/contacts',this.form).then(response => {
         console.log(response.data);
+        window.history.length > 1
+          ? this.$router.go(-1)
+          : this.$router.push('/')
       })
       .catch(e => {
         this.errors.push(e)
