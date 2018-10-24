@@ -1,5 +1,6 @@
 <template>
   <div id ="Constacts">
+    <h1>Contacts</h1>
     <div v-if="errors && users.length">
       <ul v-for="user of users">
           <router-link :to="{ name: 'Single-Contact', params: { id: user.id } }">{{user.name}}</router-link>

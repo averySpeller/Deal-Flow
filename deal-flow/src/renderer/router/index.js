@@ -21,6 +21,7 @@ import  Settings from '@/pages/Settings'
 import  Dashboard from '@/pages/Dashboard'
 import  Deals from '@/pages/Deals'
 import  SingleContact from '@/pages/single-contact'
+import SingleOrganization from '@/pages/single-organization'
 //Components
 // import SkillChart from @/components/SkillChart
 
@@ -48,6 +49,11 @@ export default new Router({
       path: '/single-contact/:id',
       name: 'Single-Contact',
       component: SingleContact
+    },
+    {
+      path: '/single-organization/:id',
+      name: 'Single-Organization',
+      component: SingleOrganization
     },
     {
       path: '/Login',
