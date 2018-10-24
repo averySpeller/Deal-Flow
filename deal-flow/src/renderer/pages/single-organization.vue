@@ -7,7 +7,7 @@
           <p><strong>Comapany Moto: </strong> "{{user.company.catchPhrase}}"</p>
           <br><br>
           <li><p><strong>Website: </strong>{{user.website}}</p></li>
-          <!-- <li><p><strong>Address: </strong>{{user.addres.street}} "Street, "{{user.address.suite}}", "{{user.address.city}}", "{{user.address.zipcode}}</p></li> -->
+          <li><p><strong>Address: </strong>{{user.address.street}} "Street, "{{user.address.suite}}", "{{user.address.city}}", "{{user.address.zipcode}}</p></li>
           <button @click="goBack()" class="uk-button uk-button-secondary uk-button-large uk-margin">GO BACK</button>
 
           <ol>
@@ -19,6 +19,7 @@
           </ol>
       </ul>
     </div>
+
     <ul v-if="errors && errors.length">
       <li v-for="error of errors">
         {{error.message}}
