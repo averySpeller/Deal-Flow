@@ -17,7 +17,7 @@
     },
     data() {
       return{
-        authenticated: false,
+        authenticated: true,
         mockAccount: {
           username: "kevin",
           password: "12345"
