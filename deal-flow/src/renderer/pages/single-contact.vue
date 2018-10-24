@@ -23,7 +23,6 @@
 </template>
 
 <script>
-import router from '../router'
 import axios from 'axios';
 export default {
   name: 'Single-Contact',
@@ -35,7 +34,11 @@ export default {
     }
   },
   methods:{
-
+    goBack () {
+      window.history.length > 1
+        ? this.$router.go(-1)
+        : this.$router.push('/')
+    }
   },
   created() {
     // this.id = this.$route.params.id;
