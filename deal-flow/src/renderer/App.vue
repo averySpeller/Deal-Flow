@@ -17,11 +17,13 @@
     },
     data() {
       return{
-        authenticated: false,
+        authenticated: true,
+
         mockAccount: {
           username: "kevin",
           password: "12345"
-        }
+        },
+        url: "http://24.138.161.30:5000/"
       }
     },
     mounted() {
@@ -35,13 +37,18 @@
       },
       logout() {
         this.authenticated = false;
+      },
+      goBack () {
+        window.history.length > 1
+          ? this.$router.go(-1)
+          : this.$router.push('/')
+      },
+      createGetRequest(path){
+        var myRequest = this.url.concat(path)
+        console.log(myRequest);
+        return myRequest
       }
     },
-    goBack () {
-      window.history.length > 1
-        ? this.$router.go(-1)
-        : this.$router.push('/')
-    }
   }
 </script>
 

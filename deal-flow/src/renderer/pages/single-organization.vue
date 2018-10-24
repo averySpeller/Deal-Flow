@@ -9,6 +9,14 @@
           <li><p><strong>Website: </strong>{{user.website}}</p></li>
           <!-- <li><p><strong>Address: </strong>{{user.addres.street}} "Street, "{{user.address.suite}}", "{{user.address.city}}", "{{user.address.zipcode}}</p></li> -->
           <button @click="goBack()" class="uk-button uk-button-secondary uk-button-large uk-margin">GO BACK</button>
+
+          <ol>
+            <li v-for="contact in contacts">
+              <router-link :to="{ name: 'Single-Contact', params: { contact_id: contact.contact_id } }">
+                {{contact.first}}
+              </router-link>
+            </li>
+          </ol>
       </ul>
     </div>
     <ul v-if="errors && errors.length">
@@ -29,7 +37,9 @@ export default {
     return {
       id: 0,
       users:[],
+      contacts: [],
       errors: [],
+      contacterrors: [],
       address: ""
     }
   },
@@ -48,6 +58,18 @@ export default {
     })
     .catch(e => {
       this.errors.push(e)
+      console.log('failed');
+    })
+
+    var myRequest = this.$parent.createGetRequest("contacts")
+
+    axios.get(myRequest).then(response => {
+      this.contacts = response.data
+      console.log(response.data);
+    })
+    .catch(e => {
+      this.contacterrors.push(e)
+      console.log('faileds');
     })
   }
 }
