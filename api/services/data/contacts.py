@@ -14,6 +14,7 @@ from api.core.model import *
 class Contact(Model):
     _properties = {
         'contact_id': Property('ContactID', Type.uid),
+        'organization_id': Property('OrganizationID', Type.uid),
         'first': Property('First', Type.string),
         'last': Property('Last', Type.string),
         'email': Property('Email', Type.string),
@@ -31,8 +32,14 @@ class Contacts(Resource):
     def on_post_collection(self, req, res):
         res = self.default_response(req, res)
 
-    def on_get(self, req, res, contactID):
-        res = self.default_response(req, res, contactID)
+    def on_get(self, req, res, contact_id):
+        res = self.default_response(req, res, contact_id)
 
     def on_get_collection(self, req, res):
         res = self.default_response(req, res)
+
+    def on_put(self, req, res, contact_id):
+        res = self.default_response(req, res, contact_id)
+
+    def on_delete(self, req, res, contact_id):
+        res = self.default_response(req, res, contact_id)

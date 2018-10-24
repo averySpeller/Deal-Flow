@@ -12,7 +12,7 @@ import falcon
 import re
 from inspect import signature
 from api.core.model import *
-from api.core.rql import *
+from api.core.srql import *
 
 
 class Resource(object):
@@ -21,10 +21,10 @@ class Resource(object):
         pass
 
     def new_model(self, id, req):
-        return self.__class__.model(id=id, parser=RQLParser(req))
+        return self.__class__.model(id=id, parser=SRQLParser(req))
 
     def new_model_collection(self, req):
-        return ModelCollection(model=self.__class__.model, parser=RQLParser(req))
+        return ModelCollection(model=self.__class__.model, parser=SRQLParser(req))
 
     def default_response(self, req, res, id=None):
         # build the models HACK: we don't really want to check for POST
@@ -36,11 +36,11 @@ class Resource(object):
 
         def _default_get(req, res, model):
             res.media = model.serialize()
+            res.status = falcon.HTTP_OK
 
-            if not model.is_error_state():
-                res.status = falcon.HTTP_OK
-            else:
+            if model.is_error_state():
                 res.status = falcon.HTTP_NOT_FOUND
+                res.media = None
             return res
 
         def _default_put(req, res, model):
@@ -49,33 +49,29 @@ class Resource(object):
             model.save()
 
             res.media = model.serialize()
+            res.status = falcon.HTTP_OK
 
-            if not model.is_error_state():
-                res.status = falcon.HTTP_OK
-            else:
+            if model.is_error_state():
                 res.status = falcon.HTTP_NOT_FOUND
             return res
 
         def _default_post(req, res, model):
-
             # Create the model object using json payload
             model.set_map()
             model.save()
 
             res.media = model.serialize()
+            res.status = falcon.HTTP_CREATED
 
-            if not model.is_error_state():
-                res.status = falcon.HTTP_CREATED
-            else:
+            if model.is_error_state():
                 res.status = falcon.HTTP_BAD_REQUEST
             return res
 
         def _default_delete(req, res, model):
-            model.delete()
+            success = model.delete()
+            res.status = falcon.HTTP_NO_CONTENT
 
-            if not model.is_error_state():
-                res.status = falcon.HTTP_NO_CONTENT
-            else:
+            if not success or model.is_error_state():
                 res.status = falcon.HTTP_BAD_REQUEST
             return res
 
@@ -90,8 +86,8 @@ class Resource(object):
         # handle the given HTTP method
         res = supported_methods[req.method](req, res, model)
 
-        print('method')
-        print(req.method)
+        # print('method')
+        # print(req.method)
 
         return res
 

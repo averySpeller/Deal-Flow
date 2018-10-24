@@ -10,11 +10,11 @@
 #
 from api.core.utils import *
 
-class RQLParser:
+class SRQLParser:
 
     def __init__(self, request=None):
         self.request = request
-        self.reserved = ['includes', 'fields', 'order', 'group', 'limit']
+        self.reserved = ['includes', 'fields', 'order', 'group', 'limit', 'page']
 
         self.url_params = None
         self.payload = None
@@ -24,9 +24,13 @@ class RQLParser:
         self.order = None
         self.group = None
         self.limit = None
+        self.page = 1
+        self.page_size = 30
 
         self.url_query = Utils.fetch_query_string(request)
         self.payload = Utils.fetch_payload(request)
+
+        print(self.url_query)
 
 
     def get_payload(self):
@@ -36,18 +40,13 @@ class RQLParser:
     # -------------------------------------------
     # Purpose: Purpose.
     # Passed-in: (Request) the request object.
-    def parse(self, req=None):
-
-        if req:
-            pass
-        else:
-            pass
-            # self.request
-
+    def parse(self):
         # Fetch the query string as a dictionary
-        self.url_query = Utils.fetch_query_string(req)
+        # self.url_query = Utils.fetch_query_string(req)
 
         # Step 1: Parse all parameters with reserved words
+        # if 'word' in self.reserved:
+
 
         # Step 2: Parse all filters
         for filter in self.url_query:
