@@ -2,6 +2,17 @@
   <div class="uk-position-center uk-inline">
     <img src="static/imgs/logo.jpg">
     <div id="loginForm" class="uk-align-center uk-text-center">
+      <el-form ref="form" :model="form">
+        <el-form-item label="Username">
+          <el-input v-model="form.name" placeholder="username"></el-input>
+        </el-form-item>
+        <el-form-item label="Password">
+          <el-input type="password" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onSubmit">Create</el-button>
+        </el-form-item>
+      </el-form>
       <form v-on:submit.prevent="validateLoginCredentials()">
         <div v-if="!loading" id="textInputs">
           <div class="uk-margin">
@@ -35,11 +46,23 @@
     name: 'Login',
     data() {
       return {
-          username: null,
-          password: null,
-          errors: null,
-          usernameErrors: false,
-          loading: false,
+
+        username: "",
+        password: "",
+        errors: null,
+        usernameError: false,
+        passwordError: false,
+        loading: false,
+        form: {
+          name: '',
+          region: '',
+          date1: '',
+          date2: '',
+          delivery: false,
+          type: [],
+          resource: '',
+          desc: ''
+        }
       }
     },
     methods: {
@@ -47,23 +70,39 @@
         this.$electron.shell.openExternal(link)
       },
       finishLogging(){
-        var re = /^\w+$/;
-        if (!re.test(this.username)) {
+        if (this.username == "") {
           this.usernameError = true;
-          this.errors = "*username is using special characters";
+          this.errors = this.errors + "username is empty\n";
+        }
+        else if (this.password == "") {
+          this.passwordError = true;
+          this.errors = this.errors + "password is empty\n";
+        }
+        else {
+          if(this.username == this.$parent.mockAccount.username && this.password == this.$parent.mockAccount.password){
+            this.$emit("authenticated", true);
+            this.$router.replace({ name: "Dashboard" });
+          }
+          else {
+            this.usernameError = true;
+            this.passwordError = true;
+            this.errors = "Bad Credentials\n";
+          }
         }
         this.loading= false;
       },
       validateLoginCredentials() {
         this.loading= true;
-        this.errors= null;
         this.usernameError= false;
+        this.passwordError= false;
+        this.errors= "";
         setTimeout(()=>{
            this.finishLogging()
-        },3000);
+        },2000);
 
-
-
+      },
+      onSubmit() {
+        console.log('submit!');
       }
     }
   }

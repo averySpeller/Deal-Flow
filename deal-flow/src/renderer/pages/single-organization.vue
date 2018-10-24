@@ -7,8 +7,8 @@
           <p><strong>Comapany Moto: </strong> "{{user.company.catchPhrase}}"</p>
           <br><br>
           <li><p><strong>Website: </strong>{{user.website}}</p></li>
-          <li><p><strong>Phone Number: </strong>{{user.phone}}</p></li>
-          <li><p><strong>Address: </strong>{{user.address.street}} Street, {{user.address.suite}}, {{user.address.city}}, {{user.address.zipcode}}</p></li>
+          <li><p><strong>Address: </strong>{{user.address.street}} "Street, "{{user.address.suite}}", "{{user.address.city}}", "{{user.address.zipcode}}</p></li>
+          <button @click="goBack()" class="uk-button uk-button-secondary uk-button-large uk-margin">GO BACK</button>
       </ul>
     </div>
 
@@ -23,7 +23,6 @@
 </template>
 
 <script>
-import router from '../router'
 import axios from 'axios';
 export default {
   name: 'Single-Organization',
@@ -36,7 +35,11 @@ export default {
     }
   },
   methods:{
-
+    goBack () {
+      window.history.length > 1
+        ? this.$router.go(-1)
+        : this.$router.push('/')
+    }
   },
   created() {
     // this.id = this.$route.params.id;
