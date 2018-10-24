@@ -64,7 +64,7 @@ export default {
           id: 5,
           text: 'Settings',
           page:'/Settings'
-        }
+        },
       ]
     }
   }

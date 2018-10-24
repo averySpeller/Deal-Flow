@@ -2,8 +2,6 @@
   <div id="app">
     <Nav></Nav>
     <router-view></router-view>
-
-
   </div>
 
 </template>
@@ -13,7 +11,7 @@
   export default {
     name: 'deal-flow',
     components:{
-          'Nav': Nav
+          'Nav': Nav,
     }
   }
 </script>

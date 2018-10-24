@@ -6,6 +6,12 @@ import Router from 'vue-router'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import axios from 'axios';
+import VueCarousel from 'vue-carousel';
+import VueCharts from 'vue-chartjs'
+import "chart.js";
+import "hchs-vue-charts";
+Vue.use(window.VueCharts);
+
 //Pages
 import  Contacts from '@/pages/Contacts'
 import  Login from '@/pages/Login'
@@ -13,9 +19,13 @@ import  Organizations from '@/pages/Organizations'
 import  Settings from '@/pages/Settings'
 import  Dashboard from '@/pages/Dashboard'
 import  Deals from '@/pages/Deals'
+import  SingleContact from '@/pages/single-contact'
+//Components
+// import SkillChart from @/components/SkillChart
 
 Vue.use(Router)
 Vue.use(ElementUI);
+Vue.use(VueCarousel);
 
 export default new Router({
   routes: [
@@ -32,6 +42,11 @@ export default new Router({
       path: '/Contacts',
       name: 'Contacts',
       component: Contacts
+    },
+    {
+      path: '/single-contact/:id',
+      name: 'Single-Contact',
+      component: SingleContact
     },
     {
       path: '/Login',
@@ -57,6 +72,11 @@ export default new Router({
       path: '/Dashboard',
       name: 'Dashboard',
       component: Dashboard
-    }
+    }//,
+    // {
+    //   path:'/SkillChart'
+    //   name: 'SkillChart'
+    //   component: SkillChart
+    // }
   ]
 })

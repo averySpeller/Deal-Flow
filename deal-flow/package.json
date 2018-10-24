@@ -22,10 +22,12 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "chart.js": "^2.7.3",
     "element-ui": "^2.4.8",
-    "vue": "^2.5.16",
+    "hchs-vue-charts": "^1.2.8",
     "vue": "^2.5.16",
     "vue-carousel": "^0.14.0",
+    "vue-chartjs": "^3.4.0",
     "vue-electron": "^1.0.6",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"

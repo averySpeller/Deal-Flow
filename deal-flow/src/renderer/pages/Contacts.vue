@@ -1,24 +1,53 @@
 <template>
-  <div>
-    <h1>Contact Me</h1>
-  <p>
-    <ul>
-      <li>Email: {{email}}</li>
-      <li>Website: {{web}}</li>
+  <div id ="Constacts">
+    <div v-if="errors && users.length">
+      <ul v-for="user of users">
+          <router-link :to="{ name: 'Single-Contact', params: { id: user.id } }">{{user.name}}</router-link>
+      </ul>
+    </div>
+    <ul v-if="errors && errors.length">
+      <li v-for="error of errors">
+        {{error.message}}
+      </li>
     </ul>
-  </p>
+
+
   </div>
 </template>
 
 <script>
+import axios from 'axios';
 export default {
   name: 'Contacts',
   data(){
     return {
-      email: 'email@email.com',
-      web: 'dealflow.com'
+      users:[],
+      errors: [],
     }
+  },
+  methods:{
+
+  },
+  created() {
+    axios.get('https://jsonplaceholder.typicode.com/users').then(response => {
+      this.users = response.data
+      console.log(response.data);
+    })
+    .catch(e => {
+      this.errors.push(e)
+    })
   }
 }
 </script>
-view raw
+<style scoped>
+
+#title{
+  text-align: center;
+  margin: 0 auto;
+}
+img {
+  margin: 0 auto;
+    border-radius: 50%;
+}
+
+</style>
