@@ -14,7 +14,8 @@
       </li>
     </ul>
 
-
+    <router-link to="/AddContact" tag="el-button">Add contact</router-link>
+    <!-- <el-button><router-link to="/AddContact">Add Contact</router-link></el-button> -->
   </div>
 </template>
 

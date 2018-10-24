@@ -60,16 +60,6 @@ export default {
           text: 'Settings',
           page:'/Settings'
         },
-        {
-          id: 5,
-          text: 'Contact Catalogue',
-          page:'/ContactCatalogue'
-        },
-        {
-          id: 6,
-          text: 'Add Contact',
-          page: '/AddContact'
-        }
       ]
     }
   }

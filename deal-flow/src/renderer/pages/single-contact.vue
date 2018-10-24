@@ -14,15 +14,15 @@
       </ul>
 
     </div>
+    <button @click="deleteContact()">delete</button>
+    <br>
     <button @click="goBack()" class="uk-button uk-button-secondary uk-button-large uk-margin">GO BACK</button>
+
     <ul v-if="errors && errors.length">
       <li v-for="error of errors">
         {{error.message}}
       </li>
     </ul>
-
-
-
   </div>
 </template>
 
@@ -42,6 +42,20 @@ export default {
       window.history.length > 1
         ? this.$router.go(-1)
         : this.$router.push('/')
+    },
+    deleteContact(){
+      var myRequest = this.$parent.createGetRequest("contacts/".concat(this.$route.params.contact_id))
+
+      axios.delete(myRequest).then(response => {
+        console.log(myRequest);
+        window.history.length > 1
+          ? this.$router.go(-1)
+          : this.$router.push('/')
+
+      })
+      .catch(e => {
+        this.errors.push(e)
+      })
     }
   },
   created() {
