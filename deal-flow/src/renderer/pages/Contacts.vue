@@ -1,9 +1,11 @@
 <template>
   <div id ="Constacts">
     <h1>Contacts</h1>
-    <div v-if="errors && users.length">
-      <ul v-for="user of users">
-          <router-link :to="{ name: 'Single-Contact', params: { id: user.id } }">{{user.name}}</router-link>
+    <div v-if="errors && contacts.length">
+      <ul v-for="contact of contacts">
+          <router-link :to="{ name: 'Single-Contact', params: { contact_id: contact.contact_id } }">
+            {{contact.first}} {{contact.last}}
+          </router-link>
       </ul>
     </div>
     <ul v-if="errors && errors.length">
@@ -22,7 +24,7 @@ export default {
   name: 'Contacts',
   data(){
     return {
-      users:[],
+      contacts:[],
       errors: [],
     }
   },
@@ -30,8 +32,10 @@ export default {
 
   },
   created() {
-    axios.get('https://jsonplaceholder.typicode.com/users').then(response => {
-      this.users = response.data
+    var myRequest = this.$parent.createGetRequest("contacts")
+
+    axios.get(myRequest).then(response => {
+      this.contacts = response.data
       console.log(response.data);
     })
     .catch(e => {
