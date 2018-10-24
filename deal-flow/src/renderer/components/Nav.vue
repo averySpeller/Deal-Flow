@@ -39,31 +39,26 @@ export default {
         },
         {
           id: 1,
-          text: 'Login',
-          page:'/Login'
-        },
-        {
-          id: 2,
           text: 'Contacts',
           page:'/Contacts'
         },
         {
-          id: 3,
+          id: 2,
           text: 'Organizations',
           page:'/Organizations'
         },
         {
-          id: 4,
+          id: 3,
           text: 'Deals',
           page:'/Deals'
         },
         {
-          id: 5,
+          id: 4,
           text: 'Settings',
           page:'/Settings'
         },
         {
-          id: 6,
+          id: 5,
           text: 'Contact Catalogue',
           page:'/ContactCatalogue'
         }

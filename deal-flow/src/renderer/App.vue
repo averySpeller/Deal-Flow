@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <Nav></Nav>
-    <router-view></router-view>
+    <Nav v-if="authenticated"></Nav>
+    <router-view @authenticated="setAuthenticated"></router-view>
 
 
   </div>
@@ -14,6 +14,28 @@
     name: 'deal-flow',
     components:{
           'Nav': Nav
+    },
+    data() {
+      return{
+        authenticated: false,
+        mockAccount: {
+          username: "kevin",
+          password: "12345"
+        }
+      }
+    },
+    mounted() {
+      if(!this.authenticated) {
+        this.$router.replace({ name: "Login" });
+      }
+    },
+    methods: {
+      setAuthenticated(status) {
+        this.authenticated = status;
+      },
+      logout() {
+        this.authenticated = false;
+      }
     }
   }
 </script>
