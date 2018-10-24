@@ -1,24 +1,24 @@
 <template>
   <div id ="Organization">
     <img src="static/imgs/UoG.png">
-    <div v-if="errors && users.length">
-      <ul v-for="user of users">
-          <div class="title"><h1>{{user.company.name}}</h1></div>
-          <p><strong>Comapany Moto: </strong> "{{user.company.catchPhrase}}"</p>
+    <div v-if="organization">
+      <ul>
+          <div class="title"><h1>{{organization.name}}</h1></div>
+          <p><strong>Comapany Vision: </strong> "{{organization.vision}}"</p>
           <br><br>
-          <li><p><strong>Website: </strong>{{user.website}}</p></li>
-          <li><p><strong>Address: </strong>{{user.address.street}} "Street, "{{user.address.suite}}", "{{user.address.city}}", "{{user.address.zipcode}}</p></li>
-          <button @click="goBack()" class="uk-button uk-button-secondary uk-button-large uk-margin">GO BACK</button>
+          <li><p><strong>Website: </strong>{{organization.website}}</p></li>
+          <!-- <li><p><strong>Address: </strong>{{organization.address.street}} "Street, "{{organization.address.suite}}", "{{organization.address.city}}", "{{organization.address.zipcode}}</p></li> -->
 
           <ol>
             <li v-for="contact in contacts">
-              <router-link :to="{ name: 'Single-Contact', params: { contact_id: contact.contact_id } }">
+              <router-link :to="{ name: 'Single-Contact', params: { id: contact.contact_id} }">
                 {{contact.first}}
               </router-link>
             </li>
           </ol>
       </ul>
     </div>
+    <button @click="goBack()" class="uk-button uk-button-secondary uk-button-large uk-margin">GO BACK</button>
 
     <ul v-if="errors && errors.length">
       <li v-for="error of errors">
@@ -36,8 +36,7 @@ export default {
   name: 'Single-Organization',
   data(){
     return {
-      id: 0,
-      users:[],
+      organization: {},
       contacts: [],
       errors: [],
       contacterrors: [],
@@ -53,16 +52,18 @@ export default {
   },
   created() {
     // this.id = this.$route.params.id;
-    axios.get("https://jsonplaceholder.typicode.com/users?id=".concat(this.$route.params.id)).then(response => {
-      this.users = response.data
-      console.log("https://jsonplaceholder.typicode.com/users?id=".concat(this.$route.params.id));
+    var myRequest = this.$parent.createGetRequest("organizations/".concat(this.$route.params.id))
+
+    axios.get(myRequest).then(response => {
+      this.organization = response.data
+      console.log(myRequest);
     })
     .catch(e => {
       this.errors.push(e)
       console.log('failed');
     })
 
-    var myRequest = this.$parent.createGetRequest("contacts")
+    myRequest = this.$parent.createGetRequest("contacts")
 
     axios.get(myRequest).then(response => {
       this.contacts = response.data

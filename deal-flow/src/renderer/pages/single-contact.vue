@@ -46,7 +46,7 @@ export default {
   },
   created() {
     // this.id = this.$route.params.id;
-    var myRequest = this.$parent.createGetRequest("contacts/".concat(this.$route.params.contact_id))
+    var myRequest = this.$parent.createGetRequest("contacts/".concat(this.$route.params.id))
 
     axios.get(myRequest).then(response => {
       this.contact = response.data
