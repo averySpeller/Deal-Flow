@@ -71,7 +71,7 @@ export default {
   name: 'EditContact',
   data(){
     return{
-      id: 0,
+      contact_id: 0,
       name: null,
       form: {
         first: null,

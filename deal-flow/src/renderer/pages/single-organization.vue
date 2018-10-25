@@ -11,7 +11,7 @@
 
           <ol>
             <li v-for="contact in contacts">
-              <router-link :to="{ name: 'Single-Contact', params: { id: contact.contact_id} }">
+              <router-link :to="{ name: 'Single-Contact', params: { contact_id: contact.contact_id} }">
                 {{contact.first}}
               </router-link>
             </li>

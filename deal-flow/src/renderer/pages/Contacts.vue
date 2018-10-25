@@ -3,7 +3,7 @@
     <h1>Contacts</h1>
     <div v-if="errors && contacts.length">
       <ul v-for="contact of contacts">
-          <router-link :to="{ name: 'Single-Contact', params: { id: contact.contact_id } }">
+          <router-link :to="{ name: 'Single-Contact', params: { contact_id: contact.contact_id } }">
             {{contact.first}} {{contact.last}}
           </router-link>
       </ul>

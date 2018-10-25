@@ -34,7 +34,7 @@ export default {
   name: 'Single-Contact',
   data(){
     return {
-      id: 0,
+      contact_id: 0,
       contact: {},
       errors: [],
     }
@@ -62,13 +62,8 @@ export default {
   },
   created() {
     // this.id = this.$route.params.id;
-<<<<<<< HEAD
     var myRequest = this.$parent.createGetRequest("contacts/".concat(this.$route.params.contact_id))
     this.id = this.$route.params.id;
-=======
-    var myRequest = this.$parent.createGetRequest("contacts/".concat(this.$route.params.id))
-
->>>>>>> 8e0c0c48599daa271fcf2d4f7187c3085bfd7495
     axios.get(myRequest).then(response => {
       this.contact = response.data
       console.log(myRequest);
