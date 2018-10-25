@@ -2,7 +2,7 @@
   <div class="uk-position-center uk-inline">
     <img src="static/imgs/logo.jpg">
     <div id="loginForm" class="uk-align-center uk-text-center">
-      <el-form ref="form" :model="form">
+      <!-- <el-form ref="form" :model="form">
         <el-form-item label="Username">
           <el-input v-model="form.name" placeholder="username"></el-input>
         </el-form-item>
@@ -12,7 +12,7 @@
         <el-form-item>
           <el-button type="primary" @click="onSubmit">Create</el-button>
         </el-form-item>
-      </el-form>
+      </el-form> -->
       <form v-on:submit.prevent="validateLoginCredentials()">
         <div v-if="!loading" id="textInputs">
           <div class="uk-margin">
@@ -25,7 +25,8 @@
           <div class="uk-margin">
             <div class="uk-inline">
               <span class="uk-form-icon" uk-icon="icon: lock"></span>
-              <input v-model="password" class="uk-input uk-form-width-medium" type="password" placeholder="password">
+              <input v-if="passwordError" v-model="password" class="uk-input uk-form-width-medium uk-form-danger" type="text" >
+              <input v-else v-model="password" class="uk-input uk-form-width-medium"  type="text" placeholder="password">
             </div>
           </div>
         </div>
@@ -74,11 +75,12 @@
           this.usernameError = true;
           this.errors = this.errors + "username is empty\n";
         }
-        else if (this.password == "") {
+        if (this.password == "") {
           this.passwordError = true;
           this.errors = this.errors + "password is empty\n";
         }
-        else {
+
+        if (!(this.usernameError && this.passwordError)) {
           if(this.username == this.$parent.mockAccount.username && this.password == this.$parent.mockAccount.password){
             this.$emit("authenticated", true);
             this.$router.replace({ name: "Dashboard" });
