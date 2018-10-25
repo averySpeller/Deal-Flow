@@ -14,7 +14,9 @@
       </ul>
 
     </div>
-    <button @click="deleteContact()">delete</button>
+    <el-button @click="deleteContact()">delete</el-button>
+
+    <router-link :to="{ name:'EditContact', params: { contact_id: contact.contact_id } }">Edit</router-link>
     <br>
     <button @click="goBack()" class="uk-button uk-button-secondary uk-button-large uk-margin">GO BACK</button>
 
@@ -61,7 +63,7 @@ export default {
   created() {
     // this.id = this.$route.params.id;
     var myRequest = this.$parent.createGetRequest("contacts/".concat(this.$route.params.contact_id))
-
+    this.id = this.$route.params.id;
     axios.get(myRequest).then(response => {
       this.contact = response.data
       console.log(myRequest);
