@@ -12,8 +12,20 @@
           <li><p><strong>Phone: </strong>{{contact.phone1}}</p></li>
           <li><p><strong>Website: </strong>{{contact.website}}</p></li>
       </ul>
+      <el-row>
+        <el-col :span="12">
+            Notes: <el-input
+                      v-model="contact.notes"
+                      type="textarea"
+                      :autosize="{ minRows: 4, maxRows: 8}"
+                      placeholder="Additional Notes" >
+                    </el-input>
+        </el-col>
+      </el-row>
+
 
     </div>
+
     <el-button @click="deleteContact()">delete</el-button>
 
     <router-link :to="{ name:'EditContact', params: { contact_id: contact.contact_id } }">Edit</router-link>
