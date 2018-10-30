@@ -8,7 +8,7 @@
             <br>
             <el-upload
               class="avatar-uploader uk-flex uk-flex-center uk-margin"
-              action="https://jsonplaceholder.typicode.com/posts/"
+              action="getImageFilePath()"
               :show-file-list="false"
               :on-success="handleAvatarSuccess"
               :before-upload="beforeAvatarUpload">

@@ -21,9 +21,10 @@ import  Settings from '@/pages/Settings'
 import  Dashboard from '@/pages/Dashboard'
 import  Deals from '@/pages/Deals'
 import  SingleContact from '@/pages/single-contact'
-import SingleOrganization from '@/pages/single-organization'
-import AddContact from '@/pages/AddContact'
-import EditContact from '@/pages/EditContact'
+import  SingleOrganization from '@/pages/single-organization'
+import  SingleDeal from '@/pages/single-deal'
+import  AddContact from '@/pages/AddContact'
+import  EditContact from '@/pages/EditContact'
 //Components
 // import SkillChart from @/components/SkillChart
 
@@ -56,6 +57,11 @@ export default new Router({
       path: '/single-organization/:id',
       name: 'Single-Organization',
       component: SingleOrganization
+    },
+    {
+      path: '/single-deal/:id',
+      name: 'Single-Deal',
+      component: SingleDeal
     },
     {
       path: '/AddContact',
