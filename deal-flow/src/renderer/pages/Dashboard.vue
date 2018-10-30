@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="companies" v-loading="loading" :data="companies">
     <h1>Dashboard</h1>
     <div id="slider2">
       <h2>Jobs</h2>
@@ -16,11 +16,11 @@
     </div>
     <div id="slider3">
       <h2>Jobs</h2>
-      <el-carousel id="Jobs" :interval="4000" type="card" height="200px">
-        <el-carousel-item v-for="organization of organizations">
+      <el-carousel id="Jobs" class="uk-margin" :interval="4000" type="card" height="200px">
+        <el-carousel-item class="uk-margin" v-for="organization of organizations">
           <router-link tag="div" :to="{ name: 'Single-Organization', params: { id: organization.organization_id  }} ">
             <div class="">
-              <img v-bind:src="organization.logo" height="200" width="200"/>
+              <img v-bind:src="organization.logo" height="100%" width="100%"/>
               {{organization.name}}
             </div>
           </router-link>
@@ -49,7 +49,8 @@
           { logo: 'static/imgs/randomLogo5.png' },
           { logo: 'static/imgs/randomLogo6.png' },
           { logo: 'static/imgs/randomLogo7.png' },
-        ]
+        ],
+        loading:true
       }
     },
     created() {
@@ -57,15 +58,10 @@
       axios.get(myRequest).then(response => {
         this.organizations = response.data
         console.log('log it up');
-        console.log(response.data);
-        console.log(this.organizations.length);
         for (var i = 0; i < this.organizations.length; i++) {
-          console.log('ANOTHA ONE');
-          console.log(i);
           this.organizations[i].logo = this.companies[i].logo;
-          console.log('YASSSS');
-
         }
+        this.loading = false
       })
       .catch(e => {
         this.errors.push(e)

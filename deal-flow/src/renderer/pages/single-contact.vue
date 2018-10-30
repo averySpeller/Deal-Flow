@@ -1,11 +1,18 @@
 <template>
-  <div id ="Constact">
-    <img src="static/imgs/linux.png">
-    <div v-if="contact">
+  <div id ="Contact" v-loading="loading" :data="contact">
+    <el-row type="flex" class="row-bg" justify="center">
+      <el-col :span="8">
+        <div class="uk-flex uk-flex-center uk-inline" style="border-radius: 50%">
+          <img src="static/imgs/linux.png">
+        </div>
+        <div class="title uk-flex uk-flex-center">
+          <h1>{{contact.first}} {{contact.last}}</h1>
+        </div>
+      </el-col>
+    </el-row>
+    <div class="">
       <ul>
-          <div class="title">
-            <h1>{{contact.first}} {{contact.last}}</h1>
-          </div>
+
           <p><strong>Name: </strong>{{contact.first}}</p>
           <br><br>
           <li><p><strong>Email: </strong>{{contact.email}}</p></li>
@@ -13,10 +20,10 @@
           <li><p><strong>Website: </strong>{{contact.website}}</p></li>
       </ul>
 
-    </div>
-    <el-button @click="deleteContact()">delete</el-button>
+      <el-button @click="deleteContact()">delete</el-button>
 
-    <router-link :to="{ name:'EditContact', params: { contact_id: contact.contact_id } }">Edit</router-link>
+      <router-link :to="{ name:'EditContact', params: { id: this.id }}">Edit</router-link>
+    </div>
     <br>
     <button @click="goBack()" class="uk-button uk-button-secondary uk-button-large uk-margin">GO BACK</button>
 
@@ -37,6 +44,7 @@ export default {
       id: 0,
       contact: {},
       errors: [],
+      loading:true
     }
   },
   methods:{
@@ -46,7 +54,7 @@ export default {
         : this.$router.push('/')
     },
     deleteContact(){
-      var myRequest = this.$parent.createGetRequest("contacts/".concat(this.$route.params.contact_id))
+      var myRequest = this.$parent.createGetRequest("contacts/".concat(this.contact.contact_id))
 
       axios.delete(myRequest).then(response => {
         console.log(myRequest);
@@ -61,17 +69,13 @@ export default {
     }
   },
   created() {
-    // this.id = this.$route.params.id;
-<<<<<<< HEAD
-    var myRequest = this.$parent.createGetRequest("contacts/".concat(this.$route.params.contact_id))
-    this.id = this.$route.params.id;
-=======
     var myRequest = this.$parent.createGetRequest("contacts/".concat(this.$route.params.id))
+    this.id = this.$route.params.id;
 
->>>>>>> 8e0c0c48599daa271fcf2d4f7187c3085bfd7495
     axios.get(myRequest).then(response => {
       this.contact = response.data
       console.log(myRequest);
+      this.loading = false;
     })
     .catch(e => {
       this.errors.push(e)

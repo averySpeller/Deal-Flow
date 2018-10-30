@@ -1,5 +1,5 @@
 <template>
-  <div id ="Constacts">
+  <div id ="Constacts" v-loading="loading" :data="contacts">
     <h1>Contacts</h1>
     <div v-if="errors && contacts.length">
       <ul v-for="contact of contacts">
@@ -14,7 +14,7 @@
       </li>
     </ul>
 
-    <router-link to="/AddContact" tag="el-button">Add contact</router-link>
+    <router-link to="AddContact" tag="el-button">Add contact</router-link>
     <!-- <el-button><router-link to="/AddContact">Add Contact</router-link></el-button> -->
   </div>
 </template>
@@ -27,6 +27,7 @@ export default {
     return {
       contacts:[],
       errors: [],
+      loading:true
     }
   },
   methods:{
@@ -38,6 +39,7 @@ export default {
     axios.get(myRequest).then(response => {
       this.contacts = response.data
       console.log(response.data);
+      this.loading = false;
     })
     .catch(e => {
       this.errors.push(e)

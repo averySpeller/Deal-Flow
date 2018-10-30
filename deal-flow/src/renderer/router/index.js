@@ -48,12 +48,12 @@ export default new Router({
       component: Contacts
     },
     {
-      path: '/single-contact/:contact_id',
+      path: '/single-contact/:id',
       name: 'Single-Contact',
       component: SingleContact
     },
     {
-      path: '/single-organization/:contact_id',
+      path: '/single-organization/:id',
       name: 'Single-Organization',
       component: SingleOrganization
     },
@@ -63,7 +63,7 @@ export default new Router({
       component: AddContact
     },
     {
-      path: '/EditContact/:contact_id',
+      path: '/EditContact/:id',
       name: 'EditContact',
       component: EditContact
     },

@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <Nav v-if="authenticated"></Nav>
+    <SearchBar v-if="authenticated"></SearchBar>
     <router-view @authenticated="setAuthenticated"></router-view>
 
   </div>
@@ -12,11 +13,11 @@
   export default {
     name: 'deal-flow',
     components:{
-          'Nav': Nav
+          'Nav': Nav,
     },
     data() {
       return{
-        authenticated: false,
+        authenticated: true,
         mockAccount: {
           username: "kevin",
           password: "12345"
@@ -43,7 +44,6 @@
       },
       createGetRequest(path){
         var myRequest = this.url.concat(path)
-        console.log(myRequest);
         return myRequest
       },
       createDeleteRequest(path){

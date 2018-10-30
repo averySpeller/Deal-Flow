@@ -1,7 +1,7 @@
 <template>
   <div id ="Organizations">
     <h1>Organizations</h1>
-    <div v-if="errors && organizations.length">
+    <div  v-loading="loading" :data="organizations">
       <ul v-for="organization in organizations">
           <router-link :to="{ name: 'Single-Organization', params: { id: organization.organization_id } }">{{organization.name}}</router-link>
       </ul>
@@ -24,6 +24,7 @@ export default {
     return {
       organizations:[],
       errors: [],
+      loading:true
     }
   },
   methods:{
@@ -35,6 +36,7 @@ export default {
       this.organizations = response.data
       console.log('log it up');
       console.log(response.data);
+      this.loading = false;
     })
     .catch(e => {
       this.errors.push(e)

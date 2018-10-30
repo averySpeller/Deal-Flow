@@ -1,9 +1,9 @@
 <template>
-  <div id ="Organization">
+  <div id ="Organization" v-loading="loading" :data="organization">
     <img src="static/imgs/UoG.png">
-    <div v-if="organization">
+    <div>
       <ul>
-          <div class="title"><h1>{{organization.name}}</h1></div>
+          <div class="title" ><h1>{{organization.name}}</h1></div>
           <p><strong>Comapany Vision: </strong> "{{organization.vision}}"</p>
           <br><br>
           <li><p><strong>Website: </strong>{{organization.website}}</p></li>
@@ -40,7 +40,8 @@ export default {
       contacts: [],
       errors: [],
       contacterrors: [],
-      address: ""
+      address: "",
+      loading:true
     }
   },
   methods:{
@@ -51,12 +52,12 @@ export default {
     }
   },
   created() {
-    // this.id = this.$route.params.id;
     var myRequest = this.$parent.createGetRequest("organizations/".concat(this.$route.params.id))
 
     axios.get(myRequest).then(response => {
       this.organization = response.data
       console.log(myRequest);
+      this.loading = false;
     })
     .catch(e => {
       this.errors.push(e)
