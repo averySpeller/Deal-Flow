@@ -1,5 +1,14 @@
 <template>
   <div>
+    <el-upload
+      class="avatar-uploader"
+      action="getImageFilePath"
+      :show-file-list="false"
+      :on-success="handleAvatarSuccess"
+      :before-upload="beforeAvatarUpload">
+      <img v-if="imageUrl" :src="imageUrl" class="avatar">
+      <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+    </el-upload>
     <el-row>
       <el-col :span="6">
           Name: <el-input
@@ -73,6 +82,7 @@ export default {
     return{
       contact_id: 0,
       name: null,
+      imageUrl:'',
       form: {
         first: null,
         last: null,
@@ -87,9 +97,8 @@ export default {
     }
   },
   created() {
-    this.contact_id = this.$route.params.contact_id;
-    var myRequest = this.$parent.createGetRequest("contacts/".concat(this.$route.params.contact_id))
-    this.id = this.$route.params.id;
+    var myRequest = this.$parent.createGetRequest("contacts/".concat(this.$route.params.id))
+
     axios.get(myRequest).then(response => {
       this.contact = response.data
       console.log(response.data);
@@ -106,11 +115,11 @@ export default {
     })
   },
   methods: {
-      goBack () {
-        window.history.length > 1
-          ? this.$router.go(-1)
-          : this.$router.push('/')
-      },
+    goBack () {
+      window.history.length > 1
+        ? this.$router.go(-1)
+        : this.$router.push('/')
+    },
     editContact(){
       var splitty = this.name.split(' ');
       this.form.first = splitty[0];
@@ -119,7 +128,7 @@ export default {
       // console.log(splitty);
       console.log(this.form);
 
-      axios.put('http://24.138.161.30:5000/contacts/'.concat(this.$route.params.contact_id),this.form).then(response => {
+      axios.put('http://24.138.161.30:5000/contacts/'.concat(this.$route.params.id),this.form).then(response => {
         console.log(response.data);
         console.log(response.header);
 
@@ -133,6 +142,21 @@ export default {
         console.log('i died');
       })
 
+    },
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg';
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error('Avatar picture must be JPG format!');
+      }
+      if (!isLt2M) {
+        this.$message.error('Avatar picture size can not exceed 2MB!');
+      }
+      return isJPG && isLt2M;
     }
 
   }

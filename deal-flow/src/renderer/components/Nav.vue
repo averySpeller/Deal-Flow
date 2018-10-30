@@ -1,7 +1,15 @@
 <template>
   <div>
-    <el-row :gutter="20">
-      <el-button class="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #offcanvas-push">Nav bar</el-button>
+    <el-row type="flex" class="row-bg" justify="space-between">
+      <el-col :span="6">
+        <el-button class="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #offcanvas-push">Nav bar</el-button>
+      </el-col>
+      <el-col :span="6">
+        <SearchBar></SearchBar>
+      </el-col>
+      <el-col :span="6">
+      </el-col>
+
     </el-row>
 
     <nav>
@@ -30,8 +38,12 @@
   </div>
 </template>
 <script>
+import SearchBar from './SearchBar'
 export default {
   name: 'Nav',
+  components:{
+        'SearchBar': SearchBar,
+  },
   data() {
     return {
       links: [
