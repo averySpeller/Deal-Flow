@@ -8,22 +8,42 @@
         <div class="title uk-flex uk-flex-center">
           <h1>{{contact.first}} {{contact.last}}</h1>
         </div>
+        <div class="title uk-flex uk-flex-center">
+          <h4>Company Name</h4>
+          <!-- <router-link tag="h4" :to="{ name: 'Single-Organization', params: { id: contact.company }} ">
+            {{contact.company}}
+          </router-link> -->
+        </div>
       </el-col>
     </el-row>
-    <div class="">
-      <ul>
-
-          <p><strong>Name: </strong>{{contact.first}}</p>
+    <div class="uk-divider-vertical uk-margin">
+      <hr class="uk-divider-icon"/>
+      <el-row :gutter="50">
+        <el-col :xs="0" :sm="1" :md="2" :lg="3" :xl="3"><div class="grid-content bg-purple"></div></el-col>
+        <el-col :xs="12" :sm="11" :md="10" :lg="9" :xl="9">
+          <ul>
+            <p><strong>Name: </strong>{{contact.first}}</p>
+            <br><br>
+            <li><p><strong>Email: </strong>{{contact.email}}</p></li>
+            <li><p><strong>Phone: </strong>{{contact.phone1}}</p></li>
+            <li><p><strong>Website: </strong>{{contact.website}}</p></li>
+          </ul>
+        </el-col>
+        <el-col  :xs="12" :sm="11" :md="10" :lg="9" :xl="9">
+          <div class="uk-flex uk-flex-center uk-inline">
+            <img src="static/imgs/sampleRadarChart.png" width="">
+          </div>
           <br><br>
-          <li><p><strong>Email: </strong>{{contact.email}}</p></li>
-          <li><p><strong>Phone: </strong>{{contact.phone1}}</p></li>
-          <li><p><strong>Website: </strong>{{contact.website}}</p></li>
-      </ul>
+          <div class="uk-flex uk-flex-center uk-inline">
+            <p>NOTES GO HERE</p>
+          </div>
 
-      <el-button @click="deleteContact()">delete</el-button>
-
-      <router-link :to="{ name:'EditContact', params: { id: this.id }}">Edit</router-link>
+        </el-col>
+        <el-col :xs="0" :sm="1" :md="2" :lg="3" :xl="3"><div class="grid-content bg-purple"></div></el-col>
+      </el-row>
     </div>
+      <el-button @click="deleteContact()">delete</el-button>
+      <router-link :to="{ name:'EditContact', params: { id: this.id }}">Edit</router-link>
     <br>
     <button @click="goBack()" class="uk-button uk-button-secondary uk-button-large uk-margin">GO BACK</button>
 
@@ -85,13 +105,29 @@ export default {
 </script>
 <style scoped>
 
-#title{
-  text-align: center;
-  margin: 0 auto;
-}
-img {
-  margin: 0 auto;
-    border-radius: 50%;
-}
+  #title{
+    text-align: center;
+    margin: 0 auto;
+  }
+  img {
+    margin: 0 auto;
+      border-radius: 50%;
+  }
+  .el-col {
+    border-radius: 4px;
+  }
+  .bg-purple-dark {
+    background: #99a9bf;
+  }
+  .bg-purple {
+    background: #d3dce6;
+  }
+  .bg-purple-light {
+    background: #e5e9f2;
+  }
+  .grid-content {
+    border-radius: 4px;
+    min-height: 36px;
+  }
 
 </style>
