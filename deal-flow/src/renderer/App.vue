@@ -18,6 +18,9 @@
     data() {
       return{
         authenticated: true,
+        header = {
+          Authorization: `Bearer `;
+        }
         mockAccount: {
           username: "kevin",
           password: "12345"
@@ -32,7 +35,8 @@
         this.$router.replace({ name: "Login" });
       }
 
-      this.jwtAuth = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb21lIjoicGF5bG9hZCJ9.4twFt5NiznN84AWoo1d7KO1T_yoc0Z6XOpOVswacPZg"; //
+      this.jwtAuth = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb21lIjoicGF5bG9hZCJ9.4twFt5NiznN84AWoo1d7KO1T_yoc0Z6XOpOVswacPZg";
+      this.header.Authorization = this.header.Authorization.concat(this.jwtAuth);
       var output = this.parseJwt(this.jwtAuth);
       console.log("RIGHT HERE RIGHT NOW");
       console.log(output);
