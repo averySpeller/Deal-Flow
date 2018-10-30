@@ -5,15 +5,20 @@
         <div class="uk-flex uk-flex-center uk-inline" style="border-radius: 50%">
           <img src="static/imgs/linux.png">
         </div>
+
         <div class="title uk-flex uk-flex-center">
           <h1>{{contact.first}} {{contact.last}}</h1>
         </div>
         <div class="title uk-flex uk-flex-center">
-          <h4>Company Name</h4>
+          <h4>From *Company*</h4>
           <!-- <router-link tag="h4" :to="{ name: 'Single-Organization', params: { id: contact.company }} ">
             {{contact.company}}
           </router-link> -->
         </div>
+        <div class="title uk-flex uk-flex-center">
+          <h4>{{this.myTest}}</h4>
+        </div>
+
       </el-col>
     </el-row>
     <div class="uk-divider-vertical uk-margin">
@@ -30,8 +35,8 @@
           </ul>
         </el-col>
         <el-col  :xs="12" :sm="11" :md="10" :lg="9" :xl="9">
-          <div class="uk-flex uk-flex-center uk-inline">
-            <img src="static/imgs/sampleRadarChart.png" width="">
+          <div class="uk-flex uk-flex-center uk-inline" >
+            <img src="static/imgs/sampleRadarChart.png" height="100" uk-img>
           </div>
           <br><br>
           <div class="uk-flex uk-flex-center uk-inline">
@@ -62,6 +67,7 @@ export default {
   data(){
     return {
       id: 0,
+      myTest:"WRONG",
       contact: {},
       errors: [],
       loading:true
@@ -100,6 +106,14 @@ export default {
     .catch(e => {
       this.errors.push(e)
     })
+
+    if (typeof(Storage) !== "undefined") {
+      // Store
+      // Retrieve
+      this.myTest = localStorage.getItem("testMe");
+    } else {
+      this.myTest = "Sorry, your browser does not support Web Storage...";
+    }
   }
 }
 </script>
@@ -113,20 +127,7 @@ export default {
     margin: 0 auto;
       border-radius: 50%;
   }
-  .el-col {
-    border-radius: 4px;
-  }
-  .bg-purple-dark {
-    background: #99a9bf;
-  }
-  .bg-purple {
-    background: #d3dce6;
-  }
-  .bg-purple-light {
-    background: #e5e9f2;
-  }
   .grid-content {
-    border-radius: 4px;
     min-height: 36px;
   }
 
