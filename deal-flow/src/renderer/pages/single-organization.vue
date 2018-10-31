@@ -4,7 +4,7 @@
       <el-col>
         <div class="uk-align-right uk-margin-right">
           <el-button @click="deleteCompany()" type="danger">Delete</el-button>
-          <router-link :to="{ name:'EditOrganization', params: { id: this.id }}">
+          <router-link :to="{ name:'EditOrganization', params: { id: organization.organization_id }}">
             <el-button>Edit</el-button>
           </router-link>
         </div>
