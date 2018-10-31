@@ -177,7 +177,7 @@ class Model:
 
         for key,value in map.items():
             print('setting %s to %s' % (key,value))
-            if encrypted:
+            if encrypted and self.__class__._properties.get(key).encrypt:
                 setattr(self, key, Utils.decrypt(value))
             else:
                 print('else')
@@ -218,7 +218,10 @@ class Model:
 
                 payload = {}
                 for field in internal_state.get_fields():
-                    payload[field] = Utils.encrypt(self._properties[field])
+                    if self.__class__._properties.get(field).encrypt:
+                        payload[field] = Utils.encrypt(self._properties[field])
+                    else:
+                        payload[field] = self._properties[field]
 
                 # if updating
                 if self._id is not None:
@@ -293,7 +296,7 @@ class Type(Enum):
 #
 class Property:
 
-    def __init__(self, name, type, relation=None, document=None, **kwargs):
+    def __init__(self, name, type, relation=None, document=None, encrypt=False, **kwargs):
         print('registering property: ' + name)
         self.document = document
         self.source = None
@@ -301,6 +304,8 @@ class Property:
         self.description = None
         self.format = None
         self.options = None
+
+        self.encrypt = encrypt
 
     def get_document(self):
         return self.document

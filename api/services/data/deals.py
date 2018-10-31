@@ -24,8 +24,8 @@ class Deal(Model):
         'valuation': Property('.', Type.string, encrypt=True),
         'raise_type': Property('.', Type.string, encrypt=True),
         'raise': Property('.', Type.string, encrypt=True),
-        'revenue': Property('.', Type.string, encrypt=True),
-        'revenue_model': Property('.', Type.string, encrypt=True),
+        'revenue': Property('.', Type.string),
+        'revenue_model': Property('.', Type.string),
 
         'round': Property('.', Type.string, encrypt=True),
 
