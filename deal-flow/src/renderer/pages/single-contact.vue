@@ -1,5 +1,16 @@
 <template v-loading="loading" :data="contact">
   <div id ="Contact">
+    <el-row>
+      <el-col>
+        <div class="uk-align-right uk-margin-right">
+          <el-button @click="deleteContact()" type="danger">Delete</el-button>
+          <router-link :to="{ name:'EditContact', params: { id: this.id }}">
+            <el-button>Edit</el-button>
+          </router-link>
+        </div>
+      </el-col>
+    </el-row>
+
     <el-row type="flex" class="row-bg" justify="center">
       <el-col :span="8">
         <div class="uk-flex uk-flex-center uk-inline" style="border-radius: 50%">
@@ -56,8 +67,6 @@
         <el-col :xs="0" :sm="1" :md="2" :lg="3" :xl="3"><div class="grid-content bg-purple"></div></el-col>
       </el-row>
     </div>
-      <el-button @click="deleteContact()">delete</el-button>
-      <router-link :to="{ name:'EditContact', params: { id: contact.contact_id }}">Edit</router-link>
     <br>
     <button @click="goBack()" class="uk-button uk-button-secondary uk-button-large uk-margin">GO BACK</button>
 
@@ -70,7 +79,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import lib from '../lib'
 export default {
   name: 'Single-Contact',
   data(){
@@ -91,47 +100,31 @@ export default {
         : this.$router.push('/')
     },
     deleteContact(){
-      var requestFields = this.$parent.createGetRequest("contacts/".concat(this.contact.contact_id))
 
-      axios.delete(requestFields.myRequest, requestFields.auth).then(response => {
+      lib.deleteRequest("/contacts/".concat(this.contact.contact_id), response => {
         console.log(requestFields.myRequest);
         window.history.length > 1
           ? this.$router.go(-1)
           : this.$router.push('/')
 
       })
-      .catch(e => {
-        this.errors.push(e)
-      })
     }
   },
   created() {
-    var requestFields = this.$parent.createGetRequest("contacts/".concat(this.$route.params.id))
     this.id = this.$route.params.id;
 
-    axios.get(requestFields.myRequest, requestFields.auth).then(response => {
+    lib.getRequest("/contacts/".concat(this.id), response => {
       this.contact = response.data
       this.orgID = this.contact.organization_id;
       console.log("orgID ISSSS: ",this.orgID);
-      console.log(requestFields.myRequest);
       this.loading = false;
 
-      requestFields = this.$parent.createGetRequest("organizations/".concat(this.orgID))
-      console.log("orgID IS: ",this.orgID);
-      axios.get(requestFields.myRequest, requestFields.auth).then(response => {
-        this.organization = response.data
-        console.log(requestFields.myRequest);
-        this.loading = false;
-      })
-      .catch(e => {
-        this.errors.push(e)
-        console.log('failed');
-      })
-
-
-    })
-    .catch(e => {
-      this.errors.push(e)
+      if (this.orgID) {
+        lib.getRequest("/organizations/".concat(this.orgID), response => {
+          this.organization = response.data
+          this.loading = false;
+        })
+      }
     })
 
     if (typeof(Storage) !== "undefined") {
@@ -141,16 +134,6 @@ export default {
     } else {
       this.myTest = "Sorry, your browser does not support Web Storage...";
     }
-
-
-
-
-
-
-
-
-
-
 
   }
 }

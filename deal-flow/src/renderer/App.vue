@@ -36,14 +36,21 @@
     methods: {
       checkForToken() {
         var jwtAuth = localStorage.getItem("jwtAuth");
-        console.log(jwtAuth);
-        this.Authorization = "Bearer ".concat(jwtAuth);
-        this.authenticated = true;
+        if (jwtAuth) {
+          console.log(jwtAuth);
+          this.Authorization = "Bearer ".concat(jwtAuth);
+          this.authenticated = true;
+        }
+        else {
+          console.log("ERROR: No Authentification token found in localStorage");
+        }
       },
       setAuthenticated(status) {
         this.authenticated = status;
       },
       logout() {
+        console.log("Logging Out Goobye");
+        localStorage.removeItem("jwtAuth");
         this.authenticated = false;
       },
       goBack () {
