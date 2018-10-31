@@ -1,5 +1,16 @@
 <template>
   <div id ="Organization" v-loading="loading" :data="organization">
+    <el-row>
+      <el-col>
+        <div class="uk-align-right uk-margin-right">
+          <el-button @click="deleteCompany()" type="danger">Delete</el-button>
+          <router-link :to="{ name:'EditOrganization', params: { id: this.id }}">
+            <el-button>Edit</el-button>
+          </router-link>
+        </div>
+      </el-col>
+    </el-row>
+
     <el-row type="flex" class="row-bg" justify="center">
       <el-col :span="8">
         <div class="uk-flex uk-flex-center uk-inline">
@@ -46,7 +57,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import lib from '../lib'
 import CompanyOverview from '../components/CompanyOverview';
 import DealOverview from '../components/DealOverview';
 export default {
@@ -75,43 +86,24 @@ export default {
     }
   },
   created() {
-    var requestFields = this.$parent.createGetRequest("organizations/".concat(this.$route.params.id))
 
-    console.log(requestFields.myRequest);
-    axios.get(requestFields.myRequest, requestFields.auth).then(response => {
+    lib.getRequest("/organizations/".concat(this.$route.params.id), response => {
       this.organization = response.data
       console.log(response.data);
       this.loading = false;
     })
-    .catch(e => {
-      this.errors.push(e)
-      console.log('failed');
-    })
 
-    requestFields = this.$parent.createGetRequest("contacts")
 
-    console.log(requestFields.myRequest);
-    axios.get(requestFields.myRequest, requestFields.auth).then(response => {
+    lib.getRequest("/contacts", response => {
       this.contacts = response.data
       console.log(response.data);
     })
-    .catch(e => {
-      this.contacterrors.push(e)
-      console.log('faileds');
-    })
 
-    requestFields = this.$parent.createGetRequest("deals")
 
-    console.log(requestFields.myRequest);
-    axios.get(requestFields.myRequest, requestFields.auth).then(response => {
+    lib.getRequest("/deals", response => {
       this.contacts = response.data
       console.log(response.data);
     })
-    .catch(e => {
-      this.contacterrors.push(e)
-      console.log('faileds');
-    })
-
   }
 }
 </script>
