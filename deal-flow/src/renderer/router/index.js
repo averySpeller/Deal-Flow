@@ -23,6 +23,7 @@ import  Deals from '@/pages/Deals'
 import  SingleContact from '@/pages/single-contact'
 import  SingleOrganization from '@/pages/single-organization'
 import  CompanyOverview from '@/components/CompanyOverview'
+import  AddEditDeal from '@/components/AddEditDeal'
 import  DealOverview from '@/components/DealOverview'
 import  AddContact from '@/pages/AddContact' //NOT PAGE ----------- MOVE TO COMPONENT DIR
 import  AddOrganization from '@/pages/AddOrganization' //NOT PAGE ----------- MOVE TO COMPONENT DIR

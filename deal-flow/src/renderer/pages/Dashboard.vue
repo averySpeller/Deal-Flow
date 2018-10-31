@@ -26,7 +26,7 @@
         </div>
       </el-col>
       <el-col :span="5">
-        <h4>Total Organizations</h4>
+        <h4>Total Deals</h4>
         <div class="dash-tile dash-grey uk-flex uk-flex-center uk-flex-middle uk-flex-column">
             <h1>120</h1>
         </div>
