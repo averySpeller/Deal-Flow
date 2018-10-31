@@ -14,6 +14,7 @@ class Contact(Model):
     _properties = {
         'contact_id': Property('ContactID', Type.uid),
         'organization_id': Property('OrganizationID', Type.uid),
+        'avatar': Property('.', Type.string),
         'first': Property('First', Type.string),
         'last': Property('Last', Type.string),
         'title': Property('Title', Type.string),
@@ -21,7 +22,6 @@ class Contact(Model):
         'phone1': Property('Phone1', Type.string),
         'phone2': Property('Phone2', Type.string),
         'website': Property('Website', Type.string),
-        'logo': Property('Logo', Type.string),
         'notes': Property('Notes', Type.string)
     }
 

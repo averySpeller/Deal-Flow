@@ -100,6 +100,7 @@ create table organization (
 create table contact (
     contact_id int auto_increment primary key,
     organization_id int(11),
+    avatar varchar(150),
     first varchar(75),
     last varchar(75),
     title varchar(75),

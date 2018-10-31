@@ -9,7 +9,7 @@ from api.core.utils import *
 class AuthMiddleware(object):
 
     def process_request(self, req, resp):
-        if req.path == '/auth':
+        if req.path == '/auth' or req.method == 'OPTIONS':
             print('in excepted ep')
             return
         else:
