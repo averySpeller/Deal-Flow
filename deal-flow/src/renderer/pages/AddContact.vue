@@ -121,7 +121,7 @@
 
 <script>
 import axios from 'axios';
-import AddOrganization from './AddOrganization'
+import AddOrganization from './AddOrganization';
 export default {
   name: 'AddContact',
   components:{
@@ -215,7 +215,7 @@ export default {
     }
   },
   created() {
-    var requestFields = this.$parent.createGetRequest("organizations")
+    var requestFields = this.$parent.$parent.createGetRequest("organizations")
     axios.get(requestFields.myRequest,requestFields.auth ).then(response => {
 
       for(let item of response.data){
