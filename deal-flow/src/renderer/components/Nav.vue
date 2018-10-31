@@ -5,7 +5,7 @@
         <el-button class="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #offcanvas-push">Nav bar</el-button>
       </el-col>
       <el-col :span="6">
-        <SearchBar></SearchBar>
+        <!-- <SearchBar></SearchBar> -->
       </el-col>
       <el-col :span="6">
       </el-col>
@@ -14,7 +14,7 @@
 
     <nav>
 
-      <div id="offcanvas-push" uk-offcanvas="mode: push; overlay: true; flip: true">
+      <div id="offcanvas-push" uk-offcanvas="mode: push; overlay: true;">
         <div class="uk-offcanvas-bar">
             <button class="uk-offcanvas-close" type="button" uk-close></button>
             <li class="nav-item" v-for="routes in links">
@@ -59,7 +59,7 @@ export default {
         },
         {
           id: 2,
-          text: 'Organizations',
+          text: 'Companies',
           page:'/Organizations'
         },
         {

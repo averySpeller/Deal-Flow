@@ -1,5 +1,5 @@
-<template>
-  <div id ="Contact" v-loading="loading" :data="contact">
+<template v-loading="loading" :data="contact">
+  <div id ="Contact">
     <el-row type="flex" class="row-bg" justify="center">
       <el-col :span="8">
         <div class="uk-flex uk-flex-center uk-inline" style="border-radius: 50%">

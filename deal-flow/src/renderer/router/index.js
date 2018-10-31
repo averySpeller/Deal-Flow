@@ -23,6 +23,7 @@ import  Deals from '@/pages/Deals'
 import  SingleContact from '@/pages/single-contact'
 import SingleOrganization from '@/pages/single-organization'
 import AddContact from '@/pages/AddContact'
+import AddOrganization from '@/pages/AddOrganization'
 import EditContact from '@/pages/EditContact'
 //Components
 // import SkillChart from @/components/SkillChart
@@ -61,6 +62,11 @@ export default new Router({
       path: '/AddContact',
       name: 'AddContact',
       component: AddContact
+    },
+    {
+      path: '/AddOrganization',
+      name: 'AddOrganization',
+      component: AddOrganization
     },
     {
       path: '/EditContact/:id',

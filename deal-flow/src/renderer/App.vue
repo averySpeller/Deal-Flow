@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Nav v-if="authenticated"></Nav>
-    <SearchBar v-if="authenticated"></SearchBar>
+    <!-- <SearchBar v-if="authenticated"></SearchBar> -->
     <router-view @authenticated="setAuthenticated"></router-view>
 
   </div>

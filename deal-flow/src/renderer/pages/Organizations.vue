@@ -11,7 +11,7 @@
         {{error.message}}
       </li>
     </ul>
-
+    <router-link to="AddOrganization" tag="el-button">Add Company</router-link>
 
   </div>
 </template>
@@ -24,7 +24,7 @@ export default {
     return {
       organizations:[],
       errors: [],
-      loading:true
+      loading: false
     }
   },
   methods:{

@@ -2,7 +2,7 @@
   <div class="">
     <div class="uk-margin">
       <el-row type="flex" class="row-bg" justify="center">
-        <el-col :xs="12" :sm="10" :md="8" :lg="6" :xl="6">
+          <el-col :xs="12" :sm="10" :md="8" :lg="6" :xl="6">
           <el-form ref="form" :model="form" label-width="70px">
             <br>
             <el-upload
@@ -22,12 +22,83 @@
                 placeholder="FistName LastName">
               </el-input>
             </el-form-item>
-            <el-form-item label="Email:">
+            <el-form-item label="Symbol:">
               <el-input
-                v-model="form.email"
+                v-model="form.stock_symbol"
                 type="text"
                 clearable
-                placeholder="username@domain.com">
+                placeholder="ABC">
+              </el-input>
+            </el-form-item>
+            <el-form-item label="Vision:">
+              <el-input
+                v-model="form.vision"
+                type="text"
+                clearable>
+              </el-input>
+            </el-form-item>
+            <el-form-item label="Model:">
+              <el-input
+                v-model="form.revenue_model"
+                type="text"
+                clearable>
+              </el-input>
+            </el-form-item>
+            <el-form-item label="revenue:">
+              <el-input
+                v-model="form.revenue"
+                type="text"
+                clearable>
+              </el-input>
+            </el-form-item>
+            <el-form-item label="Valuation:">
+              <el-input
+                v-model="form.valuation"
+                type="text"
+                clearable>
+              </el-input>
+            </el-form-item>
+            <el-form-item label="line1:">
+              <el-input
+                v-model="form.line1"
+                type="text"
+                clearable>
+              </el-input>
+            </el-form-item>
+            <el-form-item label="line2:">
+              <el-input
+                v-model="form.line2"
+                type="text"
+                clearable>
+              </el-input>
+            </el-form-item>
+            <el-form-item label="City:">
+              <el-input
+                v-model="form.city"
+                type="text"
+                clearable>
+              </el-input>
+            </el-form-item>
+            <el-form-item label="State">
+              <el-input
+                v-model="form.state"
+                type="text"
+                clearable>
+              </el-input>
+            </el-form-item>
+            <el-form-item label="Country:">
+              <el-input
+                v-model="form.country"
+                type="text"
+                clearable>
+              </el-input>
+            </el-form-item>
+            <el-form-item label="Postal:">
+              <el-input
+                v-model="form.postal"
+                type="text"
+                clearable
+                placeholder="A1A-1A1">
               </el-input>
             </el-form-item>
             <el-form-item label="Phone1:">
@@ -51,44 +122,17 @@
                 clearable>
               </el-input>
             </el-form-item>
-
-            <el-form-item label="Company:">
-            <el-row>
-
-              <el-col :span="16">
-                <el-select v-model="form.organization_id" clearable placeholder="Select">
-                    <el-option
-                      v-for="item in this.orgOptions"
-                      :label="item.label"
-                      :value="item.value">
-                    </el-option>
-                </el-select >
-              </el-col>
-              <el-col :span="4">
-                <el-button uk-toggle="target: #offcanvas-addOrganization" type="success" icon="el-icon-plus" plain></el-button>
-              </el-col>
-
-
-
-           </el-row>
+            <el-form-item label="Notes:">
+              <el-input
+                v-model="form.notes"
+                type="textarea"
+                clearable
+                placeholder="Add Notes">
+              </el-input>
             </el-form-item>
-            <!-- <el-form-item label="Title:">
-              <el-select
-                v-model="this.title"
-                multiple
-                filterable
-                allow-create
-                default-first-option
-                placeholder="Select a title">
-                <el-option
-                  v-for="item in this.titleOptions"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-form-item> -->
+
             <div class="uk-flex uk-flex-center ">
-              <button @click="addContact()" class="uk-button uk-button-primary uk-button-large uk-margin">Add contact!</button><br><br>
+              <button @click="AddOrganization()" class="uk-button uk-button-primary uk-button-large uk-margin">Add Company!</button><br><br>
             </div>
           </el-form>
           <div class="uk-flex uk-flex-center ">
@@ -98,63 +142,38 @@
       </el-row>
 
     </div>
-
-    <div id="offcanvas-addOrganization" uk-offcanvas="mode: slide; overlay: true; flip: true">
-      <div class="uk-offcanvas-bar">
-        <button class="uk-offcanvas-close" type="button" uk-close></button>
-          <AddOrganization></AddOrganization>
-      </div>
-    </div>
-
-
   </div>
 
 </template>
 
 <script>
 import axios from 'axios';
-import AddOrganization from './AddOrganization'
 export default {
-  name: 'AddContact',
-  components:{
-        'AddOrganization': AddOrganization,
-  },
+  name: 'AddOrganization',
   data(){
     return{
       name: null,
       imageUrl:'',
       form: {
-        first: null,
-        last: null,
-        email: null,
+        name: null,
+        stock_symbol: null,
+        logo: null,
+        vision: null,
+        revenue_model: null,
+        revenue: null,
+        valuation: null,
         phone1: null,
         phone2: null,
+        line1: null, //addres1
+        line2: null, //address2
+        city: null,
+        state: null,
+        country: null,
+        postal: null,
         website: null,
-        // notes: null,
-        organization_id: null,
-        // title: null, //UNCOMMENT TO SEND TITLE
         notes: null
       },
-      title: [],
-      orgOptions: [],
-      titleOptions:[
-        {
-          value: 'CEO',
-          label: 'CEO'
-        },
-        {
-          value: 'CFO',
-          label: 'CFO'
-        },
-        {
-          value: 'CTO',
-          label: 'CTO'
-        },
-        {
-          value: 'Other',
-          label: 'Other'
-        }
-      ]
+
     }
   },
   methods: {
@@ -163,15 +182,10 @@ export default {
         ? this.$router.go(-1)
         : this.$router.push('/')
     },
-    addContact(){
-      var splitty = this.name.split(' ');
-      this.form.first = splitty[0];
-      this.form.last = splitty[1];
-
-      // console.log(splitty);
+    AddOrganization(){
       console.log(this.form);
 
-      axios.post('http://24.138.161.30:5000/contacts',this.form).then(response => {
+      axios.post('http://24.138.161.30:5000/organizations',this.form).then(response => {
         console.log(this.form);
         console.log(response.data);
         window.history.length > 1
@@ -224,10 +238,10 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
   .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;
-    border-radius: 50%;
+    border-radius: 25%;
     cursor: pointer;
     position: relative;
   }
@@ -246,6 +260,9 @@ export default {
     width: 178px;
     height: 178px;
     display: block;
-    border-radius: 50%;
+    border-radius: 25%;
   }
+  .uk-offcanvas-bar {
+    background: #000000;
+}
 </style>
