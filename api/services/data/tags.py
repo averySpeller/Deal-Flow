@@ -10,24 +10,30 @@
 #
 from api.core.resource import *
 
-class Contact(Model):
+class Tag(Model):
     _properties = {
-        'contact_id': Property('ContactID', Type.uid),
-        'organization_id': Property('OrganizationID', Type.uid),
-        'first': Property('First', Type.string),
-        'last': Property('Last', Type.string),
-        'title': Property('Title', Type.string),
-        'email': Property('Email', Type.string),
-        'phone1': Property('Phone1', Type.string),
-        'phone2': Property('Phone2', Type.string),
-        'website': Property('Website', Type.string),
-        'logo': Property('Logo', Type.string),
-        'notes': Property('Notes', Type.string)
+        'tag_id': Property(Type.uid),
+        'name': Property(Type.string),
+    }
+
+    _documents = {
+        'tag_mapping': Document(relation.many_to_many, auto_load=True)
+    }
+
+class TagMapping(Model):
+    _properties = {
+        'tag_mapping_id': Property('.', Type.uid)
+    }
+
+    _documents = {
+        'organization': Document(relation.one_to_many)
+        'contact': Document(relation.one_to_many)
     }
 
 
-class Contacts(Resource):
-    model = Contact
+
+class Tags(Resource):
+    model = Tag
 
     def on_post_collection(self, req, res):
         res = self.default_response(req, res)

@@ -8,7 +8,6 @@
 # Use explicit package path so that modules may be imported from parent.
 # As per: https://docs.python.org/3/tutorial/modules.html#packages
 #
-import falcon
 import re
 from inspect import signature
 from api.core.model import *
@@ -95,6 +94,9 @@ class Resource(object):
         # set the response
         res.media = model.serialize()
         res.status = falcon.HTTP_404
+
+    def definitions(self):
+        pass
 
     #
     # WARNING: Beware, this is some pretty pseudo magic

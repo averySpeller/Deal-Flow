@@ -9,18 +9,56 @@
 # As per: https://docs.python.org/3/tutorial/modules.html#packages
 #
 from api.core.database import *
+from api.core.dao import *
+from enum import Enum, auto
+import falcon
 
+class Relationships:
+    pass
+
+#
+#   Model
+#   Description: The data model.
+#
+#
 class Model:
+    class _InternalStateModel:
+
+        def __init__(self):
+            self.read_sync = False
+            self.write_sync = True
+            self.fields = []
+
+        def get_fields(self):
+            return self.fields
+
+        def in_read_sync(self):
+            return self.read_sync
+
+        def in_write_sync(self):
+            return self.write_sync
+
+        def confirm_read_sync(self):
+            self.read_sync = True
+
+        def confirm_write_sync(self):
+            self.write_sync = True
+
+        def invalidate_state_with_write(self, property):
+            self.write_sync = False
+            if property not in self.fields:
+                self.fields.append(property)
 
     def __init__(self, id=None, parser=None, auto_save=False, from_map=None):
         print('instantiated ' + type(self).__name__)
-
         self._dao = DAO(relation=type(self).__name__)
 
         self._id = id
         self._documents = {}
         self._properties = {}
+        self._internal_state = {}
         self._parser = parser
+
         self._error_state = False
         self._auto_save = auto_save
         self._relation = type(self).__name__
@@ -33,41 +71,43 @@ class Model:
     #           to search the class property values.
     # Passed-in: Instance, var name.
     def __getattr__(self, name):
+        # If the class requested the value of a property, we'll let our internal
+        #  property logic fetch the value
         if name in (self.__class__._properties.keys()):
             # Get the document name from the class properties
             doc = self.__class__._properties[name].get_document()
 
-            # HACK: ???  We dont like to shoot first
-            try:                instance_document = self._documents[doc]
-            except KeyError:    instance_document = None
+            # Fetch the object containting the state of each internal docuemnt
+            internal_model = self._internal_state.get(doc, Model._InternalStateModel() )
 
-            # If the document is NOT in read_sync or DNE, we need to load from the DB
-            # TODO: I really dont like this... Maybe clean me up by creating lazy loaded Document models
-            if instance_document is None or instance_document['read_sync'] is False or name not in self._properties and self._id is not None:
-                print('would hit db for %s' % (name,))
-                results = self._dao.read(doc, self._id)
-                if results == None:
-                    self._error()
-                    print('no read')
-                else:
-                    self.set_map(results)
+            # If the document state is NOT in read_sync or DNE, we need to load from the DB
+            if not internal_model.in_read_sync() or name not in self._properties:
 
-                # Update the document model
-                try:
-                    document = self._documents[doc]
-                    document['read_sync'] = True
-                except KeyError:
-                    self._documents[doc] = {
-                        'read_sync': True,
-                        'write_sync': True,
-                        'fields' : []
-                    }
-            try:
-                return self._properties[name]
-            except KeyError:
+                if self._id is not None:
+                    print('would hit db for %s' % (name,))
 
-                self._properties[name] = None
-                return None
+                    # Use DAL to access the database
+                    results = self._dao.read(doc, self._id)
+
+                    # Handle the db response
+                    if results == None:
+                        print('Not Found! id: ' + str(self._id))
+                        raise falcon.HTTPNotFound()
+                        # self._error()
+                    else:
+                        self.set_map(results)
+
+                    # Update the internal document state
+                    internal_model.confirm_read_sync()
+
+            # TODO: I would love to not perform this operation everytime
+            #        plz fix me...
+            self._internal_state[doc] = internal_model
+
+            # Return the attribute we set to get from the properties model
+            return self._properties.get(name, None)
+
+        # Otherwise, we'll have the class handle it
         else:
             return super().__getattribute__(name)
 
@@ -77,32 +117,31 @@ class Model:
     #           to search the class property values.
     # Passed-in: Instance, var name, and property value.
     def __setattr__(self, name, value):
-        print('in set attr')
+        # If the class requested to write the value of a property, we'll let
+        #  our internal property logic set the value
         if name in (self.__class__._properties.keys()):
 
             # Get the document name from the class properties
             doc = self.__class__._properties[name].get_document()
 
+            # Fetch the object containting the state of each internal docuemnt
+            internal_model = self._internal_state.get(doc, Model._InternalStateModel() )
+
             # Set the property
             self._properties[name] = value
 
             # Invalidate the document model
-            try:
-                document = self._documents[doc]
-                document['read_sync'] = True
-                document['write_sync'] = False
-                if name not in document['fields']: document['fields'].append(name)
-            except KeyError:
-                self._documents[doc] = {
-                    'read_sync': True,
-                    'write_sync': False,
-                    'fields' : [ name ]
-                }
+            internal_model.invalidate_state_with_write(name)
+
+            # TODO: I would love to not perform this operation everytime
+            #        plz fix me...
+            self._internal_state[doc] = internal_model
         else:
+            # TODO: handle differently
             if name[0] is not '_':
+                # raise KeyError
                 print('Property Not Found! Implement me')
-                self._error()
-                # raise ValueError
+                # self._error()
             super().__setattr__(name, value)
 
 
@@ -162,26 +201,37 @@ class Model:
 
     def save(self):
         # Look through docuemnt model
-        for doc in self._documents.keys():
+        for doc in self._internal_state.keys():
+
+            internal_state = self._internal_state.get(doc, Model._InternalStateModel() )
 
             # If the document model is out of sync with the db.. write
-            if self._documents[doc]['write_sync'] is False:
+            if not internal_state.in_write_sync():
+                print('not in write sync')
 
                 payload = {}
-                for field in self._documents[doc]['fields']:
+                for field in internal_state.get_fields():
                     payload[field] = self._properties[field]
 
+                # if updating
                 if self._id is not None:
-                    # if updating
+
                     self._dao.update(doc, self._id, payload)
+                # if creating
                 else:
-                    # if creating
                     result = self._dao.create(doc, payload)
                     self.set_map(result)
 
-                # TODO: REDO document model
+                internal_state.confirm_write_sync()
 
+                # TODO: See TODO above
+                self._internal_state[doc] = internal_state
 
+#
+#   ModelCollection
+#   Description: ...
+#
+#
 class ModelCollection:
 
     def __init__(self, model=None, parser=None):
@@ -199,9 +249,8 @@ class ModelCollection:
 
     def populate(self):
         print('bulk read')
-        self._dao.bulk_read(self._relation)
+        self._dao.bulk_read(self._relation, parser=self._parser)
 
-        # self._create_model()
         # create the models
         for item in self._dao.fetch_buffer():
             self._model_list.append( self._data_model(from_map=item) )
@@ -216,8 +265,25 @@ class ModelCollection:
             output.append(model.serialize())
         return output
 
+#
+#   Type
+#   Description: ...
+#
+#
+class Type(Enum):
+    uid = auto()
+    integer = auto()
+    string = auto()
+    boolean = auto()
+    datetime = auto()
+    enum = auto()
+    auto = auto()
 
-
+#
+#   Property
+#   Description: ...
+#
+#
 class Property:
 
     def __init__(self, name, type, relation=None, document=None, **kwargs):
@@ -235,107 +301,36 @@ class Property:
     def validate(self):
         return True
 
-class Type:
-    uid = ''
-    integer = 'a'
-    string = ''
-    boolean = ''
-    datetime = ''
-    enum = ''
+#
+#   Relation
+#   Description: ...
+#
+#
+class Relation(Enum):
+    one_to_one = auto()
+    one_to_many = auto()
+    many_to_one = auto()
+    many_to_many = auto()
 
+#
+#   Document
+#   Description: ...
+#
+#
+class Document:
 
-# TODO: Needs a mess of work on the relation types (self(recurse), 1..1, 1..N, M..N)
-class DAO:
+    def __init__(self, model, relation):
+        self.model = model
+        self.relation = relation
 
-    def __init__(self, relation=None, bulk=False):
-        self._relation = relation
-        self._db = DBWrapper( DBExplodeOnError() )
-        self._is_bulk = bulk
-        self.result_buffer = []
+    def _map_relation(self, relation):
+        _map = {
+            Relation.one_to_one: _handle_one_to_one,
+            Relation.one_to_many: _handle_one_to_many,
+            Relation.many_to_one: _handle_many_to_one,
+            Relation.many_to_many: _handle_many_to_many
+        }
+        _map[relation]()
 
-    def fetch_buffer(self):
-        return self.result_buffer
-
-    def create(self, relation, payload):
-        def format_insert(relation, keys, values):
-            query_string = 'insert into ' + relation + ' ('
-
-            cnt = 0
-            for key in keys:
-                if cnt == len(keys) - 1:
-                    query_string = query_string + key +') values ('
-                else: query_string = query_string + key + ','
-                cnt = cnt + 1
-
-            cnt = 0
-            for value in values:
-                if cnt == len(keys) - 1:
-                    query_string = query_string + '%s)'
-                else: query_string = query_string + '%s,'
-                cnt = cnt + 1
-
-            return query_string
-
-        if relation is None:
-            relation = self._relation
-
-        # Start a transaction
-        self._db.begin_transaction()
-
-        q = format_insert(relation, payload.keys(), payload.values())
-        self._db.query(q, (*payload.values(),))
-        self._db.commit()
-
-        # Lookup the record to obtain the id
-        self._db.query('select * from ' + relation +' order by ' + relation + '_id desc limit 1')
-
-        record = self._db.fetch_one()
-        self._db.end_transaction()
-
-        return record
-
-    def read(self, relation, id=None):
-        if relation is None:
-            relation = self._relation
-
-        self._db.query('select * from ' + relation + ' where ' + relation + '_id = %s limit 1', (id))
-        return self._db.fetch_one()
-
-    def update(self, relation, id, payload):
-        def format_update(relation, keys, id):
-            query_string = 'update ' + relation + ' set '
-
-            cnt = 0
-            for key in keys:
-                if cnt == len(keys) - 1:
-                    query_string = query_string + key + ' = %s where ' + relation + '_id = ' + id
-                else: query_string = query_string + key + ' = %s,'
-                cnt = cnt + 1
-
-            return query_string
-        if relation is None:
-            relation = self._relation
-
-        query = format_update(relation, payload.keys(), id)
-
-        self._db.query(query, (*payload.values(),))
-
-    def delete(self, relation, id):
-        self._db.query('delete from ' + relation + ' where ' + relation + '_id = %s', (id,))
-        return self._db.cursor.rowcount > 0 and not self._db.error()
-
-    def bulk_create(self): pass
-
-    def bulk_read(self, relation, page_size=30, current_page=1):
-        if relation is None:
-            relation = self._relation
-
-        offset = (current_page - 1) * page_size
-
-        self._db.query('select * from ' + relation + ' limit ' + str(offset) + ', ' + str(page_size))
-
-        self.result_buffer = self._db.fetch_all()
-
-    def bulk_update(self): pass
-
-    def bulk_delete(self): pass
+    def serialize(self):
+        pass

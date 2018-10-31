@@ -9,11 +9,7 @@
 # As per: https://docs.python.org/3/tutorial/modules.html#packages
 #
 import mysql.connector
-
-USERNAME = "root"
-USERPASS = "sys"
-DATABASE = "dealflow"
-
+from api.etc.config import *
 
 # HACK HACK HACK: Just use an old MySQL lib to crank
 class DBWrapper:
@@ -34,7 +30,8 @@ class DBWrapper:
     # Passed-in: n/a.
     def connect(self):
         try:
-            self.conn = mysql.connector.connect(user=USERNAME, password=USERPASS, database=DATABASE)
+            # TODO: Review auth_plugin parmams for PROD dbs
+            self.conn = mysql.connector.connect(user=USERNAME, password=USERPASS, database=DATABASE, auth_plugin='mysql_native_password')
         except mysql.connector.Error as err:
             self._error_handler(err)
 

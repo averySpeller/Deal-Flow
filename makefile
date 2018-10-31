@@ -15,11 +15,13 @@ launch:
 	# pipenv run gunicorn -b 0.0.0.0:5000 auth.main:app --reload
 	# pipenv run gunicorn -b 0.0.0.0:5000 user.main:app --reload
 
-	pipenv run gunicorn -b 24.138.161.30:80 api.main:router.app
+	# pipenv run gunicorn -b 24.138.161.30:80 api.main:router.app
+	#
+	# pipenv run gunicorn -b 0.0.0.0:5001 api.services.data.router:data.app
+	# pipenv run gunicorn -b 0.0.0.0:5002 api.services.auth.router:auth.app
+	# pipenv run gunicorn -b 0.0.0.0:5003 api.services.user.router:user.app
 
-	pipenv run gunicorn -b 0.0.0.0:5001 api.services.data.router:data.app
-	pipenv run gunicorn -b 0.0.0.0:5002 api.services.auth.router:auth.app
-	pipenv run gunicorn -b 0.0.0.0:5003 api.services.user.router:user.app
+	pipenv run gunicorn -b 0.0.0.0:5000 api.main:monolith.app
 
 clean:
 	rm -f api/*.pyc

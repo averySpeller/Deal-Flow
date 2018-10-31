@@ -9,6 +9,9 @@ gunicorn = "*"
 falcon = {git = "git://github.com/falconry/falcon.git"}
 mysql = "*"
 mysql-connector = "*"
+pyjwt = "*"
+passlib = "*"
+bcrypt = "*"
 
 [dev-packages]
 

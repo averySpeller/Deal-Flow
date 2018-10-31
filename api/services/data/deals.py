@@ -10,26 +10,47 @@
 #
 from api.core.resource import *
 
+class Deal(Model):
+    _properties = {
+        'deal_id': Property('.', Type.uid),
+        'organization_id': Property('.', Type.uid),
+
+        'organization': Property('.', Type.string),
+        'contacts': Property('.', Type.string),
+
+        'interest': Property('.', Type.string),
+        'status': Property('.', Type.string),
+
+        'valuation': Property('.', Type.string),
+        'raise_type': Property('.', Type.string),
+        'raise': Property('.', Type.string),
+        'revenue': Property('.', Type.string),
+        'revenue_model': Property('.', Type.string),
+
+        'round': Property('.', Type.string),
+
+        'slide_deck': Property('.', Type.string),
+        'notes': Property('.', Type.string)
+    }
+    _documents = {
+        # 'organization': Document(Organization, Relation.one_to_many)
+    }
+
+
 class Deals(Resource):
+    model = Deal
 
-    data = [
-        { 'dealID': 1 },
-        { 'dealID': 2 },
-        { 'dealID': 3 },
-    ]
+    def on_post_collection(self, req, res):
+        res = self.default_response(req, res)
 
-
-    def on_get(self, req, res, dealID):
-        no_error = False
-        for item in self.data:
-            if item['dealID'] == int(dealID):
-                res.media = item
-                no_error = True
-                break
-        if not no_error:
-            res.status = falcon.HTTP_404
-
+    def on_get(self, req, res, contact_id):
+        res = self.default_response(req, res, contact_id)
 
     def on_get_collection(self, req, res):
-        res.status = falcon.HTTP_200
-        res.media = self.data
+        res = self.default_response(req, res)
+
+    def on_put(self, req, res, contact_id):
+        res = self.default_response(req, res, contact_id)
+
+    def on_delete(self, req, res, contact_id):
+        res = self.default_response(req, res, contact_id)

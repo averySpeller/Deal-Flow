@@ -10,26 +10,47 @@
 #
 from api.core.resource import *
 
+class Organization(Model):
+    _properties = {
+        'organization_id': Property('OrganizationID', Type.uid),
+        'name': Property('Name', Type.string),
+        'stock_symbol': Property('StockSymbol', Type.string),
+        'logo': Property('Logo', Type.string),
+        'vision': Property('Vision', Type.string),
+        'revenue_model': Property('RevenueModel', Type.string),
+        'revenue': Property('Revenue', Type.string),
+        'valuation': Property('Valuation', Type.string),
+        'phone1': Property('Phone1', Type.string),
+        'phone2': Property('Phone2', Type.string),
+        'line1': Property('line1', Type.string),
+        'line2': Property('line2', Type.string),
+        'city': Property('city', Type.string),
+        'state': Property('state', Type.string),
+        'country': Property('state', Type.string),
+        'postal': Property('postal', Type.string),
+        'website': Property('Website', Type.string),
+        'notes': Property('Notes', Type.string)
+    }
+
+# class OrganizationRelationships(Relationships):
+#     contacts = Document(Contacts, Relation.many_to_one)
+
+
 class Organizations(Resource):
+    model = Organization
+    # relationships = OrganizationRelationships
 
-    data = [
-        { 'organizationID': 1 },
-        { 'organizationID': 2 },
-        { 'organizationID': 3 },
-    ]
+    def on_post_collection(self, req, res):
+        res = self.default_response(req, res)
 
-
-    def on_get(self, req, res, organizationID):
-        no_error = False
-        for item in self.data:
-            if item['organizationID'] == int(organizationID):
-                res.media = item
-                no_error = True
-                break
-        if not no_error:
-            res.status = falcon.HTTP_404
-
+    def on_get(self, req, res, contact_id):
+        res = self.default_response(req, res, contact_id)
 
     def on_get_collection(self, req, res):
-        res.status = falcon.HTTP_200
-        res.media = self.data
+        res = self.default_response(req, res)
+
+    def on_put(self, req, res, contact_id):
+        res = self.default_response(req, res, contact_id)
+
+    def on_delete(self, req, res, contact_id):
+        res = self.default_response(req, res, contact_id)

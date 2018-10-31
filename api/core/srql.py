@@ -30,12 +30,14 @@ class SRQLParser:
         self.url_query = Utils.fetch_query_string(request)
         self.payload = Utils.fetch_payload(request)
 
-        print(self.url_query)
+        self.parse()
 
 
     def get_payload(self):
         return self.payload
 
+    def serialize(self):
+        return None
 
     # -------------------------------------------
     # Purpose: Purpose.
@@ -47,6 +49,11 @@ class SRQLParser:
         # Step 1: Parse all parameters with reserved words
         # if 'word' in self.reserved:
 
+        # TODO: Remove shoot first logic
+        try:
+            if int(self.url_query['page']) > 0:
+                self.page = int(self.url_query['page'])
+        except: pass
 
         # Step 2: Parse all filters
         for filter in self.url_query:
