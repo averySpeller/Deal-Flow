@@ -3,14 +3,14 @@
     <el-row type="flex" class="row-bg" justify="center">
       <el-col :span="8">
         <div class="uk-flex uk-flex-center uk-inline" style="border-radius: 50%">
-          <!-- <img v-attr="src: {{contact.avatar}}"> -->
+          <img  class="avatar"v-bind:src ="contact.avatar">
         </div>
 
         <div class="title uk-flex uk-flex-center">
           <h1>{{contact.first}} {{contact.last}}</h1>
         </div>
         <div class="title uk-flex uk-flex-center">
-          <h4>From *Company*</h4>
+          <h4>{{organization.name}}</h4>
           <!-- <router-link tag="h4" :to="{ name: 'Single-Organization', params: { id: contact.company }} ">
             {{contact.company}}
           </router-link> -->
@@ -27,7 +27,6 @@
         <el-col :xs="0" :sm="1" :md="2" :lg="3" :xl="3"><div class="grid-content bg-purple"></div></el-col>
         <el-col :xs="12" :sm="11" :md="10" :lg="9" :xl="9">
           <ul>
-            <p><strong>Name: </strong>{{contact.first}}</p>
             <br><br>
             <li><p><strong>Email: </strong>{{contact.email}}</p></li>
             <li><p><strong>Phone: </strong>{{contact.phone1}}</p></li>
@@ -39,13 +38,11 @@
             <img src="static/imgs/sampleRadarChart.png" height="100" uk-img>
           </div>
           <br><br>
-          <li><p><strong>Email: </strong>{{contact.email}}</p></li>
-          <li><p><strong>Phone: </strong>{{contact.phone1}}</p></li>
-          <li><p><strong>Website: </strong>{{contact.website}}</p></li>
       </ul>
-      <el-row>
-        <el-col :span="12">
-            Notes: <el-input
+      <el-row type="flex" class="row-bg" justify="center">
+        <el-col :span="20">
+          Notes:
+          <el-input
                       v-model="contact.notes"
                       type="textarea"
                       :autosize="{ minRows: 4, maxRows: 8}"
@@ -82,6 +79,8 @@ export default {
       myTest:"WRONG",
       contact: {},
       errors: [],
+      organization: {},
+      orgID: 0,
       loading:true
     }
   },
@@ -112,8 +111,24 @@ export default {
 
     axios.get(requestFields.myRequest, requestFields.auth).then(response => {
       this.contact = response.data
+      this.orgID = this.contact.organization_id;
+      console.log("orgID ISSSS: ",this.orgID);
       console.log(requestFields.myRequest);
       this.loading = false;
+
+      requestFields = this.$parent.createGetRequest("organizations/".concat(this.orgID))
+      console.log("orgID IS: ",this.orgID);
+      axios.get(requestFields.myRequest, requestFields.auth).then(response => {
+        this.organization = response.data
+        console.log(requestFields.myRequest);
+        this.loading = false;
+      })
+      .catch(e => {
+        this.errors.push(e)
+        console.log('failed');
+      })
+
+
     })
     .catch(e => {
       this.errors.push(e)
@@ -126,6 +141,17 @@ export default {
     } else {
       this.myTest = "Sorry, your browser does not support Web Storage...";
     }
+
+
+
+
+
+
+
+
+
+
+
   }
 }
 </script>
@@ -135,9 +161,11 @@ export default {
     text-align: center;
     margin: 0 auto;
   }
-  img {
+  img .class{
     margin: 0 auto;
       border-radius: 50%;
+      width: 250px;
+      height: 250px;
   }
   .grid-content {
     min-height: 36px;

@@ -9,7 +9,7 @@
             <br>
             <el-upload
               class="avatar-uploader uk-flex uk-flex-center uk-margin"
-              action="getImageFilePath()"
+              action="https://jsonplaceholder.typicode.com/posts/"
               :show-file-list="false"
               :on-success="handleAvatarSuccess"
               :before-upload="beforeAvatarUpload">
@@ -181,8 +181,9 @@ export default {
 
       // console.log(splitty);
       console.log(this.form);
+      var requestFields = this.$parent.createGetRequest("contacts")
 
-      axios.post('http://24.138.161.30:5000/contacts',this.form).then(response => {
+      axios.post(requestFields.myRequest, this.form, requestFields.auth ).then(response => {
         console.log(this.form);
         console.log(response.data);
         window.history.length > 1
@@ -216,8 +217,8 @@ export default {
     }
   },
   created() {
-    var myRequest = this.$parent.createGetRequest("organizations")
-    axios.get(myRequest).then(response => {
+    var requestFields = this.$parent.createGetRequest("organizations")
+    axios.get(requestFields.myRequest,requestFields.auth ).then(response => {
 
       for(let item of response.data){
 
