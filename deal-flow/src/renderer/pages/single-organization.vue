@@ -3,7 +3,7 @@
     <el-row type="flex" class="row-bg" justify="center">
       <el-col :span="8">
         <div class="uk-flex uk-flex-center uk-inline">
-          <img src="static/imgs/UoG.png">
+          <img  class="avatar" v-bind:src ="organization.logo">
         </div>
         <div class="title uk-flex uk-flex-center">
           <h1>{{organization.name}}</h1>

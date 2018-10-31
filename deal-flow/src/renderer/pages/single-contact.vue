@@ -3,7 +3,7 @@
     <el-row type="flex" class="row-bg" justify="center">
       <el-col :span="8">
         <div class="uk-flex uk-flex-center uk-inline" style="border-radius: 50%">
-          <img  class="avatar"v-bind:src ="contact.avatar">
+          <img  class="avatar" v-bind:src ="contact.avatar">
         </div>
 
         <div class="title uk-flex uk-flex-center">
@@ -161,11 +161,11 @@ export default {
     text-align: center;
     margin: 0 auto;
   }
-  img .class{
+  img .avatar{
     margin: 0 auto;
       border-radius: 50%;
-      width: 250px;
-      height: 250px;
+      width: 350px;
+      height: 350px;
   }
   .grid-content {
     min-height: 36px;
