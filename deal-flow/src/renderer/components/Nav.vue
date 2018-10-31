@@ -1,5 +1,5 @@
 <template>
-  <div style="z-index: 2500;">
+  <div style="z-index: 2500;" class="uk-margin">
     <el-row type="flex" class="row-bg" justify="space-between">
       <el-col :span="6">
         <el-button class="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #offcanvas-push">Nav bar</el-button>
@@ -13,8 +13,7 @@
     </el-row>
 
     <nav>
-
-      <div id="offcanvas-push" uk-offcanvas="mode: push; overlay: true;">
+      <div id="offcanvas-push" uk-offcanvas="mode: push; overlay: false;">
         <div class="uk-offcanvas-bar">
             <button class="uk-offcanvas-close" type="button" uk-close></button>
             <li class="nav-item" v-for="routes in links">
@@ -27,17 +26,50 @@
             </li>
         </div>
       </div>
-
-<!--
-
-      <li class="nav-item" v-for="routes in links">
-        <router-link
-          v-bind:key="routes.id"
-          :to="`${routes.page}`">{{routes.text}}
-        </router-link>
-      </li> -->
     </nav>
+
+
+    <!-- <el-radio-group v-model="isCollapse" style="margin-bottom: 20px;">
+      <el-radio-button :label="false">expand</el-radio-button>
+      <el-radio-button :label="true">collapse</el-radio-button>
+    </el-radio-group>
+    <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
+      <el-submenu index="1">
+        <template slot="title">
+          <i class="el-icon-location"></i>
+          <span slot="title">Navigator One</span>
+        </template>
+        <el-menu-item-group>
+          <span slot="title">Group One</span>
+          <el-menu-item index="1-1">item one</el-menu-item>
+          <el-menu-item index="1-2">item two</el-menu-item>
+        </el-menu-item-group>
+        <el-menu-item-group title="Group Two">
+          <el-menu-item index="1-3">item three</el-menu-item>
+        </el-menu-item-group>
+        <el-submenu index="1-4">
+          <span slot="title">item four</span>
+          <el-menu-item index="1-4-1">item one</el-menu-item>
+        </el-submenu>
+      </el-submenu>
+      <el-menu-item index="2">
+        <i class="el-icon-menu"></i>
+        <span slot="title">Navigator Two</span>
+      </el-menu-item>
+      <el-menu-item index="3" disabled>
+        <i class="el-icon-document"></i>
+        <span slot="title">Navigator Three</span>
+      </el-menu-item>
+      <el-menu-item index="4">
+        <i class="el-icon-setting"></i>
+        <span slot="title">Navigator Four</span>
+      </el-menu-item>
+    </el-menu> -->
+
   </div>
+
+
+
 </template>
 <script>
 import SearchBar from './SearchBar'
@@ -48,6 +80,7 @@ export default {
   },
   data() {
     return {
+      isCollapse: true,
       links: [
         {
           id: 0,
