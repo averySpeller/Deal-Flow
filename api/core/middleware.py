@@ -9,6 +9,8 @@ from api.core.utils import *
 class AuthMiddleware(object):
 
     def process_request(self, req, resp):
+
+        # TODO: Review security of allowing un auth-ed OPTIONS
         if req.path == '/auth' or req.method == 'OPTIONS':
             print('in excepted ep')
             return

@@ -10,6 +10,7 @@
 #
 from api.core.database import *
 from api.core.dao import *
+from api.core.utils import *
 from enum import Enum, auto
 import falcon
 
@@ -63,7 +64,7 @@ class Model:
         self._auto_save = auto_save
         self._relation = type(self).__name__
 
-        if from_map: self.set_map(from_map)
+        if from_map: self.set_map(from_map, encrypted=True)
 
 
     # -------------------------------------------
@@ -95,7 +96,8 @@ class Model:
                         raise falcon.HTTPNotFound()
                         # self._error()
                     else:
-                        self.set_map(results)
+                        print('sending to decryptor')
+                        self.set_map(results, encrypted=True)
 
                     # Update the internal document state
                     internal_model.confirm_read_sync()
@@ -168,14 +170,19 @@ class Model:
         return self._error_state
 
 
-    def set_map(self, map=None):
+    def set_map(self, map=None, encrypted=False):
         # Parse a given map or fetch it from the request
         if not map:
             map = self._parser.get_payload()
 
         for key,value in map.items():
             print('setting %s to %s' % (key,value))
-            setattr(self, key, value)
+            if encrypted:
+                setattr(self, key, Utils.decrypt(value))
+            else:
+                print('else')
+                print(encrypted)
+                setattr(self, key, value)
 
 
     #
@@ -211,7 +218,7 @@ class Model:
 
                 payload = {}
                 for field in internal_state.get_fields():
-                    payload[field] = self._properties[field]
+                    payload[field] = Utils.encrypt(self._properties[field])
 
                 # if updating
                 if self._id is not None:
@@ -220,7 +227,7 @@ class Model:
                 # if creating
                 else:
                     result = self._dao.create(doc, payload)
-                    self.set_map(result)
+                    self.set_map(result, encrypted=True)
 
                 internal_state.confirm_write_sync()
 

@@ -1,7 +1,8 @@
 import json, re
+import jwt, datetime, base64
 from passlib.hash import bcrypt
-import jwt, datetime
 from api.etc.config import *
+from cryptography.fernet import Fernet
 
 class Utils:
 
@@ -10,6 +11,18 @@ class Utils:
 
     def verify(pwd, h):
         return bcrypt.verify(pwd, h)
+
+    def encrypt(text):
+        if isinstance(text, str) or isinstance(text, bytes):
+            f = Fernet(CRYPT_KEY)
+            return f.encrypt(text.encode())
+        return text
+
+    def decrypt(text):
+        if isinstance(text, str) or isinstance(text, bytes):
+            f = Fernet(CRYPT_KEY)
+            return f.decrypt(text.encode()).decode('utf8')
+        return text
 
     def jwt_encode(json_dict={}):
         json_dict['exp'] = datetime.datetime.utcnow() + datetime.timedelta(hours=24)

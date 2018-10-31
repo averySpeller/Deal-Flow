@@ -12,6 +12,7 @@ mysql-connector = "*"
 pyjwt = "*"
 passlib = "*"
 bcrypt = "*"
+cryptography = "*"
 
 [dev-packages]
 

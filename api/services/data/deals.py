@@ -18,19 +18,19 @@ class Deal(Model):
         'organization': Property('.', Type.string),
         'contacts': Property('.', Type.string),
 
-        'interest': Property('.', Type.string),
-        'status': Property('.', Type.string),
+        'interest': Property('.', Type.string, encrypt=True),
+        'status': Property('.', Type.string, encrypt=True),
 
-        'valuation': Property('.', Type.string),
-        'raise_type': Property('.', Type.string),
-        'raise': Property('.', Type.string),
-        'revenue': Property('.', Type.string),
-        'revenue_model': Property('.', Type.string),
+        'valuation': Property('.', Type.string, encrypt=True),
+        'raise_type': Property('.', Type.string, encrypt=True),
+        'raise': Property('.', Type.string, encrypt=True),
+        'revenue': Property('.', Type.string, encrypt=True),
+        'revenue_model': Property('.', Type.string, encrypt=True),
 
-        'round': Property('.', Type.string),
+        'round': Property('.', Type.string, encrypt=True),
 
         'slide_deck': Property('.', Type.string),
-        'notes': Property('.', Type.string)
+        'notes': Property('.', Type.string, encrypt=True)
     }
     _documents = {
         # 'organization': Document(Organization, Relation.one_to_many)

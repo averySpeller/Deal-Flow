@@ -29,12 +29,19 @@ class Auth(Resource):
         model.set_map()
 
         # HACK HACK HACKin away
-        model._dao._db.query('select * from user where username = %s limit 1', (model.username,))
+        model._dao._db.query('select * from user where username = %s limit 1', (Utils.encrypt(model.username),))
+
+        print(Utils.encrypt(model.username))
+        print('select * from user where username = %s limit 1' % (Utils.encrypt(model.username)))
 
         result = model._dao._db.fetch_result()
 
+        print()
+        print(result)
+        print()
+
         res.status = falcon.HTTP_404
-        if Utils.verify(model.password,result['password']):
+        if result and Utils.verify(model.password,Utils.decrypt(result['password'])):
             # res.media =
             res.media = { 'type': 'access', 'token': Utils.jwt_encode({'some_payload': 'payload'}) }
             res.status = falcon.HTTP_OK
