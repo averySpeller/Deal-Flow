@@ -1,9 +1,10 @@
 <template>
   <div class="">
+
+
     <div class="uk-margin">
-      <el-row type="flex" class="row-bg" justify="space-between">
-        <el-col :span="6"/>
-        <el-col :span="6">
+      <el-row type="flex" class="row-bg" justify="center">
+        <el-col :xs="12" :sm="10" :md="8" :lg="6" :xl="6">
           <el-form ref="form" :model="form" label-width="70px">
             <br>
             <el-upload
@@ -52,26 +53,82 @@
                 clearable>
               </el-input>
             </el-form-item>
+
+            <el-form-item label="Company:">
+            <el-row>
+
+              <el-col :span="16">
+                <el-select v-model="form.organization_id" clearable placeholder="Select">
+                    <el-option
+                      v-for="item in this.orgOptions"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                </el-select >
+              </el-col>
+              <el-col :span="4">
+                <el-button uk-toggle="target: #offcanvas-addOrganization" type="success" icon="el-icon-plus" plain></el-button>
+              </el-col>
+
+
+
+           </el-row>
+            </el-form-item>
+            <el-form-item label="Notes:">
+              <el-input
+                v-model="form.notes"
+                type="textarea"
+                clearable
+                placeholder="Add Notes">
+              </el-input>
+            </el-form-item>
+            <!-- <el-form-item label="Title:">
+              <el-select
+                v-model="this.title"
+                multiple
+                filterable
+                allow-create
+                default-first-option
+                placeholder="Select a title">
+                <el-option
+                  v-for="item in this.titleOptions"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item> -->
             <div class="uk-flex uk-flex-center ">
-              <button @click="addContact()" class="uk-button uk-button-primary uk-button-large uk-margin">Add contact!</button><br><br>
+              <el-button @click="addContact()" type="primary">Add contact!</el-button><br><br>
             </div>
           </el-form>
-          <div class="uk-flex uk-flex-center ">
-            <button @click="goBack()" class="uk-button uk-button-secondary uk-button-medium uk-margin">GO BACK</button>
-          </div>
+          <!-- <div class="uk-flex uk-flex-center ">
+            <el-button @click="goBack()" type="danger" plain>GO BACK</el-button>
+          </div> -->
         </el-col>
-        <el-col :span="6"/>
       </el-row>
 
     </div>
+
+    <div id="offcanvas-addOrganization" uk-offcanvas="mode: slide; overlay: true; flip: true">
+      <div class="uk-offcanvas-bar">
+        <button class="uk-offcanvas-close" type="button" uk-close></button>
+          <AddOrganization></AddOrganization>
+      </div>
+    </div>
+
+
   </div>
 
 </template>
 
 <script>
 import axios from 'axios';
+import AddOrganization from './AddOrganization'
 export default {
   name: 'AddContact',
+  components:{
+        'AddOrganization': AddOrganization,
+  },
   data(){
     return{
       name: null,
@@ -83,10 +140,32 @@ export default {
         phone1: null,
         phone2: null,
         website: null,
-        first: null,
-        last: null,
+        avatar: null,
+        // notes: null,
+        organization_id: null,
+        // title: null, //UNCOMMENT TO SEND TITLE
         notes: null
-      }
+      },
+      title: [],
+      orgOptions: [],
+      titleOptions:[
+        {
+          value: 'CEO',
+          label: 'CEO'
+        },
+        {
+          value: 'CFO',
+          label: 'CFO'
+        },
+        {
+          value: 'CTO',
+          label: 'CTO'
+        },
+        {
+          value: 'Other',
+          label: 'Other'
+        }
+      ]
     }
   },
   methods: {
@@ -104,6 +183,7 @@ export default {
       console.log(this.form);
 
       axios.post('http://24.138.161.30:5000/contacts',this.form).then(response => {
+        console.log(this.form);
         console.log(response.data);
         window.history.length > 1
           ? this.$router.go(-1)
@@ -112,12 +192,15 @@ export default {
       .catch(e => {
         this.errors.push(e)
         console.log(e);
-        console.log('i died');
+        console.log('i is dead');
       })
 
     },
     handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
+      this.imageUrl = "/static/" + file.raw.path.replace(/^.+static/,''); ;
+      this.form.avatar = this.imageUrl;
+      console.log(  "IMAGE PATH: "+this.form.avatar);
+      console.log(file.raw.path);
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg';
@@ -131,7 +214,23 @@ export default {
       }
       return isJPG && isLt2M;
     }
+  },
+  created() {
+    var myRequest = this.$parent.createGetRequest("organizations")
+    axios.get(myRequest).then(response => {
 
+      for(let item of response.data){
+
+        this.orgOptions.push({
+          'label': item.name,
+          'value': item.organization_id
+        })
+      }
+      this.loading = false;
+    })
+    .catch(e => {
+      this.errors.push(e)
+    })
   }
 
 }
@@ -142,7 +241,7 @@ export default {
 <style>
   .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;
-    border-radius: 6px;
+    border-radius: 50%;
     cursor: pointer;
     position: relative;
   }
@@ -161,5 +260,12 @@ export default {
     width: 178px;
     height: 178px;
     display: block;
+    border-radius: 50%;
   }
+</style>
+<style scoped>
+.uk-offcanvas-bar{
+  width: 50%;
+  background: #fff
+}
 </style>

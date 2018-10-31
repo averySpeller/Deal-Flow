@@ -14,7 +14,7 @@
 
     <nav>
 
-      <div id="offcanvas-push"  uk-offcanvas="mode: push; overlay: true; flip: true">
+      <div id="offcanvas-push" uk-offcanvas="mode: push; overlay: true;">
         <div class="uk-offcanvas-bar">
             <button class="uk-offcanvas-close" type="button" uk-close></button>
             <li class="nav-item" v-for="routes in links">
@@ -61,7 +61,7 @@ export default {
         },
         {
           id: 2,
-          text: 'Organizations',
+          text: 'Companies',
           page:'/Organizations'
         },
         {
