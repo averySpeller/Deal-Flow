@@ -72,6 +72,14 @@
 
            </el-row>
             </el-form-item>
+            <el-form-item label="Notes:">
+              <el-input
+                v-model="form.notes"
+                type="textarea"
+                clearable
+                placeholder="Add Notes">
+              </el-input>
+            </el-form-item>
             <!-- <el-form-item label="Title:">
               <el-select
                 v-model="this.title"

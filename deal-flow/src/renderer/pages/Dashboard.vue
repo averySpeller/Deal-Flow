@@ -50,7 +50,7 @@
           { logo: 'static/imgs/randomLogo6.png' },
           { logo: 'static/imgs/randomLogo7.png' },
         ],
-        loading:true
+        loading:false
       }
     },
     created() {
