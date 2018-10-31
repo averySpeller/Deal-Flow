@@ -74,8 +74,8 @@
 </template>
 
 <script>
-// import lib from '../lib'
-import axios from 'axios'
+import lib from '../lib'
+// import axios from 'axios'
 import router from '../router'
 export default {
   name: 'EditContact',
@@ -99,24 +99,8 @@ export default {
   },
   created() {
     //~~~~~~~~~~~~~~~UNCOMMENT ONCE LIB IS CREATED~~~~~~~~~~~~~~~~~~~~~~~~~~//
-    //
-    // lib.getRequest('contacts/'.concat(this.$route.params.id), response => {
-    //   this.contact = response.data
-    //   console.log(response.data);
-    //    this.name = response.data['first'] + ' ' + response.data['last'];
-    //    this.form.email = response.data['email'];
-    //    this.form.phone1 = response.data['phone1'];
-    //    this.form.phone2 = response.data['phone2'];
-    //    this.form.website = response.data['website'];
-    //    this.form.notes = response.data['notes'];
-    //   console.log(myRequest);
-    // })
 
-
-
-    var requestFields = this.$parent.createGetRequest("contacts/".concat(this.$route.params.id))
-
-    axios.get(requestFields.myRequest, requestFields.auth).then(response => {
+    lib.getRequest('/contacts/'.concat(this.$route.params.id), response => {
       this.contact = response.data
       console.log(response.data);
        this.name = response.data['first'] + ' ' + response.data['last'];
@@ -127,9 +111,25 @@ export default {
        this.form.notes = response.data['notes'];
       console.log(myRequest);
     })
-    .catch(e => {
-      this.errors.push(e)
-    })
+
+
+    //
+    // var requestFields = this.$parent.createGetRequest("contacts/".concat(this.$route.params.id))
+    //
+    // axios.get(requestFields.myRequest, requestFields.auth).then(response => {
+    //   this.contact = response.data
+    //   console.log(response.data);
+    //    this.name = response.data['first'] + ' ' + response.data['last'];
+    //    this.form.email = response.data['email'];
+    //    this.form.phone1 = response.data['phone1'];
+    //    this.form.phone2 = response.data['phone2'];
+    //    this.form.website = response.data['website'];
+    //    this.form.notes = response.data['notes'];
+    //   console.log(myRequest);
+    // })
+    // .catch(e => {
+    //   this.errors.push(e)
+    // })
   },
   methods: {
     goBack () {
@@ -145,20 +145,14 @@ export default {
       // console.log(splitty);
       console.log(this.form);
 
-    lib.putRequest('contacts/'.concat(this.$route.params.id), this.form, response => {
+    lib.putRequest('/contacts/'.concat(this.$route.params.id), this.form, response => {
       console.log(response.data);
       console.log(response.header);
 
       window.history.length > 1
         ? this.$router.go(-1)
         : this.$router.push('/')
-      },
-      err => {
-        this.errors.push(e)
-        console.log(e);
-        console.log('i died');
-      }
-    )
+      })
       // axios.put('http://24.138.161.30:5000/contacts/'.concat(this.$route.params.id),this.form).then(response => {
       //   console.log(response.data);
       //   console.log(response.header);

@@ -7,10 +7,13 @@
             <br>
             <el-upload
               class="avatar-uploader uk-flex uk-flex-center uk-margin"
-              action="https://jsonplaceholder.typicode.com/posts/"
+              action=""
               :show-file-list="false"
+              :auto-upload="false"
               :on-success="handleAvatarSuccess"
-              :before-upload="beforeAvatarUpload">
+              :before-upload="beforeAvatarUpload"
+              :thumbnail-mode="true"
+              >
               <img v-if="imageUrl" :src="imageUrl" class="avatar">
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
@@ -179,19 +182,13 @@ export default {
 
       // console.log(splitty);
       console.log(this.form);
-      var requestFields = this.$parent.$parent.createGetRequest("contacts")
-
-      axios.post(requestFields.myRequest, this.form, requestFields.auth ).then(response => {
+      // var requestFields = this.$parent.$parent.createGetRequest("contacts")
+        lib.postRequest('/contacts', this.form, response => {
         console.log(this.form);
         console.log(response.data);
         window.history.length > 1
           ? this.$router.go(-1)
           : this.$router.push('/')
-      })
-      .catch(e => {
-        this.errors.push(e)
-        console.log(e);
-        console.log('i is dead');
       })
 
     },
