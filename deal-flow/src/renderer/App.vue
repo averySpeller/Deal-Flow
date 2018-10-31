@@ -38,7 +38,7 @@
         var jwtAuth = localStorage.getItem("jwtAuth");
         console.log(jwtAuth);
         this.Authorization = "Bearer ".concat(jwtAuth);
-        this.authenticated = true;
+        // this.authenticated = true;
       },
       setAuthenticated(status) {
         this.authenticated = status;
