@@ -1,5 +1,7 @@
 <template>
   <div class="">
+
+
     <div class="uk-margin">
       <el-row type="flex" class="row-bg" justify="center">
         <el-col :xs="12" :sm="10" :md="8" :lg="6" :xl="6">
@@ -138,6 +140,7 @@ export default {
         phone1: null,
         phone2: null,
         website: null,
+        avatar: null,
         // notes: null,
         organization_id: null,
         // title: null, //UNCOMMENT TO SEND TITLE
@@ -194,7 +197,10 @@ export default {
 
     },
     handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
+      this.imageUrl = "/static/" + file.raw.path.replace(/^.+static/,''); ;
+      this.form.avatar = this.imageUrl;
+      console.log(  "IMAGE PATH: "+this.form.avatar);
+      console.log(file.raw.path);
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg';

@@ -3,7 +3,7 @@
     <el-row type="flex" class="row-bg" justify="center">
       <el-col :span="8">
         <div class="uk-flex uk-flex-center uk-inline" style="border-radius: 50%">
-          <img src="static/imgs/linux.png">
+          <img src={{contact.avatar}}>
         </div>
         <div class="title uk-flex uk-flex-center">
           <h1>{{contact.first}} {{contact.last}}</h1>
