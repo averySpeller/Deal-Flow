@@ -2,8 +2,8 @@
   <div class="">
     <div class="uk-margin">
       <el-row type="flex" class="row-bg" justify="center">
-          <el-col :xs="12" :sm="10" :md="8" :lg="6" :xl="6">
-          <el-form ref="form" :model="form" label-width="70px">
+          <el-col :span="18">
+          <el-form ref="form" :model="form" label-width="125px">
             <br>
             <el-upload
               class="avatar-uploader uk-flex uk-flex-center uk-margin"
@@ -37,14 +37,14 @@
                 clearable>
               </el-input>
             </el-form-item>
-            <el-form-item label="Model:">
+            <el-form-item label="Revenue Model:">
               <el-input
                 v-model="form.revenue_model"
                 type="text"
                 clearable>
               </el-input>
             </el-form-item>
-            <el-form-item label="revenue:">
+            <el-form-item label="Revenue:">
               <el-input
                 v-model="form.revenue"
                 type="text"
@@ -132,12 +132,9 @@
             </el-form-item>
 
             <div class="uk-flex uk-flex-center ">
-              <button @click="AddOrganization()" class="uk-button uk-button-primary uk-button-large uk-margin">Add Company!</button><br><br>
+              <el-button @click="AddOrganization()" type="primary">Add Company!</el-button><br><br>
             </div>
           </el-form>
-          <div class="uk-flex uk-flex-center ">
-            <button @click="goBack()" class="uk-button uk-button-secondary uk-button-medium uk-margin">GO BACK</button>
-          </div>
         </el-col>
       </el-row>
 
@@ -215,24 +212,6 @@ export default {
       return isJPG && isLt2M;
     }
   },
-  created() {
-    var myRequest = this.$parent.createGetRequest("organizations")
-    axios.get(myRequest).then(response => {
-
-      for(let item of response.data){
-
-        this.orgOptions.push({
-          'label': item.name,
-          'value': item.organization_id
-        })
-      }
-      this.loading = false;
-    })
-    .catch(e => {
-      this.errors.push(e)
-    })
-  }
-
 }
 
 
@@ -262,7 +241,5 @@ export default {
     display: block;
     border-radius: 25%;
   }
-  .uk-offcanvas-bar {
-    background: #000000;
-}
+
 </style>

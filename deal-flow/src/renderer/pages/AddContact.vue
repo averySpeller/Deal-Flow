@@ -88,12 +88,12 @@
               </el-select>
             </el-form-item> -->
             <div class="uk-flex uk-flex-center ">
-              <button @click="addContact()" class="uk-button uk-button-primary uk-button-large uk-margin">Add contact!</button><br><br>
+              <el-button @click="addContact()" type="primary">Add contact!</el-button><br><br>
             </div>
           </el-form>
-          <div class="uk-flex uk-flex-center ">
-            <button @click="goBack()" class="uk-button uk-button-secondary uk-button-medium uk-margin">GO BACK</button>
-          </div>
+          <!-- <div class="uk-flex uk-flex-center ">
+            <el-button @click="goBack()" type="danger" plain>GO BACK</el-button>
+          </div> -->
         </el-col>
       </el-row>
 
@@ -248,4 +248,10 @@ export default {
     display: block;
     border-radius: 50%;
   }
+</style>
+<style scoped>
+.uk-offcanvas-bar{
+  width: 50%;
+  background: #fff
+}
 </style>
