@@ -8,15 +8,9 @@
           <el-col :span="18">
           <el-form ref="form" :model="form" label-width="125px">
             <br>
-            <el-upload
-              class="avatar-uploader uk-flex uk-flex-center uk-margin"
-              action="https://jsonplaceholder.typicode.com/posts/"
-              :show-file-list="false"
-              :on-success="handleAvatarSuccess"
-              :before-upload="beforeAvatarUpload">
-              <img v-if="imageUrl" :src="imageUrl" class="avatar">
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload>
+            <div class="uk-flex uk-flex-center uk-inline" style="border-radius: 50%">
+              <img  class="avatar" v-bind:src ="form.logo">
+            </div>
             <el-form-item label="Name:">
               <el-input
                 v-model="form.name"

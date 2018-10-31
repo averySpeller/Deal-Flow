@@ -5,18 +5,9 @@
         <el-col :xs="12" :sm="10" :md="8" :lg="6" :xl="6">
           <el-form ref="form" :model="form" label-width="70px">
             <br>
-            <el-upload
-              class="avatar-uploader uk-flex uk-flex-center uk-margin"
-              action=""
-              :show-file-list="false"
-              :auto-upload="false"
-              :on-success="handleAvatarSuccess"
-              :before-upload="beforeAvatarUpload"
-              :thumbnail-mode="true"
-              >
-              <img v-if="imageUrl" :src="imageUrl" class="avatar">
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload>
+            <div class="uk-flex uk-flex-center uk-inline" style="border-radius: 50%">
+              <img  class="avatar" v-bind:src ="form.avatar">
+            </div>
             <el-form-item label="Name:">
               <el-input
                 v-model="name"
