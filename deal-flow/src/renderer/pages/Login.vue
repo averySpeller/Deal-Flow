@@ -51,6 +51,7 @@
         username: "",
         password: "",
         errors: null,
+        jwtAuth:"",
         usernameError: false,
         passwordError: false,
         loading: false,
@@ -71,6 +72,39 @@
         this.$electron.shell.openExternal(link)
       },
       finishLogging(){
+
+        // axios.post(base_url + '/auth', { "username": this.username, "password": this.password });
+
+        axios.post(base_url + '/auth', { "username": this.username, "password": this.password }).then(response => {
+          if (response.data) {
+            this.jwtAuth = response.data
+            if (typeof(Storage) !== "undefined") {
+              // Store
+              localStorage.setItem("jwtAuth", this.jwtAuth);
+              // Retrieve
+              // this.jwtAuth = localStorage.getItem("jwtAuth");
+            } else {
+              document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Storage...";
+            }
+            console.log(myRequest);
+            this.loading = false;
+          }
+          else {
+            this.usernameError= false;
+            this.passwordError= false;
+            this.errors = this.errors + "EVERYTHING IS MESSED";
+          }
+        })
+        .catch(e => {
+          this.errorArray.push(e)
+        })
+      },
+      validateLoginCredentials() {
+        this.loading= true;
+        this.usernameError= false;
+        this.passwordError= false;
+        this.errors= "";
+
         if (this.username == "") {
           this.usernameError = true;
           this.errors = this.errors + "username is empty\n";
@@ -81,7 +115,7 @@
         }
 
         if (!(this.usernameError && this.passwordError)) {
-          if(this.username == this.$parent.mockAccount.username && this.password == this.$parent.mockAccount.password){
+          if(finishLogging()){
             this.$emit("authenticated", true);
             this.$router.replace({ name: "Dashboard" });
           }
@@ -91,13 +125,7 @@
             this.errors = "Bad Credentials\n";
           }
         }
-        this.loading= false;
-      },
-      validateLoginCredentials() {
-        this.loading= true;
-        this.usernameError= false;
-        this.passwordError= false;
-        this.errors= "";
+
         setTimeout(()=>{
            this.finishLogging()
         },2000);
