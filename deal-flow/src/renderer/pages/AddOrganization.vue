@@ -188,6 +188,7 @@ export default {
         console.log(response.data);
         this.organization_id = response.data.organization_id
         this.$emit('addOrg', this.organization_id)
+        alert("company '"+this.form.name+"' added");
         // window.history.length > 1
         //   ? this.$router.go(-1)
         //   : this.$router.push('/')

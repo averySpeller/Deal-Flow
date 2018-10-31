@@ -148,7 +148,7 @@ export default {
   name: 'EditOrganization',
   data(){
     return{
-      contact_id: 0,
+      // contact_id: 0,
       name: null,
       imageUrl:'',
       form: {
