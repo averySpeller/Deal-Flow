@@ -144,7 +144,8 @@
 </template>
 
 <script>
-import axios from 'axios';
+// import axios from 'axios';
+import lib from '../lib'
 export default {
   name: 'AddOrganization',
   data(){
@@ -181,20 +182,14 @@ export default {
     },
     AddOrganization(){
       console.log(this.form);
-      var requestFields = this.$parent.$parent.createGetRequest("organizations")
-      axios.post(requestFields.myRequest, this.form, requestFields.auth ).then(response => {
+
+      lib.postRequest('/organizations', this.form, response => {
         console.log(this.form);
         console.log(response.data);
         // window.history.length > 1
         //   ? this.$router.go(-1)
         //   : this.$router.push('/')
       })
-      .catch(e => {
-        this.errors.push(e)
-        console.log(e);
-        console.log('i is dead');
-      })
-
     },
     handleAvatarSuccess(res, file) {
       this.imageUrl = "/static/" + file.raw.path.replace(/^.+static/,''); ;
