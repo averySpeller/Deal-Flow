@@ -99,7 +99,7 @@ create table organization (
 
 create table contact (
     contact_id int auto_increment primary key,
-    organization_id int,
+    organization_id int(11),
     first varchar(75),
     last varchar(75),
     title varchar(75),
@@ -112,5 +112,5 @@ create table contact (
 
 insert organization values (1,'Apple', 'AAPL', 'static/imgs/randomLogo8.jpg', 'Think different.', 'Manufacturing model', '$52.6 Billion (USD)', '$1 Trillion', '(123) 456-7890', '(408) 606-5775', 'One Infinite Loop', '', 'Cupertino', 'CA', 'USA', '95014', 'www.apple.ca', 'Apple Inc. is an American multinational technology company headquartered in Cupertino, California, that designs, develops, and sells consumer electronics, computer software, and online services. ');
 
-insert into contact values (1,1,'Tim', 'Cook', 'CEO', 'timcook@apple.ca', '(123) 456-7890','','www.timcook.ca', 'Timothy Donald Cook is an American business executive and industrial engineer. Cook is the Chief Executive Officer of Apple Inc., and previously served as the company's Chief Operating Officer under its founder Steve Jobs.');
+insert into contact values (1,1,'Tim', 'Cook', 'CEO', 'timcook@apple.ca', '(123) 456-7890','','www.timcook.ca', 'Timothy Donald Cook is an American business executive and industrial engineer. Cook is the Chief Executive Officer of Apple Inc., and previously served as the company\'s Chief Operating Officer under its founder Steve Jobs.');
 ```

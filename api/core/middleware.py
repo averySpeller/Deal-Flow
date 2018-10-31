@@ -19,7 +19,10 @@ class AuthMiddleware(object):
         token = req.get_header('Authorization')
 
         # parse out token from bearer
-        token = token.split(' ')[1]
+        try:
+            token = token.split(' ')[1]
+        except:
+            pass
 
         challenges = ['Token type="JWT"']
 
