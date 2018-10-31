@@ -1,6 +1,9 @@
 <template>
 
 <div class="wrapper">
+  <div class="title uk-flex uk-flex-center">
+      <h1>Add Contact</h1>
+  </div>
   <AddContact></AddContact>
 </div>
 </template>
@@ -14,7 +17,7 @@ export default {
   },
   data() {
     return{
-      
+
     }
   }
 }

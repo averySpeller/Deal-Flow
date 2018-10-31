@@ -30,6 +30,7 @@ import  EditContact from '@/pages/EditContact'
 import  AddOrganizationPage from '@/pages/AddOrganizationPage'
 import  AddContactPage from '@/pages/AddContactPage'
 import  AddDeal from '@/components/AddDeal'
+import  EditOrganization from '@/components/EditOrganization'
 //Components
 // import SkillChart from @/components/SkillChart
 
@@ -128,6 +129,12 @@ export default new Router({
       name: 'AddDeal',
       component: AddDeal
 
+    },
+    {
+      path: '../components/EditOrganization',
+      name: 'EditOrganization',
+      component: EditOrganization
     }
+
   ]
 })

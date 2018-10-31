@@ -59,7 +59,7 @@
             <el-row>
 
               <el-col :span="16">
-                <el-select v-model="form.organization_id" clearable placeholder="Select">
+                <el-select @click="loadSelect()" v-model="form.organization_id" clearable placeholder="Select">
                     <el-option
                       v-for="item in this.orgOptions"
                       :label="item.label"
@@ -113,7 +113,10 @@
     <div id="offcanvas-addOrganization" uk-offcanvas="mode: slide; overlay: true; flip: true">
       <div class="uk-offcanvas-bar">
         <button class="uk-offcanvas-close" type="button" uk-close></button>
-          <AddOrganization></AddOrganization>
+        <div class="title uk-flex uk-flex-center">
+            <h1>Add Company</h1>
+        </div>
+          <AddOrganization v-on:addOrg="loadIt($event)"></AddOrganization>
       </div>
     </div>
 
@@ -209,10 +212,16 @@ export default {
         this.$message.error('Avatar picture size can not exceed 2MB!');
       }
       return isJPG && isLt2M;
-    }
+    },
+
+  loadIt(arg) {
+    this.loadSelect()
+    this.form.organization_id=arg
   },
-  created() {
+
+  loadSelect() {
     lib.getRequest('/organizations', response => {
+      console.log(response);
       for(let item of response.data){
         this.orgOptions.push({
           'label': item.name,
@@ -222,7 +231,10 @@ export default {
       this.loading = false;
     })
   }
-
+},
+created() {
+  this.loadSelect()
+}
 }
 
 
