@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <Nav v-if="authenticated"></Nav>
-    <SearchBar v-if="authenticated"></SearchBar>
     <router-view @authenticated="setAuthenticated"></router-view>
 
   </div>
@@ -17,10 +16,8 @@
     },
     data() {
       return{
-        authenticated: true,
-        header = {
-          Authorization: `Bearer `;
-        }
+        authenticated: false,
+        Authorization: "",
         mockAccount: {
           username: "kevin",
           password: "12345"
@@ -28,21 +25,21 @@
         baseUrl: "http://24.138.161.30:5000/"
       }
     },
-    mounted() {
-      this.jwtAuth = localStorage.getItem("jwtAuth");
+    created() {
+      console.log("CHECKING TOKEN");
+      this.checkForToken();
 
       if(!this.authenticated) {
         this.$router.replace({ name: "Login" });
       }
-
-      this.jwtAuth = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb21lIjoicGF5bG9hZCJ9.4twFt5NiznN84AWoo1d7KO1T_yoc0Z6XOpOVswacPZg";
-      this.header.Authorization = this.header.Authorization.concat(this.jwtAuth);
-      var output = this.parseJwt(this.jwtAuth);
-      console.log("RIGHT HERE RIGHT NOW");
-      console.log(output);
     },
     methods: {
-
+      checkForToken() {
+        var jwtAuth = localStorage.getItem("jwtAuth");
+        console.log(jwtAuth);
+        this.Authorization = "Bearer ".concat(jwtAuth);
+        this.authenticated = true;
+      },
       setAuthenticated(status) {
         this.authenticated = status;
       },
@@ -56,16 +53,16 @@
       },
       createGetRequest(path){
         var myRequest = this.baseUrl.concat(path)
-        return myRequest
-      },
-      createPostRequest(path){
-        var myRequest = this.baseUrl.concat(path)
-        return myRequest
-      },
-      createDeleteRequest(path){
-        var myRequest = this.baseUrl.concat(path)
-        console.log(myRequest);
-        return myRequest
+        console.log(this.Authorization);
+        return {
+          myRequest: myRequest,
+          auth: {
+            headers: {
+              Authorization: this.Authorization
+            }
+          }
+        };
+        // , { headers:{ this.header }}
       },
       parseJwt (token) {
         var base64Url = token.split('.')[0];

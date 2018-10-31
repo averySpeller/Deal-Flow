@@ -71,11 +71,11 @@ export default {
     }
   },
   created() {
-    var myRequest = this.$parent.createGetRequest("organizations/".concat(this.$route.params.id))
+    var requestFields = this.$parent.createGetRequest("organizations/".concat(this.$route.params.id))
 
-    axios.get(myRequest).then(response => {
+    axios.get(requestFields.myRequest, requestFields.auth).then(response => {
       this.organization = response.data
-      console.log(myRequest);
+      console.log(requestFields.myRequest);
       this.loading = false;
     })
     .catch(e => {

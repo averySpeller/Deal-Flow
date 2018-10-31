@@ -97,9 +97,9 @@ export default {
     }
   },
   created() {
-    var myRequest = this.$parent.createGetRequest("contacts/".concat(this.$route.params.id))
+    var requestFields = this.$parent.createGetRequest("contacts/".concat(this.$route.params.id))
 
-    axios.get(myRequest).then(response => {
+    axios.get(requestFields.myRequest, requestFields.auth).then(response => {
       this.contact = response.data
       console.log(response.data);
        this.name = response.data['first'] + ' ' + response.data['last'];
@@ -108,7 +108,7 @@ export default {
        this.form.phone2 = response.data['phone2'];
        this.form.website = response.data['website'];
        this.form.notes = response.data['notes'];
-      console.log(myRequest);
+      console.log(requestFields.myRequest);
     })
     .catch(e => {
       this.errors.push(e)

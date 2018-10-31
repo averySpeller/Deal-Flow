@@ -34,9 +34,9 @@ export default {
 
   },
   created() {
-    var myRequest = this.$parent.createGetRequest("contacts")
+    var requestFields = this.$parent.createGetRequest("contacts")
 
-    axios.get(myRequest).then(response => {
+    axios.get(requestFields.myRequest, requestFields.auth).then(response => {
       this.contacts = response.data
       console.log(response.data);
       this.loading = false;

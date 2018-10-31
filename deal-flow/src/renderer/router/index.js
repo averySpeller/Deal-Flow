@@ -23,6 +23,7 @@ import  Deals from '@/pages/Deals'
 import  SingleContact from '@/pages/single-contact'
 import  SingleOrganization from '@/pages/single-organization'
 import  SingleDeal from '@/pages/single-deal'
+import  CompanyOverview from '@/components/CompanyOverview'
 import  AddContact from '@/pages/AddContact'
 import  EditContact from '@/pages/EditContact'
 //Components
@@ -102,6 +103,11 @@ export default new Router({
       path: '/ContactCatalogue',
       name: 'ContactCatalogue',
       component: ContactCatalogue
+    },
+    {
+      path: '../components/CompanyOverview',
+      name: 'CompanyOverview',
+      component: CompanyOverview
     }
   ]
 })

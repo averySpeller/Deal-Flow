@@ -92,10 +92,10 @@ export default {
         : this.$router.push('/')
     },
     deleteContact(){
-      var myRequest = this.$parent.createGetRequest("contacts/".concat(this.contact.contact_id))
+      var requestFields = this.$parent.createGetRequest("contacts/".concat(this.contact.contact_id))
 
-      axios.delete(myRequest).then(response => {
-        console.log(myRequest);
+      axios.delete(requestFields.myRequest, requestFields.auth).then(response => {
+        console.log(requestFields.myRequest);
         window.history.length > 1
           ? this.$router.go(-1)
           : this.$router.push('/')
@@ -107,12 +107,12 @@ export default {
     }
   },
   created() {
-    var myRequest = this.$parent.createGetRequest("contacts/".concat(this.$route.params.id))
+    var requestFields = this.$parent.createGetRequest("contacts/".concat(this.$route.params.id))
     this.id = this.$route.params.id;
 
-    axios.get(myRequest).then(response => {
+    axios.get(requestFields.myRequest, requestFields.auth).then(response => {
       this.contact = response.data
-      console.log(myRequest);
+      console.log(requestFields.myRequest);
       this.loading = false;
     })
     .catch(e => {

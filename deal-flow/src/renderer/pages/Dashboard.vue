@@ -1,5 +1,5 @@
 <template>
-  <div v-if="companies" v-loading="loading" :data="companies">
+  <div v-if="companies"  :data="companies">
     <h1>Dashboard</h1>
     <div id="slider2">
       <h2>Jobs</h2>
@@ -53,11 +53,21 @@
         loading:true
       }
     },
-    created() {
-      var myRequest = this.$parent.createGetRequest("organizations")
-      axios.get(myRequest).then(response => {
+    mounted() {
+      var requestFields = this.$parent.createGetRequest("organizations")
+      console.log(requestFields.auth);
+      // axios({
+      //   method: 'get',
+      //   url: requestFields.myRequest,
+      //   headers: { "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzb21lX3BheWxvYWQiOiJwYXlsb2FkIiwiZXhwIjoxNTQwOTEzNzc0fQ.RSLJOy0aRg09WeYWBFHCZD7xrAmOGydNP-NZTN6DYRI" }
+      // }).then(response => {
+      //   console.log(response);
+      // }).catch(e => {
+      //   console.log(e);
+      // })
+
+      axios.get(requestFields.myRequest, requestFields.auth).then(response => {
         this.organizations = response.data
-        console.log('log it up');
         for (var i = 0; i < this.organizations.length; i++) {
           this.organizations[i].logo = this.companies[i].logo;
         }

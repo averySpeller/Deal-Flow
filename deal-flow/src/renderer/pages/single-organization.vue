@@ -16,48 +16,25 @@
           DEALS:
         </div>
         <el-row type="flex" class="row-bg" justify="center">
-
-            <router-link :to="{ name: 'Single-Deal', params: { id: organization.organization_id} }">
-              <el-button type="primary" plain round size="small">Deal #1</el-button>
-            </router-link>
+          <el-col :span="8">
+            <el-button v-on:click="currentView=true;" type="info" plain round size="small">Overview</el-button>
+          </el-col>
+          <el-col :span="8">
+            <el-button v-on:click="currentView=false;" type="primary" plain round size="small">Deal #1</el-button>
+          </el-col>
+          <el-col :span="8">
+            <el-button v-on:click="currentView=false;" type="primary" plain round size="small">Deal #1</el-button>
+          </el-col>
         </el-row>
+        <h2 v-if="overviewFlag === true">bitches</h2>
 
       </el-col>
     </el-row>
-    <div class="uk-divider-vertical uk-margin">
+    <div class="uk-margin">
       <hr class="uk-divider-icon"/>
-      <el-row :gutter="50">
-        <el-col :xs="0" :sm="1" :md="2" :lg="3" :xl="3"><div class="grid-content bg-purple"></div></el-col>
-        <el-col :xs="12" :sm="11" :md="10" :lg="9" :xl="9">
-          <ul>
-            <p><strong>Comapany Vision: </strong> "{{organization.vision}}"</p>
-            <br><br>
-            <li><p><strong>Website: </strong>{{organization.website}}</p></li>
-            <!-- <li><p><strong>Address: </strong>{{organization.address.street}} "Street, "{{organization.address.suite}}", "{{organization.address.city}}", "{{organization.address.zipcode}}</p></li> -->
-          </ul>
-
-          <p><strong>Contacts: </strong></p>
-          <ol>
-            <li v-for="contact in contacts">
-              <router-link :to="{ name: 'Single-Contact', params: { contact_id: contact.contact_id} }">
-                {{contact.first}}
-              </router-link>
-            </li>
-          </ol>
-        </el-col>
-        <el-col  :xs="12" :sm="11" :md="10" :lg="9" :xl="9">
-          <div class="uk-flex uk-flex-center uk-inline">
-            <img src="static/imgs/sampleRadarChart.png" height="100" uk-img>
-          </div>
-          <br><br>
-          <div class="uk-flex uk-flex-center uk-inline">
-            <p>NOTES GO HERE</p>
-          </div>
-
-        </el-col>
-        <el-col :xs="0" :sm="1" :md="2" :lg="3" :xl="3"><div class="grid-content bg-purple"></div></el-col>
-      </el-row>
+      <CompanyOverview v-if="overviewFlag" v-bind:organization="this.organization" v-bind:contacts="this.contacts"></CompanyOverview>
     </div>
+
     <button @click="goBack()" class="uk-button uk-button-secondary uk-button-large uk-margin">GO BACK</button>
 
     <ul v-if="errors && errors.length">
@@ -66,14 +43,17 @@
       </li>
     </ul>
 
-
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import CompanyOverview from '../components/CompanyOverview';
 export default {
   name: 'Single-Organization',
+  components: {
+    'CompanyOverview' : CompanyOverview
+  },
   data(){
     return {
       organization: {},
@@ -81,6 +61,7 @@ export default {
       errors: [],
       contacterrors: [],
       address: "",
+      overviewFlag: true,
       loading:true
     }
   },
@@ -92,11 +73,11 @@ export default {
     }
   },
   created() {
-    var myRequest = this.$parent.createGetRequest("organizations/".concat(this.$route.params.id))
+    var requestFields = this.$parent.createGetRequest("organizations/".concat(this.$route.params.id))
 
-    axios.get(myRequest).then(response => {
+    axios.get(requestFields.myRequest, requestFields.auth).then(response => {
       this.organization = response.data
-      console.log(myRequest);
+      console.log(requestFields.myRequest);
       this.loading = false;
     })
     .catch(e => {
@@ -104,9 +85,9 @@ export default {
       console.log('failed');
     })
 
-    myRequest = this.$parent.createGetRequest("contacts")
+    requestFields = this.$parent.createGetRequest("contacts")
 
-    axios.get(myRequest).then(response => {
+    axios.get(requestFields.myRequest, requestFields.auth).then(response => {
       this.contacts = response.data
       console.log(response.data);
     })
@@ -128,8 +109,6 @@ export default {
     margin: 0 auto;
       border-radius: 15%;
   }
-  .grid-content {
-    min-height: 36px;
-  }
+
 
 </style>

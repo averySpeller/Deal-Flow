@@ -26,7 +26,7 @@
             <div class="uk-inline">
               <span class="uk-form-icon" uk-icon="icon: lock"></span>
               <input v-if="passwordError" v-model="password" class="uk-input uk-form-width-medium uk-form-danger" type="text" >
-              <input v-else v-model="password" class="uk-input uk-form-width-medium"  type="text" placeholder="password">
+              <input v-else v-model="password" class="uk-input uk-form-width-medium"  type="password" placeholder="password">
             </div>
           </div>
         </div>
@@ -43,14 +43,15 @@
   </div>
 </template>
 <script>
+  import axios from 'axios';
   export default {
     name: 'Login',
     data() {
       return {
-
         username: "",
         password: "",
         errors: null,
+        errorArray: [],
         jwtAuth:"",
         usernameError: false,
         passwordError: false,
@@ -72,30 +73,30 @@
         this.$electron.shell.openExternal(link)
       },
       finishLogging(){
-
-        // axios.post(base_url + '/auth', { "username": this.username, "password": this.password });
-
-        axios.post(base_url + '/auth', { "username": this.username, "password": this.password }).then(response => {
+        axios.post(this.$parent.baseUrl + 'auth', { "username": this.username, "password": this.password }).then(response => {
           if (response.data) {
-            this.jwtAuth = response.data
+            console.log(response.data);
+            this.jwtAuth = response.data.token
             if (typeof(Storage) !== "undefined") {
               // Store
               localStorage.setItem("jwtAuth", this.jwtAuth);
-              // Retrieve
-              // this.jwtAuth = localStorage.getItem("jwtAuth");
-            } else {
+            }
+            else {
               document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Storage...";
             }
-            console.log(myRequest);
+            this.$emit("authenticated", true);
+            this.$router.replace({ name: "Dashboard" });
             this.loading = false;
+            this.$parent.checkForToken();
           }
           else {
-            this.usernameError= false;
-            this.passwordError= false;
-            this.errors = this.errors + "EVERYTHING IS MESSED";
+            this.usernameError = true;
+            this.passwordError = true;
+            this.errors = "Bad Credentials\n";
           }
         })
         .catch(e => {
+          console.log(e);
           this.errorArray.push(e)
         })
       },
@@ -115,20 +116,8 @@
         }
 
         if (!(this.usernameError && this.passwordError)) {
-          if(finishLogging()){
-            this.$emit("authenticated", true);
-            this.$router.replace({ name: "Dashboard" });
-          }
-          else {
-            this.usernameError = true;
-            this.passwordError = true;
-            this.errors = "Bad Credentials\n";
-          }
+          this.finishLogging()
         }
-
-        setTimeout(()=>{
-           this.finishLogging()
-        },2000);
 
       },
       onSubmit() {

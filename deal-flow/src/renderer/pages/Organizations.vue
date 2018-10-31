@@ -31,8 +31,8 @@ export default {
 
   },
   created() {
-    var myRequest = this.$parent.createGetRequest("organizations")
-    axios.get(myRequest).then(response => {
+    var requestFields = this.$parent.createGetRequest("organizations")
+    axios.get(requestFields.myRequest, requestFields.auth).then(response => {
       this.organizations = response.data
       console.log('log it up');
       console.log(response.data);
