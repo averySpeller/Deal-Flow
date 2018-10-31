@@ -21,18 +21,12 @@ import  Settings from '@/pages/Settings'
 import  Dashboard from '@/pages/Dashboard'
 import  Deals from '@/pages/Deals'
 import  SingleContact from '@/pages/single-contact'
-<<<<<<< HEAD
-import SingleOrganization from '@/pages/single-organization'
-import AddContact from '@/pages/AddContact'
-import AddOrganization from '@/pages/AddOrganization'
-import EditContact from '@/pages/EditContact'
-=======
 import  SingleOrganization from '@/pages/single-organization'
 import  SingleDeal from '@/pages/single-deal'
 import  CompanyOverview from '@/components/CompanyOverview'
 import  AddContact from '@/pages/AddContact'
+import  AddOrganization from '@/pages/AddOrganization'
 import  EditContact from '@/pages/EditContact'
->>>>>>> 2d6bce6bd0f0ead0f7f14d8772c1b9a7f06131a1
 //Components
 // import SkillChart from @/components/SkillChart
 

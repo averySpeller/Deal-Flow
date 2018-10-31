@@ -13,21 +13,18 @@
         </div>
 
         <div class="title uk-flex uk-flex-center">
-          DEALS:
         </div>
         <el-row type="flex" class="row-bg" justify="center">
-          <el-col :span="8">
-            <el-button v-on:click="currentView=true;" type="info" plain round size="small">Overview</el-button>
-          </el-col>
-          <el-col :span="8">
-            <el-button v-on:click="currentView=false;" type="primary" plain round size="small">Deal #1</el-button>
-          </el-col>
-          <el-col :span="8">
-            <el-button v-on:click="currentView=false;" type="primary" plain round size="small">Deal #1</el-button>
-          </el-col>
+          <!-- <el-col :span="8"> -->
+            <el-button v-on:click="overviewFlag=true;" type="info" plain round size="small">Overview</el-button>
+          <!-- </el-col> -->
+          <!-- <el-col :span="8"> -->
+            <el-button v-on:click="overviewFlag=false;" type="primary" plain round size="small">Deal #1</el-button>
+          <!-- </el-col> -->
+          <!-- <el-col :span="8"> -->
+            <el-button v-on:click="overviewFlag=false;" type="primary" plain round size="small">Deal #1</el-button>
+          <!-- </el-col> -->
         </el-row>
-        <h2 v-if="overviewFlag === true">bitches</h2>
-
       </el-col>
     </el-row>
     <div class="uk-margin">

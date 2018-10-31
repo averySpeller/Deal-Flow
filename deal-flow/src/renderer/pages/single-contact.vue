@@ -3,7 +3,7 @@
     <el-row type="flex" class="row-bg" justify="center">
       <el-col :span="8">
         <div class="uk-flex uk-flex-center uk-inline" style="border-radius: 50%">
-          <img src={{contact.avatar}}>
+          <!-- <img v-attr="src: {{contact.avatar}}"> -->
         </div>
 
         <div class="title uk-flex uk-flex-center">
