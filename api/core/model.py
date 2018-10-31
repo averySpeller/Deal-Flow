@@ -180,8 +180,6 @@ class Model:
             if encrypted and self.__class__._properties.get(key).encrypt:
                 setattr(self, key, Utils.decrypt(value))
             else:
-                print('else')
-                print(encrypted)
                 setattr(self, key, value)
 
 

@@ -102,16 +102,40 @@ class DAO:
         if relation is None:
             relation = self._relation
 
+        where_condition = ''
         if parser:
             page_size = parser.page_size
             current_page = parser.page
 
+            print(parser.url_query)
+
+            all_values = []
+            # create the lookup filter query string
+            for key,value in parser.url_query.items():
+                # Single
+                if isinstance(value, str):
+                    all_values.append(value)
+                    if len(all_values) > 1:
+                        where_condition = where_condition + ' or ' + key + ' = %s'
+                    else:
+                        where_condition = where_condition + ' where ' + key + ' = %s'
+                # or separated
+                else:
+                    for v in value:
+                        all_values.append(v)
+                        if len(all_values) > 1:
+                            where_condition = where_condition + ' or ' + key + ' = %s'
+                        else:
+                            where_condition = where_condition + ' where ' + key + ' = %s'
+
         offset = (current_page - 1) * page_size
-        where_condition = ''
 
-        self._db.query('select * from ' + relation + ' ' + where_condition + ' limit ' + str(offset) + ', ' + str(page_size))
-
-        self.result_buffer = self._db.fetch_all()
+        try:
+            self._db.query('select * from ' + relation + ' ' + where_condition + ' limit ' + str(offset) + ', ' + str(page_size), (*all_values,))
+            self.result_buffer = self._db.fetch_all()
+        except Exception as err:
+            self.result_buffer = []
+            print(err)
 
     def bulk_update(self): pass
 
