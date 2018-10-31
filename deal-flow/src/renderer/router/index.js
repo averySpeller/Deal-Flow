@@ -24,9 +24,11 @@ import  SingleContact from '@/pages/single-contact'
 import  SingleOrganization from '@/pages/single-organization'
 import  CompanyOverview from '@/components/CompanyOverview'
 import  DealOverview from '@/components/DealOverview'
-import  AddContact from '@/pages/AddContact'
-import  AddOrganization from '@/pages/AddOrganization'
+import  AddContact from '@/pages/AddContact' //NOT PAGE ----------- MOVE TO COMPONENT DIR
+import  AddOrganization from '@/pages/AddOrganization' //NOT PAGE ----------- MOVE TO COMPONENT DIR
 import  EditContact from '@/pages/EditContact'
+import  AddOrganizationPage from '@/pages/AddOrganizationPage'
+import  AddContactPage from '@/pages/AddContactPage'
 //Components
 // import SkillChart from @/components/SkillChart
 
@@ -69,6 +71,16 @@ export default new Router({
       path: '/AddOrganization',
       name: 'AddOrganization',
       component: AddOrganization
+    },
+    {
+      path: '/AddOrganizationPage',
+      name: 'AddOrganizationPage',
+      component: AddOrganizationPage
+    },
+    {
+      path: '/AddContactPage',
+      name: 'AddContactPage',
+      component: AddContactPage
     },
     {
       path: '/EditContact/:id',

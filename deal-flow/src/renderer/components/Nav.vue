@@ -107,6 +107,12 @@ export default {
           text: 'Settings',
           page:'/Settings'
         },
+        {
+          id: 5,
+          text: 'AddOrganizationPage',
+          page:'/AddOrganizationPage'
+        },
+
       ]
     }
   }
