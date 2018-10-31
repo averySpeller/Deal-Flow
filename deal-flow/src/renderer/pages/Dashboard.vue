@@ -75,7 +75,7 @@
 </template>
 
 <script>
-  import axios from 'axios';
+  import lib from '../lib'
   export default {
     name: 'Dashboard', //this is the name of the component
     data() {
@@ -102,28 +102,37 @@
       }
     },
     mounted() {
-      var requestFields = this.$parent.createGetRequest("organizations")
-      console.log(requestFields.myRequest);
 
-      axios.get(requestFields.myRequest, requestFields.auth).then(response => {
+      lib.getRequest('/organizations', response => {
+
+        console.log(response);
         this.organizations = response.data
         this.setStatistics();
-        this.loading = false
-      })
-      .catch(e => {
-        this.errors.push(e)
+        this.loading = false;
       })
 
-      requestFields = this.$parent.createGetRequest("deals")
-      console.log(requestFields.myRequest);
-      axios.get(requestFields.myRequest, requestFields.auth).then(response => {
-        this.deals = response.data
-        this.setStatistics();
-        this.loading = false
-      })
-      .catch(e => {
-        this.errors.push(e)
-      })
+      // var requestFields = this.$parent.createGetRequest("organizations")
+      // console.log(requestFields.myRequest);
+      //
+      // axios.get(requestFields.myRequest, requestFields.auth).then(response => {
+      //   this.organizations = response.data
+      //   this.setStatistics();
+      //   this.loading = false
+      // })
+      // .catch(e => {
+      //   this.errors.push(e)
+      // })
+      //
+      // requestFields = this.$parent.createGetRequest("deals")
+      // console.log(requestFields.myRequest);
+      // axios.get(requestFields.myRequest, requestFields.auth).then(response => {
+      //   this.deals = response.data
+      //   this.setStatistics();
+      //   this.loading = false
+      // })
+      // .catch(e => {
+      //   this.errors.push(e)
+      // })
     },
     methods: {
       setStatistics(){

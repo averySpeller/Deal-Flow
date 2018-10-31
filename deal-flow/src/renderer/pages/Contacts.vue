@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import lib from '../lib'
 export default {
   name: 'Contacts',
   data(){
@@ -36,13 +36,10 @@ export default {
   created() {
     var requestFields = this.$parent.createGetRequest("contacts")
 
-    axios.get(requestFields.myRequest, requestFields.auth).then(response => {
+    lib.getRequest('/contacts', response => {
       this.contacts = response.data
       console.log(response.data);
       this.loading = false;
-    })
-    .catch(e => {
-      this.errors.push(e)
     })
   }
 }

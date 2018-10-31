@@ -120,7 +120,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import lib from '../lib'
 import AddOrganization from './AddOrganization';
 export default {
   name: 'AddContact',
@@ -215,20 +215,14 @@ export default {
     }
   },
   created() {
-    var requestFields = this.$parent.$parent.createGetRequest("organizations")
-    axios.get(requestFields.myRequest,requestFields.auth ).then(response => {
-
+    lib.getRequest('/organizations', response => {
       for(let item of response.data){
-
         this.orgOptions.push({
           'label': item.name,
           'value': item.organization_id
         })
       }
       this.loading = false;
-    })
-    .catch(e => {
-      this.errors.push(e)
     })
   }
 
