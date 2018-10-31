@@ -3,7 +3,7 @@
     <el-row type="flex" class="row-bg" justify="center">
       <el-col :span="8">
         <div class="uk-flex uk-flex-center uk-inline">
-          <img src="static/imgs/UoG.png">
+          <img v-bind:src="organization.logo" >
         </div>
         <div class="title uk-flex uk-flex-center">
           <h1>{{organization.name}}</h1>
@@ -16,13 +16,14 @@
         </div>
         <el-row type="flex" class="row-bg" justify="center">
           <!-- <el-col :span="8"> -->
-            <el-button v-on:click="overviewFlag=true;" type="info" plain round size="small">Overview</el-button>
+            <el-button v-on:click="overviewFlag=true; currentView='Overview'" type="info" :plain="currentView === currentView" round size="small">Overview</el-button>
           <!-- </el-col> -->
           <!-- <el-col :span="8"> -->
-            <el-button v-on:click="overviewFlag=false;" type="primary" plain round size="small">Deal #1</el-button>
+            <el-button v-on:click="overviewFlag=false;" type="primary" :plain="currentView === 'Overview'" round size="small">Deal #1</el-button>
           <!-- </el-col> -->
           <!-- <el-col :span="8"> -->
-            <el-button v-on:click="overviewFlag=false;" type="primary" plain round size="small">Deal #1</el-button>
+            <el-button v-on:click="overviewFlag=false;" type="primary" :plain="overviewFlag" round size="small">Deal #2</el-button>
+            <el-button v-on:click="overviewFlag=false;" type="success" plain round size="small">Add Deal</el-button>
           <!-- </el-col> -->
         </el-row>
       </el-col>
@@ -30,6 +31,7 @@
     <div class="uk-margin">
       <hr class="uk-divider-icon"/>
       <CompanyOverview v-if="overviewFlag" v-bind:organization="this.organization" v-bind:contacts="this.contacts"></CompanyOverview>
+      <DealOverview v-else v-bind:organization="this.organization" ></DealOverview>
     </div>
 
     <button @click="goBack()" class="uk-button uk-button-secondary uk-button-large uk-margin">GO BACK</button>
@@ -46,10 +48,12 @@
 <script>
 import axios from 'axios';
 import CompanyOverview from '../components/CompanyOverview';
+import DealOverview from '../components/DealOverview';
 export default {
   name: 'Single-Organization',
   components: {
-    'CompanyOverview' : CompanyOverview
+    'CompanyOverview' : CompanyOverview,
+    'DealOverview' : DealOverview
   },
   data(){
     return {
@@ -59,6 +63,7 @@ export default {
       contacterrors: [],
       address: "",
       overviewFlag: true,
+      currentView: "Overview",
       loading:true
     }
   },
@@ -72,9 +77,10 @@ export default {
   created() {
     var requestFields = this.$parent.createGetRequest("organizations/".concat(this.$route.params.id))
 
+    console.log(requestFields.myRequest);
     axios.get(requestFields.myRequest, requestFields.auth).then(response => {
       this.organization = response.data
-      console.log(requestFields.myRequest);
+      console.log(response.data);
       this.loading = false;
     })
     .catch(e => {
@@ -84,6 +90,19 @@ export default {
 
     requestFields = this.$parent.createGetRequest("contacts")
 
+    console.log(requestFields.myRequest);
+    axios.get(requestFields.myRequest, requestFields.auth).then(response => {
+      this.contacts = response.data
+      console.log(response.data);
+    })
+    .catch(e => {
+      this.contacterrors.push(e)
+      console.log('faileds');
+    })
+
+    requestFields = this.$parent.createGetRequest("deals")
+
+    console.log(requestFields.myRequest);
     axios.get(requestFields.myRequest, requestFields.auth).then(response => {
       this.contacts = response.data
       console.log(response.data);
@@ -105,7 +124,8 @@ export default {
   img {
     margin: 0 auto;
       border-radius: 15%;
+      height:250px;
+      width:250px;
   }
-
 
 </style>
