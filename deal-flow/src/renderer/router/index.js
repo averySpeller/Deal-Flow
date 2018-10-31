@@ -22,8 +22,8 @@ import  Dashboard from '@/pages/Dashboard'
 import  Deals from '@/pages/Deals'
 import  SingleContact from '@/pages/single-contact'
 import  SingleOrganization from '@/pages/single-organization'
-import  SingleDeal from '@/pages/single-deal'
 import  CompanyOverview from '@/components/CompanyOverview'
+import  DealOverview from '@/components/DealOverview'
 import  AddContact from '@/pages/AddContact'
 import  AddOrganization from '@/pages/AddOrganization'
 import  EditContact from '@/pages/EditContact'
@@ -59,11 +59,6 @@ export default new Router({
       path: '/single-organization/:id',
       name: 'Single-Organization',
       component: SingleOrganization
-    },
-    {
-      path: '/single-deal/:id',
-      name: 'Single-Deal',
-      component: SingleDeal
     },
     {
       path: '/AddContact',
