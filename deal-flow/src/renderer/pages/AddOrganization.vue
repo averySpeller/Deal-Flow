@@ -16,10 +16,10 @@
             </el-upload>
             <el-form-item label="Name:">
               <el-input
-                v-model="name"
+                v-model="form.name"
                 type="text"
                 clearable
-                placeholder="FistName LastName">
+                placeholder="CompanyName">
               </el-input>
             </el-form-item>
             <el-form-item label="Symbol:">
@@ -181,8 +181,8 @@ export default {
     },
     AddOrganization(){
       console.log(this.form);
-
-      axios.post('http://24.138.161.30:5000/organizations',this.form).then(response => {
+      var requestFields = this.$parent.createGetRequest("organizations")
+      axios.post(requestFields.myRequest, this.form, requestFields.auth ).then(response => {
         console.log(this.form);
         console.log(response.data);
         window.history.length > 1
@@ -197,7 +197,10 @@ export default {
 
     },
     handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
+      this.imageUrl = "/static/" + file.raw.path.replace(/^.+static/,''); ;
+      this.form.logo = this.imageUrl;
+      console.log(  "IMAGE PATH: "+this.form.avatar);
+      console.log(file.raw.path);
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg';
