@@ -57,7 +57,7 @@
       </el-row>
     </div>
       <el-button @click="deleteContact()">delete</el-button>
-      <router-link :to="{ name:'EditContact', params: { id: this.id }}">Edit</router-link>
+      <router-link :to="{ name:'EditContact', params: { id: contact.contact_id }}">Edit</router-link>
     <br>
     <button @click="goBack()" class="uk-button uk-button-secondary uk-button-large uk-margin">GO BACK</button>
 

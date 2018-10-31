@@ -61,25 +61,14 @@ export default {
         },
         {
           id: 2,
-          text: 'Companies',
-          page:'/Organizations'
-        },
-        {
-          id: 3,
           text: 'Deals',
-          page:'/Deals'
+          page:'/Organizations'
         },
         {
           id: 4,
           text: 'Settings',
           page:'/Settings'
         },
-        {
-          id: 5,
-          text: 'AddOrganizationPage',
-          page:'/AddOrganizationPage'
-        },
-
       ]
     }
   }

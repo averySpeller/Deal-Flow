@@ -29,6 +29,7 @@ import  AddOrganization from '@/pages/AddOrganization' //NOT PAGE ----------- MO
 import  EditContact from '@/pages/EditContact'
 import  AddOrganizationPage from '@/pages/AddOrganizationPage'
 import  AddContactPage from '@/pages/AddContactPage'
+import  AddDeal from '@/components/AddDeal'
 //Components
 // import SkillChart from @/components/SkillChart
 
@@ -121,6 +122,12 @@ export default new Router({
       path: '../components/CompanyOverview',
       name: 'CompanyOverview',
       component: CompanyOverview
+    },
+    {
+      path: '../components/AddDeal',
+      name: 'AddDeal',
+      component: AddDeal
+
     }
   ]
 })

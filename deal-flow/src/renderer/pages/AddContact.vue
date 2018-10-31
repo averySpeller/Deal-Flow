@@ -179,7 +179,7 @@ export default {
 
       // console.log(splitty);
       console.log(this.form);
-      var requestFields = this.$parent.createGetRequest("contacts")
+      var requestFields = this.$parent.$parent.createGetRequest("contacts")
 
       axios.post(requestFields.myRequest, this.form, requestFields.auth ).then(response => {
         console.log(this.form);
