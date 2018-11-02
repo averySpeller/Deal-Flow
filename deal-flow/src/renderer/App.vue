@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <el-button @click="logout();" class="uk-align-right " type="info">Logout</el-button>
     <Nav v-if="authenticated"></Nav>
     <router-view @authenticated="setAuthenticated"></router-view>
 
@@ -52,6 +53,7 @@
         console.log("Logging Out Goobye");
         localStorage.removeItem("jwtAuth");
         this.authenticated = false;
+        location.reload();
       },
       goBack () {
         window.history.length > 1

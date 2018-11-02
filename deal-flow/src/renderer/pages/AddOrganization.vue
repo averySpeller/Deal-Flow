@@ -153,23 +153,23 @@ export default {
       name: null,
       imageUrl:'',
       form: {
-        name: null,
-        stock_symbol: null,
-        logo: null,
-        vision: null,
-        revenue_model: null,
-        revenue: null,
-        valuation: null,
-        phone1: null,
-        phone2: null,
-        line1: null, //addres1
+        name: "Bobs Supply Co",
+        stock_symbol: "BOB",
+        logo: "/static/imgs/UoG.png",
+        vision: "Bob's got your back",
+        revenue_model: "I fix stuff and get payed",
+        revenue: "$100, 000",
+        valuation: "$1,000,000",
+        phone1: "(519)-351-3511",
+        phone2: "(519)-351-3511",
+        line1: "123 Road Street", //addres1
         line2: null, //address2
-        city: null,
-        state: null,
-        country: null,
-        postal: null,
-        website: null,
-        notes: null
+        city: "Guelph",
+        state: "Ontario",
+        country: "Canada",
+        postal: "A1A 1A1",
+        website: "bobsmith.com",
+        notes: "Great organization we should really invest in this."
       },
 
     }
@@ -188,6 +188,7 @@ export default {
         console.log(response.data);
         this.organization_id = response.data.organization_id
         this.$emit('addOrg', this.organization_id)
+        alert("company '"+this.form.name+"' added");
         // window.history.length > 1
         //   ? this.$router.go(-1)
         //   : this.$router.push('/')

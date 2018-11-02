@@ -156,6 +156,7 @@ export default {
     },
     AddDeal(){
       console.log(this.form);
+      this.form.organization_id = this.$parent.organization.organization_id
 
       lib.postRequest('/deals', this.form, response => {
         console.log(this.form);

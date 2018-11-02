@@ -4,7 +4,7 @@
       <el-col>
         <div class="uk-align-right uk-margin-right">
           <el-button @click="deleteCompany()" type="danger">Delete</el-button>
-          <router-link :to="{ name:'EditOrganization', params: { id: this.organization_id }}">
+          <router-link :to="{ name:'EditOrganization', params: { id: organization.organization_id }}">
             <el-button>Edit</el-button>
           </router-link>
         </div>
@@ -26,10 +26,10 @@
         <div class="title uk-flex uk-flex-center">
         </div>
         <el-row type="flex" class="row-bg" justify="center">
-            <el-button v-on:click="overviewFlag=true; currentView='Overview'" type="info" :plain="currentView === currentView" round size="small">Overview</el-button>
+            <el-button v-on:click="overviewFlag=true; currentView='Overview'" type="info" :plain="currentView" round size="small">Overview</el-button>
 
 
-            <el-button v-for="deal in deals" v-on:click="overviewFlag==='false';" type="primary" :plain="currentView === 'Overview'" round size="small">Deal #1</el-button>
+            <el-button v-for="deal in deals" v-on:click="overviewFlag='false';" type="primary" :plain="currentView" round size="small">Deal #1</el-button>
 
             <el-button uk-toggle="target: #offcanvas-addDeal" type="success" plain round size="small">Add Deal</el-button>
         </el-row>

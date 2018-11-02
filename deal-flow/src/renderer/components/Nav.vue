@@ -8,7 +8,7 @@
         <!-- <SearchBar></SearchBar> -->
       </el-col>
       <el-col :span="6">
-        <el-button @click="this.$parent.logout()" class="uk-align-right " type="info">Logout</el-button>
+        <!-- <el-button @click="this.$parent.logout()" class="uk-align-right " type="info">Logout</el-button> -->
       </el-col>
 
     </el-row>

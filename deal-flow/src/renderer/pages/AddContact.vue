@@ -135,20 +135,20 @@ export default {
   },
   data(){
     return{
-      name: null,
+      name: "Bob Smith",
       imageUrl:'',
       form: {
         first: null,
         last: null,
-        email: null,
-        phone1: null,
-        phone2: null,
-        website: null,
-        avatar: null,
+        email: "Bob@Smith.com",
+        phone1: "(519)-351-3511",
+        phone2: "(519)-351-3511",
+        website: "bobsmith.com",
+        avatar: "/static/imgs/linux.png",
         // notes: null,
         organization_id: null,
         // title: null, //UNCOMMENT TO SEND TITLE
-        notes: null
+        notes: "I work for myself and thats just the way I like it."
       },
       title: [],
       orgOptions: [],
