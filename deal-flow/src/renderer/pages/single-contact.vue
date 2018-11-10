@@ -102,7 +102,6 @@ export default {
     deleteContact(){
 
       lib.deleteRequest("/contacts/".concat(this.contact.contact_id), response => {
-        console.log(requestFields.myRequest);
         window.history.length > 1
           ? this.$router.go(-1)
           : this.$router.push('/')

@@ -53,7 +53,7 @@ export default{
     })
   },
   deleteRequest (end_point, callback, error_callback=null) {
-    axios.get(this.data.base_url + end_point, this.getHeaders()).then(response => {
+    axios.delete(this.data.base_url + end_point, this.getHeaders()).then(response => {
       callback(response)
     }).catch(e => {
       if (!error_callback) {

@@ -1,5 +1,16 @@
 <template>
   <div>
+    <el-row>
+      <el-col>
+        <div class="uk-align-right uk-margin-right">
+          <el-button @click="deleteDeal()" type="danger">Delete Deal</el-button>
+          <router-link :to="{ name:'EditOrganization', params: { id: organization.organization_id }}">
+            <el-button>Edit</el-button>
+          </router-link>
+        </div>
+      </el-col>
+    </el-row>
+    <h1>THIS: {{this.deal.deal_id}}</h1>
     <el-row :gutter="50">
       <el-col :xs="0" :sm="1" :md="2" :lg="3" :xl="3"><div class="grid-content bg-purple"></div></el-col>
       <el-col :xs="12" :sm="11" :md="10" :lg="9" :xl="9">
@@ -45,7 +56,7 @@
             <strong class="uk-align-right">Status:</strong>
           </el-col>
           <el-col :span="12">
-            {{organization.revenue_model}}
+            {{deal.status}}
           </el-col>
         </el-row>
         <el-row :gutter="15">
@@ -53,7 +64,7 @@
             <strong class="uk-align-right">Raise:</strong>
           </el-col>
           <el-col :span="12">
-            {{organization.revenue_model}}
+            {{deal.raise}}
           </el-col>
         </el-row>
         <el-row :gutter="15">
@@ -61,7 +72,7 @@
             <strong class="uk-align-right">Raise Type:</strong>
           </el-col>
           <el-col :span="12">
-            {{organization.revenue_model}}
+            {{deal.raise_type}}
           </el-col>
         </el-row>
         <el-row :gutter="15">
@@ -69,7 +80,7 @@
             <strong class="uk-align-right">Round:</strong>
           </el-col>
           <el-col :span="12">
-            {{organization.revenue_model}}
+            {{deal.round}}
           </el-col>
         </el-row>
 
@@ -83,7 +94,7 @@
       <el-col :span="12">
         Notes:
         <el-input
-          v-model="organization.notes"
+          v-model="deal.notes"
           type="textarea"
           :autosize="{ minRows: 4, maxRows: 8}"
           placeholder="Additional Notes" >
@@ -99,7 +110,7 @@
           <embed src="static/pdfs/Prototyping.pdf" type="application/pdf" />
         </object> -->
         <br>
-        <iframe id="fred" style="border:1px solid #666CCC" title="PDF in an i-Frame" src="static/pdfs/Prototyping.pdf" frameborder="1" scrolling="auto" height="1100" width="850" ></iframe>
+        <!-- <iframe id="fred" style="border:1px solid #666CCC" title="PDF in an i-Frame" src="static/pdfs/Prototyping.pdf" frameborder="1" scrolling="auto" height="1100" width="850" ></iframe> -->
         <!-- <object data="your_url_to_pdf" type="application/pdf">
           <iframe src="static/pdfs/Prototyping.pdf"></iframe>
         </object> -->
@@ -110,9 +121,19 @@
 </template>
 
 <script>
+import lib from '../lib'
 export default {
   name: 'DealOverview',
-  props: ['organization']
+  props: ['organization', 'deal'],
+
+  methods: {
+    deleteDeal(){
+      console.log("TRYING TO DELETE: ".concat(this.deal.deal_id));
+      lib.deleteRequest("/deals/".concat(this.deal.deal_id), response => {
+        console.log(response);
+      })
+    }
+  }
 
 }
 </script>

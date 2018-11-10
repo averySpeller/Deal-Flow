@@ -26,10 +26,9 @@
         <div class="title uk-flex uk-flex-center">
         </div>
         <el-row type="flex" class="row-bg" justify="center">
-            <el-button v-on:click="overviewFlag=true; currentView='Overview'" type="info" :plain="currentView" round size="small">Overview</el-button>
+            <el-button v-on:click="currentView = 0;" type="info" :plain="(this.currentView !== 0)" round size="small">Overview</el-button>
 
-
-            <el-button v-for="deal in deals" v-on:click="overviewFlag='false';" type="primary" :plain="currentView" round size="small">Deal #1</el-button>
+            <el-button v-for="(deal, key) in deals" v-on:click="currentView = (key+1); currentDeal=deals[key]" type="primary" plain round size="small">Deal {{key+1}}</el-button>
 
             <el-button uk-toggle="target: #offcanvas-addDeal" type="success" plain round size="small">Add Deal</el-button>
         </el-row>
@@ -37,8 +36,8 @@
     </el-row>
     <div class="uk-margin">
       <hr class="uk-divider-icon"/>
-      <CompanyOverview v-if="overviewFlag" v-bind:organization="this.organization" v-bind:contacts="this.contacts"></CompanyOverview>
-      <DealOverview v-else v-bind:organization="this.organization" ></DealOverview>
+      <CompanyOverview v-if="this.currentView == 0" v-bind:organization="this.organization" v-bind:contacts="this.contacts"></CompanyOverview>
+      <DealOverview v-else v-bind:organization="this.organization" v-bind:deal="this.currentDeal" ></DealOverview>
     </div>
 
     <button @click="goBack()" class="uk-button uk-button-secondary uk-button-large uk-margin">GO BACK</button>
@@ -76,13 +75,14 @@ export default {
   data(){
     return {
       organization: {},
+      currentDeal: {},
       contacts: [],
       deals: [],
       errors: [],
       contacterrors: [],
       address: "",
       overviewFlag: true,
-      currentView: "Overview",
+      currentView: 0,
       loading:true
     }
   },
@@ -115,18 +115,19 @@ export default {
     lib.getRequest("/organizations/".concat(this.$route.params.id), response => {
       this.organization = response.data
       console.log(response.data);
-      this.loading = false;
+
+      console.log(this.organization.organization_id);
+      lib.getRequest("/deals?organization_id=".concat(this.organization.organization_id), response => {
+        console.log("GOT A ");
+        this.deals = response.data
+        console.log(response.data);
+        this.loading = false;
+      })
     })
 
 
     lib.getRequest("/contacts", response => {
       this.contacts = response.data
-      console.log(response.data);
-    })
-
-    lib.getRequest("/deals?organization_id=".concat(organization.organization_id), response => {
-      console.log("GOT A ");
-      this.deals = response.data
       console.log(response.data);
     })
 

@@ -5,21 +5,12 @@
           <el-col :span="18">
           <el-form ref="form" :model="form" label-width="125px">
             <br>
-            <el-form-item label="Org_ID:">
-              <el-input
-                v-model="form.organization_id"
-                type="text"
-                clearable
-                disabled
-                v-bind:value="organization.organization_id">
-              </el-input>
-            </el-form-item>
             <el-form-item label="Name:">
               <el-input
                 type="text"
                 clearable
                 disabled
-                v-bind:value="organization.organization_id">
+                v-bind:value="organization.name">
               </el-input>
             </el-form-item>
             <el-form-item label="Status:">
@@ -116,12 +107,12 @@ export default {
       imageUrl:'',
       form: {
         organization_id: this.$parent.organization.organization_id,
-        interest: "Interested in many things",
-        status: "inProgress",
-        valuation: "$34 Million",
-        raise: "$3 Million",
-        revenue: "$245 Million a year",
-        revenue_model: "Building and selling things",
+        interest: null,
+        status: null,
+        valuation: null,
+        raise: null,
+        revenue: null,
+        revenue_model: null,
         round: null,
         slide_deck: null,
         notes: null
