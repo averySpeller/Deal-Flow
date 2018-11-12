@@ -29,7 +29,7 @@ class Organization(Model):
         'country': Property('state', Type.string),
         'postal': Property('postal', Type.string),
         'website': Property('Website', Type.string),
-        'notes': Property('Notes', Type.string)
+        'notes': Property('Notes', Type.string, encrypt=True)
     }
 
 # class OrganizationRelationships(Relationships):
@@ -43,14 +43,14 @@ class Organizations(Resource):
     def on_post_collection(self, req, res):
         res = self.default_response(req, res)
 
-    def on_get(self, req, res, contact_id):
-        res = self.default_response(req, res, contact_id)
+    def on_get(self, req, res, organization_id):
+        res = self.default_response(req, res, organization_id)
 
     def on_get_collection(self, req, res):
         res = self.default_response(req, res)
 
-    def on_put(self, req, res, contact_id):
-        res = self.default_response(req, res, contact_id)
+    def on_put(self, req, res, organization_id):
+        res = self.default_response(req, res, organization_id)
 
-    def on_delete(self, req, res, contact_id):
-        res = self.default_response(req, res, contact_id)
+    def on_delete(self, req, res, organization_id):
+        res = self.default_response(req, res, organization_id)

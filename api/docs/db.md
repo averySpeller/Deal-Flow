@@ -47,8 +47,6 @@ TagRelation ( _EntityType, EntityID, TagID_ )
 ```
 
 
-
-
 ```
 create table user (
     user_id int auto_increment primary key,
@@ -59,7 +57,7 @@ create table user (
     privillege int(2)
 );
 
-create table deals (
+create table deal (
     deal_id int auto_increment primary key,
     organization_id int,
     organization text,
@@ -73,6 +71,8 @@ create table deals (
     revenue_model varchar(255),
     round varchar(255),
     slide_deck varchar(255),
+    date_added datetime,
+    date_viewed datetime,
     notes text
 );
 
@@ -111,20 +111,22 @@ create table contact (
     notes text
 );
 
-contact_id,
-organization_id,
-avatar,
-first,
-last,
-title,
-email,
-phone1,
-phone2,
-website,
-notes
+create table tag (
+    tag_id int auto_increment primary key,
+    tag_name varchar(255),
+    tag_color varchar(255)
+);
+
+create table tagmapping (
+    tag_mapping_id int auto_increment primary key,
+    contact_id int(11),
+    organization_id int(11)
+);
 
 
-insert organization values (1,'Apple', 'AAPL', 'static/imgs/randomLogo8.jpg', 'Think different.', 'Manufacturing model', '$52.6 Billion (USD)', '$1 Trillion', '(123) 456-7890', '(408) 606-5775', 'One Infinite Loop', '', 'Cupertino', 'CA', 'USA', '95014', 'www.apple.ca', 'Apple Inc. is an American multinational technology company headquartered in Cupertino, California, that designs, develops, and sells consumer electronics, computer software, and online services. ');
+Data Import Commands:
 
-insert into contact values (1,1,'Tim', 'Cook', '', 'CEO', 'timcook@apple.ca', '(123) 456-7890','','www.timcook.ca', 'Timothy Donald Cook is an American business executive and industrial engineer. Cook is the Chief Executive Officer of Apple Inc., and previously served as the company\'s Chief Operating Officer under its founder Steve Jobs.');
+curl -i -H "Authorization: Bearer <token>" -d '{}' -X POST "24.138.161.30:5000/organizations"
+curl -i -H "Authorization: Bearer <token>" -d '{}' -X POST "24.138.161.30:5000/contacts"
+curl -i -H "Authorization: Bearer <token>" -d '{}' -X POST "24.138.161.30:5000/organizations"
 ```

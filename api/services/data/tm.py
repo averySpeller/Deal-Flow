@@ -10,27 +10,28 @@
 #
 from api.core.resource import *
 
-class Tag(Model):
+class TagMapping(Model):
     _properties = {
-        'tag_id': Property('', Type.uid),
-        'tag_name': Property('', Type.string),
-        'tag_color': Property('', Type.string)
+        'tag_mapping_id': Property('', Type.uid),
+        'tag_id': Property('', Type.string),
+        'contact_id': Property('', Type.string),
+        'organization_id': Property('', Type.string)
     }
 
-class Tags(Resource):
-    model = Tag
+class TagMappings(Resource):
+    model = TagMapping
 
     def on_post_collection(self, req, res):
         res = self.default_response(req, res)
 
-    def on_get(self, req, res, tag_id):
-        res = self.default_response(req, res, tag_id)
+    def on_get(self, req, res, tag_mapping_id):
+        res = self.default_response(req, res, tag_mapping_id)
 
     def on_get_collection(self, req, res):
         res = self.default_response(req, res)
 
-    def on_put(self, req, res, tag_id):
-        res = self.default_response(req, res, tag_id)
+    def on_put(self, req, res, tag_mapping_id):
+        res = self.default_response(req, res, tag_mapping_id)
 
-    def on_delete(self, req, res, tag_id):
-        res = self.default_response(req, res, tag_id)
+    def on_delete(self, req, res, tag_mapping_id):
+        res = self.default_response(req, res, tag_mapping_id)

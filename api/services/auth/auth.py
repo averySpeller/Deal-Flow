@@ -22,27 +22,21 @@ class Auth(Resource):
     model = Authenticate
 
     def on_post_collection(self, req, res):
-
         # HACK HACK HACK-IN AWAY
+
+        # Create an instance of the model
         model = self.new_model(None, req)
 
+        # Load the request values into the model
         model.set_map()
 
-        # HACK HACK HACKin away
-        model._dao._db.query('select * from user where username = %s limit 1', (Utils.encrypt(model.username),))
-
-        print(Utils.encrypt(model.username))
-        print('select * from user where username = %s limit 1' % (Utils.encrypt(model.username)))
+        # Query the DAL directly to grab the requested user
+        model._dao._db.query('select * from user where username = %s limit 1', (model.username),)
 
         result = model._dao._db.fetch_result()
 
-        print()
-        print(result)
-        print()
-
-        res.status = falcon.HTTP_404
-        if result and Utils.verify(model.password,Utils.decrypt(result['password'])):
-            # res.media =
+        res.status = falcon.HTTP_401
+        if result and Utils.verify(model.password,result['password']):
             res.media = { 'type': 'access', 'token': Utils.jwt_encode({'some_payload': 'payload'}) }
             res.status = falcon.HTTP_OK
         return res

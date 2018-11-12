@@ -18,7 +18,7 @@ class Deal(Model):
         'organization': Property('.', Type.string),
         'contacts': Property('.', Type.string),
 
-        'interest': Property('.', Type.string, encrypt=True),
+        'interest': Property('.', Type.string),
         'status': Property('.', Type.string, encrypt=True),
 
         'valuation': Property('.', Type.string, encrypt=True),
@@ -43,14 +43,14 @@ class Deals(Resource):
     def on_post_collection(self, req, res):
         res = self.default_response(req, res)
 
-    def on_get(self, req, res, contact_id):
-        res = self.default_response(req, res, contact_id)
+    def on_get(self, req, res, deal_id):
+        res = self.default_response(req, res, deal_id)
 
     def on_get_collection(self, req, res):
         res = self.default_response(req, res)
 
-    def on_put(self, req, res, contact_id):
-        res = self.default_response(req, res, contact_id)
+    def on_put(self, req, res, deal_id):
+        res = self.default_response(req, res, deal_id)
 
-    def on_delete(self, req, res, contact_id):
-        res = self.default_response(req, res, contact_id)
+    def on_delete(self, req, res, deal_id):
+        res = self.default_response(req, res, deal_id)
