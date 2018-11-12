@@ -118,7 +118,8 @@ create table tag (
 );
 
 create table tagmapping (
-    tag_mapping_id int auto_increment primary key,
+    tagmapping_id int auto_increment primary key,
+    tag_id int(11),
     contact_id int(11),
     organization_id int(11)
 );
@@ -129,4 +130,9 @@ Data Import Commands:
 curl -i -H "Authorization: Bearer <token>" -d '{}' -X POST "24.138.161.30:5000/organizations"
 curl -i -H "Authorization: Bearer <token>" -d '{}' -X POST "24.138.161.30:5000/contacts"
 curl -i -H "Authorization: Bearer <token>" -d '{}' -X POST "24.138.161.30:5000/organizations"
+
+curl -i -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzb21lX3BheWxvYWQiOiJwYXlsb2FkIiwiZXhwIjoxNTQyMDQ5NTgyfQ.tDZJPBnYTw2exuznE41kM9BWnPYhsdLDFBGFonqJ6UE" -d '{     "name": "Apple",     "stock_symbol": "AAPL",     "logo": "static/imgs/randomLogo8.jpg",     "vision": "Think different.",     "revenue_model": "Manufacturing model",     "revenue": "$52.6 Billion (USD)",     "valuation": "$1 Trillion",     "phone1": "(123) 456-7890",     "phone2": "(408) 606-5775",     "line1": "One Infinite Loop",     "line2": "",     "city": "Cupertino",     "state": "CA",     "country": "USA",     "postal": "95014",     "website": "www.apple.ca",     "notes": "Apple Inc. is an American multinational technology company headquartered in Cupertino"   }' -X POST "24.138.161.30:5000/organizations"
+
+
+
 ```

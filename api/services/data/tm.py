@@ -12,7 +12,7 @@ from api.core.resource import *
 
 class TagMapping(Model):
     _properties = {
-        'tag_mapping_id': Property('', Type.uid),
+        'tagmapping_id': Property('', Type.uid),
         'tag_id': Property('', Type.string),
         'contact_id': Property('', Type.string),
         'organization_id': Property('', Type.string)
