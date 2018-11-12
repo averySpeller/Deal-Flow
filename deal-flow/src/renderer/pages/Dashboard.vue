@@ -10,25 +10,25 @@
       <el-col :span="5">
         <h4>Funded</h4>
         <div class="dash-tile dash-green uk-flex uk-flex-center uk-flex-middle uk-flex-column">
-            <h1>25%</h1>
+            <h1 class="dash-tile-content">{{this.fundedNum}}%</h1>
         </div>
       </el-col>
       <el-col :span="5">
         <h4>In Progress</h4>
         <div class="dash-tile dash-yellow uk-flex uk-flex-center uk-flex-middle uk-flex-column">
-            <h1>55%</h1>
+            <h1 class="dash-tile-content">{{this.inProgressNum}}%</h1>
         </div>
       </el-col>
       <el-col :span="5">
         <h4>Not Funded</h4>
         <div class="dash-tile dash-red uk-flex uk-flex-center uk-flex-middle uk-flex-column">
-            <h1>45%</h1>
+            <h1 class="dash-tile-content">{{this.notFundedNum}}%</h1>
         </div>
       </el-col>
       <el-col :span="5">
         <h4>Total Deals</h4>
         <div class="dash-tile dash-grey uk-flex uk-flex-center uk-flex-middle uk-flex-column">
-            <h1>120</h1>
+            <h1 class="dash-tile-content">{{this.totalDeals}}</h1>
         </div>
       </el-col>
     </el-row>
@@ -81,11 +81,12 @@
     data() {
       return {
         organizations:[],
+        deals:[],
         errors: [],
         variable: null,
-        totalCompanies: 0,
+        totalDeals: 0,
         fundedNum:0,
-        nonFundedNum: 0,
+        notFundedNum: 0,
         inProgressNum: 0,
         examplelogo: 'static/imgs/404.png',
         companies: [
@@ -103,13 +104,20 @@
     },
     mounted() {
 
-      lib.getRequest('/organizations', response => {
-
-        console.log(response);
-        this.organizations = response.data
+      lib.getRequest("/deals", response => {
+        this.deals = response.data
+        console.log(response.data);
         this.setStatistics();
+      })
+
+      lib.getRequest('/organizations', response => {
+        this.organizations = response.data
+        console.log(response.data);
         this.loading = false;
       })
+
+
+
 
       // var requestFields = this.$parent.createGetRequest("organizations")
       // console.log(requestFields.myRequest);
@@ -136,10 +144,38 @@
     },
     methods: {
       setStatistics(){
-        for (var i = 0; i < this.deals.length; i++) {
-          console.log(this.deals[i]);
+        var myDeal;
+        this.totalDeals = 0;
+        this.inProgressNum = 0;
+        this.fundedNum = 0;
+        this.notFundedNum = 0;
 
+        for (var i = 0; i < this.deals.length; i++) {
+          myDeal = this.deals[i]
+          this.totalDeals += 1;
+
+          if (myDeal.status === "inProgress") {
+            this.inProgressNum += 1;
+          }
+          else if (myDeal.status === "funded") {
+            this.fundedNum += 1;
+          }
+          else if (myDeal.status === "notFunded") {
+            this.notFundedNum += 1;
+          }
+          else {
+            console.log("Error: Deal without a status");
+            console.log(myDeal.deal_id);
+          }
         }
+
+        this.inProgressNum = Math.round((this.inProgressNum / this.totalDeals) * 100);
+        this.fundedNum = Math.round((this.fundedNum / this.totalDeals) * 100);
+        this.notFundedNum = Math.round((this.notFundedNum / this.totalDeals) * 100);
+
+        console.log(this.inProgressNum);
+        console.log(this.notFundedNum);
+        console.log(this.fundedNum);
 
       }
     }
@@ -167,9 +203,19 @@
       width: 180px;
   }
 
+
   .dash-tile{
     border-radius: 10%;
-    min-height: 150px;
+  	position: relative;
+    width: 80%
+  }
+  .dash-tile:before{
+  	content: "";
+  	display: block;
+  	padding-top: 70%; 	/* initial ratio of 1:1*/
+  }
+  .dash-tile-content{
+    position: absolute;
   }
   .dash-green{
     background-color: #67C23A;

@@ -1,5 +1,5 @@
 <template>
-  <div id ="Constacts" v-loading="loading" :data="contacts">
+  <div id ="Contacts" v-loading="loading" :data="contacts">
     <h1>Contacts</h1>
     <div v-if="errors && contacts.length">
       <ul v-for="contact of contacts">

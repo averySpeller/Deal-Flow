@@ -51,13 +51,28 @@ export default {
 </script>
 
 <style>
-img {
-  margin: 0 auto;
-    border-radius: 15%;
-    height:250px;
-    width:250px;
-}
-.grid-content {
-  min-height: 36px;
-}
+  img {
+    margin: 0 auto;
+      border-radius: 15%;
+      height:250px;
+      width:250px;
+  }
+  .grid-content {
+    min-height: 36px;
+  }
+  .el-tag + .el-tag {
+    margin-left: 10px;
+  }
+  .button-new-tag {
+    margin-left: 10px;
+    height: 32px;
+    line-height: 30px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .input-new-tag {
+    width: 90px;
+    margin-left: 10px;
+    vertical-align: bottom;
+  }
 </style>

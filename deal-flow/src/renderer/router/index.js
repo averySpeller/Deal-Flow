@@ -14,7 +14,6 @@ Vue.use(window.VueCharts);
 
 //Pages
 import  Contacts from '@/pages/Contacts'
-import  ContactCatalogue from '@/pages/ContactCatalogue'
 import  Login from '@/pages/Login'
 import  Organizations from '@/pages/Organizations'
 import  Settings from '@/pages/Settings'
@@ -22,17 +21,19 @@ import  Dashboard from '@/pages/Dashboard'
 import  Deals from '@/pages/Deals'
 import  SingleContact from '@/pages/single-contact'
 import  SingleOrganization from '@/pages/single-organization'
-import  CompanyOverview from '@/components/CompanyOverview'
-import  AddEditDeal from '@/components/AddEditDeal'
-import  DealOverview from '@/components/DealOverview'
 import  AddContact from '@/pages/AddContact' //NOT PAGE ----------- MOVE TO COMPONENT DIR
 import  AddOrganization from '@/pages/AddOrganization' //NOT PAGE ----------- MOVE TO COMPONENT DIR
 import  EditContact from '@/pages/EditContact'
 import  AddOrganizationPage from '@/pages/AddOrganizationPage'
 import  AddContactPage from '@/pages/AddContactPage'
-import  AddDeal from '@/components/AddDeal'
 import  EditOrganization from '@/components/EditOrganization'
+
 //Components
+import  CompanyOverview from '@/components/CompanyOverview'
+import  AddEditDeal from '@/components/AddEditDeal'
+import  DealOverview from '@/components/DealOverview'
+import  AddDeal from '@/components/AddDeal'
+import  Tag from '@/pages/Tag'
 // import SkillChart from @/components/SkillChart
 
 Vue.use(Router)
@@ -111,14 +112,14 @@ export default new Router({
       component: Deals
     },
     {
+      path: '/Tag',
+      name: 'Tag',
+      component: Tag
+    },
+    {
       path: '/Dashboard',
       name: 'Dashboard',
       component: Dashboard
-    },
-    {
-      path: '/ContactCatalogue',
-      name: 'ContactCatalogue',
-      component: ContactCatalogue
     },
     {
       path: '../components/CompanyOverview',
@@ -129,7 +130,6 @@ export default new Router({
       path: '../components/AddDeal',
       name: 'AddDeal',
       component: AddDeal
-
     },
     {
       path: '../components/EditOrganization',
