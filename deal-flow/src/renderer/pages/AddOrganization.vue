@@ -153,23 +153,23 @@ export default {
       name: null,
       imageUrl:'',
       form: {
-        name: "Bobs Supply Co",
-        stock_symbol: "BOB",
-        logo: "/static/imgs/UoG.png",
-        vision: "Bob's got your back",
-        revenue_model: "I fix stuff and get payed",
-        revenue: "$100, 000",
-        valuation: "$1,000,000",
-        phone1: "(519)-351-3511",
-        phone2: "(519)-351-3511",
-        line1: "123 Road Street", //addres1
+        name: "",
+        stock_symbol: "",
+        logo: "",
+        vision: "",
+        revenue_model: "",
+        revenue: "",
+        valuation: "",
+        phone1: "",
+        phone2: "",
+        line1: "", //addres1
         line2: null, //address2
-        city: "Guelph",
-        state: "Ontario",
-        country: "Canada",
-        postal: "A1A 1A1",
-        website: "bobsmith.com",
-        notes: "Great organization we should really invest in this."
+        city: "",
+        state: "",
+        country: "",
+        postal: "",
+        website: "",
+        notes: ""
       },
 
     }

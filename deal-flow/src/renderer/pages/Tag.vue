@@ -22,7 +22,7 @@
 
     <div v-if="errors && contacts.length">
       <ul v-for="contact of contacts">
-          {{contact.contact_id}}
+          {{contact.first}}
           <!-- <router-link :to="{ name: 'Single-Contact', params: { id: tag.tag } }">
             {{contact.first}} {{contact.last}}
           </router-link> -->
@@ -60,31 +60,24 @@ export default {
       var orgIds = "";
       var contactIds = "";
 
+      //Loop through the tag mappings to find the organization and contact ids for the query
       for (var i = 0; i < this.tags.length; i++) {
         if (this.tags[i].organization_id) {
           if (orgIds !== "") {
             orgIds = orgIds.concat(",");
           }
-          console.log("Adding orgID");
-          console.log(this.tags[i].organization_id);
-          orgIds = orgIds.concat(this.tags[i].organization_id);
+          orgIds = orgIds.concat(this.tags[i].organization_id); //concatenating the ids to the string to later use in query
         }
         else if (this.tags[i].contact_id) {
           if (contactIds !== "") {
             contactIds = contactIds.concat(",");
           }
-          console.log("Adding contactID");
-          console.log(this.tags[i].contact_id);
           contactIds = contactIds.concat(this.tags[i].contact_id);
         }
       }
-      console.log("Organization Ids");
-      console.log(orgIds);
-      console.log("Contact Ids");
-      console.log(contactIds);
 
       if (orgIds !== "") {
-        var requestString = "/organizations?organization_id=" + orgIds;
+        var requestString = "/organizations?organization_id=" + orgIds; //attach ids to the request to get specific set of organizations
         lib.getRequest(requestString, response => {
           this.organizations = response.data
           console.log(response.data);
@@ -104,6 +97,7 @@ export default {
   },
   created() {
 
+    // lib.getRequest('/tagmappings?id=&page=2', response => {
     lib.getRequest('/tagmappings', response => {
       this.tags = response.data
       console.log(response.data);

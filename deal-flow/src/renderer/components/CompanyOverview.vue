@@ -14,8 +14,8 @@
 
       <p><strong>Contacts: </strong></p>
       <ol>
-        <li v-if="contact.organization_id===organization.organization_id" v-for="contact in contacts">
-          <router-link :to="{ name: 'Single-Contact', params: { contact_id: contact.contact_id} }">
+        <li v-for="contact in contacts">
+          <router-link :to="{ name: 'Single-Contact', params: { id: contact.contact_id} }">
             {{contact.first}}
           </router-link>
         </li>
@@ -59,20 +59,5 @@ export default {
   }
   .grid-content {
     min-height: 36px;
-  }
-  .el-tag + .el-tag {
-    margin-left: 10px;
-  }
-  .button-new-tag {
-    margin-left: 10px;
-    height: 32px;
-    line-height: 30px;
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-  .input-new-tag {
-    width: 90px;
-    margin-left: 10px;
-    vertical-align: bottom;
   }
 </style>

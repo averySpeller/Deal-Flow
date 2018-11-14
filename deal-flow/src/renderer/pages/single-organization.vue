@@ -36,28 +36,42 @@
     </el-row>
     <div class="uk-margin">
       <hr class="uk-divider-icon"/>
-      <el-row type="flex" class="row-bg" justify="center">
-        <router-link tag="div" :to="{ name:'Tag', params: { id: tag }}" v-for="tag in dynamicTags" class="tagContainer">
+      <el-row id="tagContainer" type="flex" class="row-bg" justify="center">
+        <router-link tag="div" :to="{ name:'Tag', params: { id: tag.tag_id }}" v-for="tag in tags" class="tagContainer">
           <div>
             <el-tag
-              :key="tag"
+              :key="tag.tag_name"
               closable
               :disable-transitions="false"
-              @close="handleClose(tag)">
-              #{{tag}}
+              @close="deleteTag(tag)">
+              #{{tag.tag_name}}
             </el-tag>
           </div>
         </router-link>
 
-        <el-input
-          class="input-new-tag"
+
+
+        <el-autocomplete
+          class="inline-input input-new-tag"
+          v-model="inputTag"
           v-if="inputVisible"
-          v-model="inputValue"
+          size="small"
           ref="saveTagInput"
-          size="mini"
-          @keyup.enter.native="handleInputConfirm"
-          @blur="handleInputConfirm" >
-        </el-input>
+          :fetch-suggestions="searchTags"
+          placeholder="Please Input"
+          :trigger-on-focus="false"
+          @select="handleTagConfirm"
+          @keyup.enter.native="handleTagConfirm">
+          <i
+            uk-icon="icon: hashtag"
+            class="el-input__icon"
+            slot="prefix">
+          </i>
+          <template slot-scope="{ item }">
+            <div>#{{ item.value }}</div>
+          </template>
+        </el-autocomplete>
+
         <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
       </el-row>
       <br>
@@ -104,13 +118,10 @@ export default {
       contacts: [],
       deals: [],
       errors: [],
-      contacterrors: [],
-      dynamicTags: ['Tag 1', 'Tag 2', 'Tag 3'],
+      tags: [],
+      tagSuggestions: [],
       inputVisible: false,
-      isCollapse: false,
-      inputValue: '',
-      address: "",
-      overviewFlag: true,
+      inputTag: '',
       currentView: 0,
       loading:true
     }
@@ -138,10 +149,14 @@ export default {
         this.loading = false;
       })
     },
-    handleClose(tag) {
-      this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
-    },
 
+    //Dynamic tag control methods.
+    deleteTag(tag) {
+      lib.deleteRequest("/tagmappings/".concat(tag.tagmapping_id), response => {
+        console.log(response.data);
+        this.tags.splice(this.tags.indexOf(tag), 1);
+      })
+    },
     showInput() {
       this.inputVisible = true;
       this.$nextTick(_ => {
@@ -149,17 +164,67 @@ export default {
       });
     },
 
-    handleInputConfirm() {
-      let inputValue = this.inputValue;
-      if (inputValue) {
-        this.dynamicTags.push(inputValue);
+    //tag submit
+    handleTagConfirm(item) {
+      console.log("Handle input confirm");
+      console.log(item);
+
+      if (item instanceof KeyboardEvent){
+        console.log("We have keyboard Event");
+        //NEED to create New Tag
+        let inputTag = this.inputTag;
+        if (inputTag) {
+          var newTag = {"tag_name": inputTag, "tag_color": "blue"}
+          lib.postRequest("/tags", newTag, response => {
+            console.log(response.data);
+
+            this.tagSuggestions.push({"value": response.data.tag_name, "tag_id": response.data.tag_id, "tag_color": response.data.tag_color,})
+
+            var newTagMapping = {"tag_id": response.data.tag_id, "organization_id": this.organization.organization_id}
+
+            lib.postRequest("/tagmappings", newTagMapping, response => {
+              console.log(response.data);
+              this.tags.push({"tag_id": newTagMapping.tag_id, "tag_name": newTag.tag_name, "tag_color": newTag.tag_color, "tagmapping_id": response.data.tagmapping_id});
+            })
+          })
+        }
+
+        //get tag id back from tag
+        //add Tag Mapping for tag
       }
+      else {
+        console.log("preExisting tag");
+        console.log("Found a repeated Tag: ".concat(item.tag_id));
+
+        var newTagMapping = {"tag_id": item.tag_id, "organization_id": this.organization.organization_id}
+        console.log(newTagMapping);
+
+        lib.postRequest("/tagmappings", newTagMapping, response => {
+          console.log(response.data);
+          this.tags.push({"tag_id": item.tag_id, "tag_name": item.value, "tag_color": item.tag_color, "tagmapping_id": response.data.tagmapping_id});
+        })
+      }
+      //
+      // let inputTag = this.inputTag;
+      // if (inputTag) {
+      //   this.tags.push(inputTag);
+      // }
       this.inputVisible = false;
-      this.inputValue = '';
+      this.inputTag = '';
     },
-    goToTag(tag) {
-      console.log("myTag");
-      console.log(tag);
+
+    // AutoComplete methods
+    searchTags(queryString, cb) {
+      var tagSuggestions = this.tagSuggestions;
+      var results = queryString ? tagSuggestions.filter(this.createFilter(queryString)) : tagSuggestions;
+      // call callback function to return suggestions
+      console.log(results);
+      cb(results);
+    },
+    createFilter(queryString) {
+      return (tagSuggestion) => {
+        return (tagSuggestion.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+      };
     }
   },
   created() {
@@ -170,17 +235,58 @@ export default {
 
       console.log(this.organization.organization_id);
       lib.getRequest("/deals?organization_id=".concat(this.organization.organization_id), response => {
-        console.log("GOT A ");
         this.deals = response.data
         console.log(response.data);
         this.loading = false;
       })
+
+      lib.getRequest('/tagmappings?organization_id='.concat(this.organization.organization_id), response => {
+
+        var tagIds = "";
+        var tm = {};
+
+        for (var i = 0; i < response.data.length; i++) {
+          if (tagIds !== "") {
+            tagIds = tagIds.concat(",");
+          }
+          tagIds = tagIds.concat(response.data[i].tag_id);
+          tm[response.data[i].tag_id] = response.data[i].tagmapping_id;
+        }
+        console.log(tm);
+
+        lib.getRequest('/tags?tag_id='.concat(tagIds), response => {
+
+          console.log(response.data);
+
+          for (var i = 0; i < response.data.length; i++) {
+            response.data[i].tagmapping_id = tm[response.data[i].tag_id]
+          }
+          console.log(response.data);
+          this.tags = response.data;
+        })
+      })
+
+
+      lib.getRequest("/contacts?organization_id=".concat(this.organization.organization_id), response => {
+        this.contacts = response.data
+        console.log(response.data);
+      })
     })
 
 
-    lib.getRequest("/contacts", response => {
-      this.contacts = response.data
+    lib.getRequest('/tags', response => {
+
       console.log(response.data);
+
+      var myTagSuggestions = []
+      for (var i = 0; i < response.data.length; i++) {
+        myTagSuggestions.push({"value": response.data[i].tag_name, "tag_id": response.data[i].tag_id, "tag_color": response.data[i].tag_color,})
+      }
+      console.log("NEW TAG SUGGESTIONS");
+      console.log(myTagSuggestions);
+
+      this.tagSuggestions = myTagSuggestions;
+
     })
 
   }
@@ -219,9 +325,8 @@ export default {
     padding-bottom: 0;
   }
   .input-new-tag {
-    width: 90px;
+    width: 150px;
     margin-left: 10px;
-    vertical-align: bottom;
   }
 
 </style>
