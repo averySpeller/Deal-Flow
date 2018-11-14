@@ -104,15 +104,9 @@
     <el-row :gutter="50" type="flex" class="row-bg" justify="center">
       <el-col :span="12">
         PDF:
-        <br>
-        <!-- <object data="static/pdfs/Prototyping.pdf" type="application/pdf">
-          <embed src="static/pdfs/Prototyping.pdf" type="application/pdf" />
-        </object> -->
-        <br>
-        <!-- <iframe id="fred" style="border:1px solid #666CCC" title="PDF in an i-Frame" src="static/pdfs/Prototyping.pdf" frameborder="1" scrolling="auto" height="1100" width="850" ></iframe> -->
-        <!-- <object data="your_url_to_pdf" type="application/pdf">
-          <iframe src="static/pdfs/Prototyping.pdf"></iframe>
-        </object> -->
+        <!-- static/pdfs/Prototyping.pdf -->
+        <!-- <webview v-bind:src="deal.slide_deck" plugins></webview> -->
+        <webview v-bind:src="deal.slide_deck" plugins></webview>
       </el-col>
     </el-row>
 
