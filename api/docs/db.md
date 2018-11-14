@@ -70,7 +70,7 @@ create table deal (
     revenue varchar(255),
     revenue_model varchar(255),
     round varchar(255),
-    slide_deck varchar(255),
+    slide_deck longtext,
     date_added datetime,
     date_viewed datetime,
     notes text
@@ -80,7 +80,7 @@ create table organization (
     organization_id int auto_increment primary key,
     name varchar(255),
     stock_symbol varchar(255),
-    logo varchar(255),
+    logo longtext,
     vision varchar(255),
     revenue_model varchar(255),
     revenue varchar(255),
@@ -100,7 +100,7 @@ create table organization (
 create table contact (
     contact_id int auto_increment primary key,
     organization_id int(11),
-    avatar varchar(255),
+    avatar longtext,
     first varchar(255),
     last varchar(255),
     title varchar(255),
@@ -123,6 +123,11 @@ create table tagmapping (
     contact_id int(11),
     organization_id int(11)
 );
+
+
+alter table contact modify avatar longtext;
+alter table organization modify logo longtext;
+alter table deal modify slide_deck longtext;
 
 
 Data Import Commands:
