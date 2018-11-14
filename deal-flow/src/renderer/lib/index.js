@@ -2,10 +2,19 @@ import axios from 'axios';
 
 export default{
 
-  data: {
-    base_url: 'http://24.138.161.30:5000',
-  },
+  baseUrl: 'http://24.138.161.30:5000',
 
+  checkForToken() {
+    var jwtAuth = localStorage.getItem("jwtAuth");
+    if (jwtAuth) {
+      console.log(jwtAuth);
+      return true;
+    }
+    else {
+      console.log("ERROR: No Authentification token found in localStorage");
+      return false;
+    }
+  },
   getHeaders () {
     return {
       headers: { Authorization: "Bearer ".concat(localStorage.getItem('jwtAuth'))}
@@ -13,7 +22,7 @@ export default{
   },
   getRequest (end_point, callback, error_callback=null) {
     console.log(this.getHeaders());
-      axios.get(this.data.base_url + end_point, this.getHeaders()).then(response => {
+      axios.get(this.baseUrl + end_point, this.getHeaders()).then(response => {
         callback(response)
       }).catch(e => {
         if (!error_callback) {
@@ -27,7 +36,7 @@ export default{
       })
   },
   putRequest (end_point, payload, callback, error_callback=null) {
-    axios.put(this.data.base_url + end_point, payload, this.getHeaders()).then(response => {
+    axios.put(this.baseUrl + end_point, payload, this.getHeaders()).then(response => {
       callback(response)
     }).catch(e => {
       if (!error_callback) {
@@ -40,7 +49,7 @@ export default{
     })
   },
   postRequest (end_point, payload, callback, error_callback=null) {
-    axios.post(this.data.base_url + end_point, payload, this.getHeaders()).then(response => {
+    axios.post(this.baseUrl + end_point, payload, this.getHeaders()).then(response => {
       callback(response)
     }).catch(e => {
       if (!error_callback) {
@@ -53,7 +62,7 @@ export default{
     })
   },
   deleteRequest (end_point, callback, error_callback=null) {
-    axios.delete(this.data.base_url + end_point, this.getHeaders()).then(response => {
+    axios.delete(this.baseUrl + end_point, this.getHeaders()).then(response => {
       callback(response)
     }).catch(e => {
       if (!error_callback) {

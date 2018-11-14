@@ -34,8 +34,6 @@ export default {
 
   },
   created() {
-    var requestFields = this.$parent.createGetRequest("contacts")
-
     lib.getRequest('/contacts', response => {
       this.contacts = response.data
       console.log(response.data);
