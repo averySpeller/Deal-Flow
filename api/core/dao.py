@@ -112,6 +112,20 @@ class DAO:
             all_values = []
             # create the lookup filter query string
             for key,value in parser.url_query.items():
+
+                # TODO:
+                # this will allow us to fire search
+                # /contacts?first:like=search_data,last:like=search_data
+                # /organizations?name:like=search_data
+                # Returns search results in arraylist form [ {...}, {...} ] from the resource 
+
+                # split the key
+                # parse the second key word
+
+                # like, gt, lt, gte, lte, ne
+
+                # END --
+
                 # Single
                 if isinstance(value, str):
                     all_values.append(value)
