@@ -43,9 +43,11 @@
   </div>
 </template>
 <script>
+  import lib from '../lib'
   import axios from 'axios';
   export default {
     name: 'Login',
+    props: ['authenticated'],
     data() {
       return {
         username: "",
@@ -73,7 +75,9 @@
         this.$electron.shell.openExternal(link)
       },
       finishLogging(){
-        axios.post(this.$parent.baseUrl + 'auth', { "username": this.username, "password": this.password }).then(response => {
+        console.log(lib.baseUrl.concat('/auth'));
+        lib.postRequest('/auth', { "username": this.username, "password": this.password }, response => {
+          console.log('here');
           if (response.data) {
             console.log(response.data);
             this.jwtAuth = response.data.token
@@ -87,18 +91,15 @@
             this.$emit("authenticated", true);
             this.$router.replace({ name: "Dashboard" });
             this.loading = false;
-            this.$parent.checkForToken();
+            lib.checkForToken();
+            this.authenticated = true;
           }
           else {
             this.usernameError = true;
             this.passwordError = true;
             this.errors = "Bad Credentials\n";
           }
-        })
-        .catch(e => {
-          console.log(e);
-          this.errorArray.push(e)
-        })
+        }, function() {console.log('failed');})
       },
       validateLoginCredentials() {
         this.loading= true;

@@ -1,22 +1,44 @@
 <template>
   <div id="app">
-    <el-button v-if="authenticated" @click="logout();" class="uk-align-right " type="info">Logout</el-button>
-    <Nav v-if="authenticated"></Nav>
-    <router-view @authenticated="setAuthenticated"></router-view>
+    <el-container v-if="authenticated">
+      <el-header class="topnav-container">
+        <!-- <el-radio-group v-model="isCollapse" style="margin-bottom: 20px;">
+          <el-radio-button :label="false">expand</el-radio-button>
+          <el-radio-button :label="true">collapse</el-radio-button>
+        </el-radio-group> -->
+        <el-menu :default-active="activeIndex" class="topnav-right" mode="horizontal" @select="handleSelect">
+          <el-menu-item index="1">Kevin</el-menu-item>
+          <el-menu-item index="2">Logout</el-menu-item>
+        </el-menu>
+      </el-header>
+      <el-container>
+        <el-aside width="auto" height="100%">
+          <Nav v-bind:isCollapse="this.isCollapse"></Nav>
+        </el-aside>
+        <el-main>
+          <router-view></router-view>
+        </el-main>
+      </el-container>
+    </el-container>
 
+    <router-view v-else @authenticated="setAuthenticated" v-bind:authenticated="this.authenticated"></router-view>
   </div>
 
 </template>
 
 <script>
+  import lib from './lib'
   import Nav from './components/Nav'
+  import TopBar from './components/TopBar'
   export default {
     name: 'deal-flow',
     components:{
           'Nav': Nav,
+          'TopBar': TopBar,
     },
     data() {
       return{
+        isCollapse: false,
         authenticated: false,
         Authorization: "",
         mockAccount: {
@@ -28,7 +50,7 @@
     },
     created() {
       console.log("CHECKING TOKEN");
-      this.checkForToken();
+      this. authenticated = lib.checkForToken();
 
       if(!this.authenticated) {
         this.$router.replace({ name: "Login" });
@@ -36,15 +58,7 @@
     },
     methods: {
       checkForToken() {
-        var jwtAuth = localStorage.getItem("jwtAuth");
-        if (jwtAuth) {
-          console.log(jwtAuth);
-          this.Authorization = "Bearer ".concat(jwtAuth);
-          this.authenticated = true;
-        }
-        else {
-          console.log("ERROR: No Authentification token found in localStorage");
-        }
+        this.authenticated = true;
       },
       setAuthenticated(status) {
         this.authenticated = status;
@@ -55,23 +69,17 @@
         this.authenticated = false;
         location.reload();
       },
+      handleSelect(key, keyPath) {
+        console.log(key, keyPath);
+        if (key == 2) {
+          console.log("IN HEREEEEE");
+          this.logout();
+        }
+      },
       goBack () {
         window.history.length > 1
           ? this.$router.go(-1)
           : this.$router.push('/')
-      },
-      createGetRequest(path){
-        var myRequest = this.baseUrl.concat(path)
-        console.log(this.Authorization);
-        return {
-          myRequest: myRequest,
-          auth: {
-            headers: {
-              Authorization: this.Authorization
-            }
-          }
-        };
-        // , { headers:{ this.header }}
       },
       parseJwt (token) {
         var base64Url = token.split('.')[0];
@@ -83,5 +91,11 @@
 </script>
 
 <style>
-  /* CSS */
+  .topnav-right {
+    float: right;
+  }
+  .topnav-container{
+    border-bottom: 3px;
+    border-color: black;
+  }
 </style>

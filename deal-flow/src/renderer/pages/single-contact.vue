@@ -253,18 +253,32 @@ export default {
         }
         console.log(tm);
 
-        lib.getRequest('/tags?tag_id='.concat(tagIds), response => {
+        if (tagIds !== "") {
+          lib.getRequest('/tags?tag_id='.concat(tagIds), response => {
 
-          console.log(response.data);
+            console.log(response.data);
 
-          for (var i = 0; i < response.data.length; i++) {
-            response.data[i].tagmapping_id = tm[response.data[i].tag_id]
-          }
-          console.log(response.data);
-          this.tags = response.data;
-        })
+            for (var i = 0; i < response.data.length; i++) {
+              response.data[i].tagmapping_id = tm[response.data[i].tag_id]
+            }
+            console.log(response.data);
+            this.tags = response.data;
+          })
+        }
       })
 
+      lib.getRequest('/tags', response => {
+
+        console.log(response.data);
+
+        var myTagSuggestions = []
+        for (var i = 0; i < response.data.length; i++) {
+          myTagSuggestions.push({"value": response.data[i].tag_name, "tag_id": response.data[i].tag_id, "tag_color": response.data[i].tag_color,})
+        }
+
+        this.tagSuggestions = myTagSuggestions;
+
+      })
       this.loading = false;
     })
 

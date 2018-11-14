@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import lib from '../lib'
 export default {
   name: 'Organizations',
   data(){
@@ -31,15 +31,10 @@ export default {
 
   },
   created() {
-    var requestFields = this.$parent.createGetRequest("organizations")
-    axios.get(requestFields.myRequest, requestFields.auth).then(response => {
+    lib.getRequest('/organizations', response => {
       this.organizations = response.data
-      console.log('log it up');
       console.log(response.data);
       this.loading = false;
-    })
-    .catch(e => {
-      this.errors.push(e)
     })
   }
 }
