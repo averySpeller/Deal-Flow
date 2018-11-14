@@ -249,6 +249,19 @@ export default {
       return (tagSuggestion) => {
         return (tagSuggestion.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
       };
+    },
+    deleteCompany(){
+      for (var i = 0; i < this.deals.length; i++) {
+        lib.deleteRequest("/deals/".concat(this.deals[i].deal_id), response => {
+          console.log("deleted deal #".concat(this.deals[i].deal_id));
+          console.log(response.data);
+        })
+
+      }
+      lib.deleteRequest("/organization/".concat(this.organization.organization_id), response => {
+        console.log("deleted organization #".concat(this.organization.organization_id));
+        console.log(response.data);
+      })
     }
   },
   created() {

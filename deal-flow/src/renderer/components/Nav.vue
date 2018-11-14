@@ -7,7 +7,11 @@
         :to="`${routes.page}`">
 
         <el-menu-item index="2">
-          <i v-bind:class="routes.icon"></i>
+          <i
+            v-bind:uk-icon="routes.icon"
+            class="el-icon">
+          </i>
+          <!-- <i v-bind:class="routes.icon"></i> -->
           <span slot="title">{{routes.text}}</span>
         </el-menu-item>
       </router-link>
@@ -29,25 +33,25 @@ export default {
       links: [
         {
           id: 0,
-          icon: 'el-icon-menu',
+          icon: 'icon: home',
           text: 'Dashboard',
           page:'/Dahsboard'
         },
         {
           id: 1,
-          icon: 'el-icon-menu',
+          icon: 'icon: user',
           text: 'Contacts',
           page:'/Contacts'
         },
         {
           id: 2,
-          icon: 'el-icon-menu',
+          icon: 'icon: grid',
           text: 'Deals',
           page:'/Organizations'
         },
         {
           id: 4,
-          icon: 'el-icon-setting',
+          icon: 'icon: cog',
           text: 'Settings',
           page:'/Settings'
         },

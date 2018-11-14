@@ -10,10 +10,10 @@
     </el-row>
     <div v-if="errors && organizations.length">
       <ul v-for="organization of organizations">
-          {{organization.name}}
-          <!-- <router-link :to="{ name: 'Single-Contact', params: { id: tag.tag } }">
-            {{contact.first}} {{contact.last}}
-          </router-link> -->
+          <!-- {{organization.name}} -->
+          <router-link :to="{ name: 'Single-Org', params: { id: organization.organization_id } }">
+            {{organization.name}}
+          </router-link>
       </ul>
     </div>
     <el-row type="flex" class="row-bg" justify="center">
@@ -22,10 +22,9 @@
 
     <div v-if="errors && contacts.length">
       <ul v-for="contact of contacts">
-          {{contact.first}}
-          <!-- <router-link :to="{ name: 'Single-Contact', params: { id: tag.tag } }">
+          <router-link :to="{ name: 'Single-Contact', params: { id: contact.contact_id } }">
             {{contact.first}} {{contact.last}}
-          </router-link> -->
+          </router-link>
       </ul>
     </div>
     <ul v-if="errors && errors.length">
