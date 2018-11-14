@@ -31,6 +31,8 @@ class Deal(Model):
 
         'slide_deck': Property('.', Type.string),
         'notes': Property('.', Type.string, encrypt=True)
+        'date_added': Property('.', Type.datetime),
+        'date_viewed': Property('.', Type.datetime)
     }
     _documents = {
         # 'organization': Document(Organization, Relation.one_to_many)
