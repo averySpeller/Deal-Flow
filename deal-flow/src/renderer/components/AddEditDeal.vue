@@ -88,6 +88,7 @@
                 placeholder="Add Notes">
               </el-input>
             </el-form-item>
+            <FileUploader v-model="deal.slide_deck"></FileUploader>
 
             <div v-if="deal.editDeal" class="uk-flex uk-flex-center">
               <el-button @click="EditDeal()" type="primary" uk-toggle="target: #offcanvas-addDeal">Edit Deal!</el-button><br><br>
@@ -108,6 +109,7 @@
 <script>
 // import axios from 'axios';
 import lib from '../lib'
+import FileUploader from './FileUploader'
 export default {
   name: 'AddEditDeal',
   props: ['organization', 'editDeal', 'deal'],
@@ -163,6 +165,9 @@ export default {
       ],
 
     }
+  },
+  components: {
+      'FileUploader': FileUploader
   },
   methods: {
     goBack () {

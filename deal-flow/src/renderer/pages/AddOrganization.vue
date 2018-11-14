@@ -5,15 +5,7 @@
           <el-col :span="18">
           <el-form ref="form" :model="form" label-width="125px">
             <br>
-            <el-upload
-              class="avatar-uploader uk-flex uk-flex-center uk-margin"
-              action="https://jsonplaceholder.typicode.com/posts/"
-              :show-file-list="false"
-              :on-success="handleAvatarSuccess"
-              :before-upload="beforeAvatarUpload">
-              <img v-if="imageUrl" :src="imageUrl" class="avatar">
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload>
+            <FileUploader isImage="true" v-model="form.logo"></FileUploader>
             <el-form-item label="Name:">
               <el-input
                 v-model="form.name"
@@ -146,6 +138,7 @@
 <script>
 // import axios from 'axios';
 import lib from '../lib'
+import FileUploader from '../components/FileUploader'
 export default {
   name: 'AddOrganization',
   data(){
@@ -173,6 +166,9 @@ export default {
       },
 
     }
+  },
+  components: {
+      'FileUploader': FileUploader
   },
   methods: {
     goBack () {
