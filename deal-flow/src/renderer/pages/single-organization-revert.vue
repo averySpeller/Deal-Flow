@@ -3,7 +3,7 @@
     <el-row>
       <el-col>
         <div class="uk-align-right uk-margin-right">
-          <el-button @click="deleteCompany()" type="danger">Delete Organization</el-button>
+          <el-button @click="deleteCompany()" type="danger">Delete</el-button>
           <router-link :to="{ name:'EditOrganization', params: { id: organization.organization_id }}">
             <el-button>Edit</el-button>
           </router-link>
@@ -26,59 +26,57 @@
         <div class="title uk-flex uk-flex-center">
         </div>
         <el-row type="flex" class="row-bg" justify="center">
-          <el-radio-group v-model="currentDeal">
-            <el-radio-button :label="emptyDeal">Overview</el-radio-button>
-            <el-radio-button v-for="(deal, key) in deals" :label="deal" >Pitch {{key+1}}</el-radio-button>
+          <el-radio-group v-model="currentView">
+            <el-radio-button :label="0">Overview</el-radio-button>
+            <el-radio-button v-for="(deal, key) in deals" :label="(key+1)" >Pitch {{key+1}}</el-radio-button>
           </el-radio-group>
-          <el-button @click="emptyCurrentDeal()" uk-toggle="target: #offcanvas-addDeal" type="success" plain  size="medium">Add Pitch</el-button>
+          <el-button uk-toggle="target: #offcanvas-addDeal" type="success" plain  size="medium">Add Pitch</el-button>
         </el-row>
       </el-col>
     </el-row>
     <div class="uk-margin">
       <hr class="uk-divider-icon"/>
-      <div v-if="this.currentDeal === emptyDeal" id="CompanyOverview Container">
-        <el-row id="tagContainer" type="flex" class="row-bg" justify="center">
-          <router-link tag="div" :to="{ name:'Tag', params: { id: tag.tag_id }}" v-for="tag in tags" class="tagContainer">
-            <div>
-              <el-tag
-                :key="tag.tag_name"
-                closable
-                :disable-transitions="false"
-                @close="deleteTag(tag)">
-                #{{tag.tag_name}}
-              </el-tag>
-            </div>
-          </router-link>
+      <el-row id="tagContainer" type="flex" class="row-bg" justify="center">
+        <router-link tag="div" :to="{ name:'Tag', params: { id: tag.tag_id }}" v-for="tag in tags" class="tagContainer">
+          <div>
+            <el-tag
+              :key="tag.tag_name"
+              closable
+              :disable-transitions="false"
+              @close="deleteTag(tag)">
+              #{{tag.tag_name}}
+            </el-tag>
+          </div>
+        </router-link>
 
 
 
-          <el-autocomplete
-            class="inline-input input-new-tag"
-            v-model="inputTag"
-            v-if="inputVisible"
-            size="small"
-            ref="saveTagInput"
-            :fetch-suggestions="searchTags"
-            placeholder="Please Input"
-            :trigger-on-focus="false"
-            @select="handleTagConfirm"
-            @keyup.enter.native="handleTagConfirm">
-            <i
-              uk-icon="icon: hashtag"
-              class="el-input__icon"
-              slot="prefix">
-            </i>
-            <template slot-scope="{ item }">
-              <div>#{{ item.value }}</div>
-            </template>
-          </el-autocomplete>
+        <el-autocomplete
+          class="inline-input input-new-tag"
+          v-model="inputTag"
+          v-if="inputVisible"
+          size="small"
+          ref="saveTagInput"
+          :fetch-suggestions="searchTags"
+          placeholder="Please Input"
+          :trigger-on-focus="false"
+          @select="handleTagConfirm"
+          @keyup.enter.native="handleTagConfirm">
+          <i
+            uk-icon="icon: hashtag"
+            class="el-input__icon"
+            slot="prefix">
+          </i>
+          <template slot-scope="{ item }">
+            <div>#{{ item.value }}</div>
+          </template>
+        </el-autocomplete>
 
-          <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
-        </el-row>
-        <br>
-        <CompanyOverview v-bind:organization="this.organization" v-bind:contacts="this.contacts"></CompanyOverview>
-      </div>
-      <DealOverview v-else v-bind:organization="this.organization" v-bind:deal="this.currentDeal" ></DealOverview>
+        <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
+      </el-row>
+      <br>
+      <CompanyOverview v-if="this.currentView == 0" v-bind:organization="this.organization" v-bind:contacts="this.contacts"></CompanyOverview>
+      <DealOverview v-else v-bind:organization="this.organization" v-bind:deal="this.deals[currentView-1]" ></DealOverview>
     </div>
 
     <button @click="goBack()" class="uk-button uk-button-secondary uk-button-large uk-margin">GO BACK</button>
@@ -92,7 +90,10 @@
     <div id="offcanvas-addDeal" uk-offcanvas="mode: slide; overlay: true; flip: true">
       <div class="uk-offcanvas-bar">
         <button class="uk-offcanvas-close" type="button" uk-close></button>
-          <AddEditDeal v-bind:organization="this.organization" v-bind:editDeal="this.editDeal" v-bind:deal="this.currentDeal"></AddEditDeal>
+        <div class="title uk-flex uk-flex-center">
+            <h1>Add Deal</h1>
+        </div>
+          <AddEditDeal v-bind:organization="this.organization" v-bind:editDeal="this.editDeal" v-bind:deal="this.deals[currentView-1]"></AddEditDeal>
       </div>
     </div>
   </div>
@@ -133,8 +134,9 @@ export default {
         slide_deck: null,
         notes: null
       },
-      loading:true,
-      editDeal:false
+      currentView: 0,
+      editDeal: false,
+      loading:true
     }
   },
   methods:{
@@ -146,23 +148,6 @@ export default {
     loadIt(arg) {
       this.loadSelect()
       this.form.organization_id=arg
-    },
-
-    emptyCurrentDeal() {
-      this.emptyDeal.organization_id = this.organization.organization_id;
-      this.emptyDeal.interest = null;
-      this.emptyDeal.status = null;
-      this.emptyDeal.valuation = null;
-      this.emptyDeal.raise = null;
-      this.emptyDeal.revenue = null;
-      this.emptyDeal.revenue_model = null;
-      this.emptyDeal.round = null;
-      this.emptyDeal.slide_deck = null;
-      this.emptyDeal.notes = null;
-
-      this.currentDeal = this.emptyDeal
-      console.log(this.emptyDeal);
-      console.log(this.currentDeal);
     },
 
     loadSelect() {
@@ -221,8 +206,11 @@ export default {
         //add Tag Mapping for tag
       }
       else {
+        console.log("preExisting tag");
+        console.log("Found a repeated Tag: ".concat(item.tag_id));
 
         var newTagMapping = {"tag_id": item.tag_id, "organization_id": this.organization.organization_id}
+        console.log(newTagMapping);
 
         lib.postRequest("/tagmappings", newTagMapping, response => {
           console.log(response.data);
@@ -243,6 +231,7 @@ export default {
       var tagSuggestions = this.tagSuggestions;
       var results = queryString ? tagSuggestions.filter(this.createFilter(queryString)) : tagSuggestions;
       // call callback function to return suggestions
+      console.log(results);
       cb(results);
     },
     createFilter(queryString) {
@@ -254,14 +243,12 @@ export default {
   created() {
 
     lib.getRequest("/organizations/".concat(this.$route.params.id), response => {
-      this.organization = response.data;
+      this.organization = response.data
       console.log(response.data);
 
-      this.emptyDeal.organization_id = this.organization.organization_id;
-      this.emptyCurrentDeal();
+      this.emptyDeal.organization_id = this.organization.organization_id
 
-      this.currentDeal = this.emptyDeal
-
+      console.log(this.organization.organization_id);
       lib.getRequest("/deals?organization_id=".concat(this.organization.organization_id), response => {
         this.deals = response.data
         console.log(response.data);
@@ -280,9 +267,11 @@ export default {
           tagIds = tagIds.concat(response.data[i].tag_id);
           tm[response.data[i].tag_id] = response.data[i].tagmapping_id;
         }
+        console.log(tm);
 
         lib.getRequest('/tags?tag_id='.concat(tagIds), response => {
 
+          console.log(response.data);
 
           for (var i = 0; i < response.data.length; i++) {
             response.data[i].tagmapping_id = tm[response.data[i].tag_id]
@@ -308,6 +297,8 @@ export default {
       for (var i = 0; i < response.data.length; i++) {
         myTagSuggestions.push({"value": response.data[i].tag_name, "tag_id": response.data[i].tag_id, "tag_color": response.data[i].tag_color,})
       }
+      console.log("NEW TAG SUGGESTIONS");
+      console.log(myTagSuggestions);
 
       this.tagSuggestions = myTagSuggestions;
 

@@ -1,5 +1,8 @@
 <template>
   <div class="">
+    <div class="title uk-flex uk-flex-center">
+        <h1>{{deal.valuation}}</h1>
+    </div>
     <div class="uk-margin">
       <el-row type="flex" class="row-bg" justify="center">
           <el-col :span="18">
@@ -15,27 +18,31 @@
             </el-form-item>
             <el-form-item label="Status:">
               <el-select
-                v-model="form.status"
+                v-model="deal.status"
                 placeholder="Select a status">
                 <el-option
-                  v-for="item in options"
+                  v-for="status in statusOptions"
+                  :key="status.value"
+                  :label="status.label"
+                  :value="status.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="Interest:">
+              <el-select
+                v-model="deal.interest"
+                placeholder="Select an interest level">
+                <el-option
+                  v-for="item in interestOptions"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value">
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="Interest:">
-              <el-input
-                v-model="form.interest"
-                type="text"
-                clearable
-                placeholder="ABC">
-              </el-input>
-            </el-form-item>
             <el-form-item label="Raise:">
               <el-input
-                v-model="form.raise"
+                v-model="deal.raise"
                 type="text"
                 clearable
                 placeholder="ABC">
@@ -43,7 +50,7 @@
             </el-form-item>
             <el-form-item label="Valuation:">
               <el-input
-                v-model="form.valuation"
+                v-model="deal.valuation"
                 type="text"
                 clearable
                 placeholder="1 Billion">
@@ -51,7 +58,7 @@
             </el-form-item>
             <el-form-item label="Revenue:">
               <el-input
-                v-model="form.revenue"
+                v-model="deal.revenue"
                 type="text"
                 clearable
                 placeholder="1 Billion">
@@ -59,7 +66,7 @@
             </el-form-item>
             <el-form-item label="Revenue Model:">
               <el-input
-                v-model="form.revenue_model"
+                v-model="deal.revenue_model"
                 type="text"
                 clearable
                 placeholder="1 Billion">
@@ -67,7 +74,7 @@
             </el-form-item>
             <el-form-item label="Round:">
               <el-input
-                v-model="form.round"
+                v-model="deal.round"
                 type="text"
                 clearable
                 placeholder="1 Billion">
@@ -75,15 +82,19 @@
             </el-form-item>
             <el-form-item label="Notes:">
               <el-input
-                v-model="form.notes"
+                v-model="deal.notes"
                 type="textarea"
                 clearable
                 placeholder="Add Notes">
               </el-input>
             </el-form-item>
 
-            <div class="uk-flex uk-flex-center ">
-              <el-button @click="AddDeal()" type="primary">Add Deal!</el-button><br><br>
+            <div v-if="deal.editDeal" class="uk-flex uk-flex-center">
+              <el-button @click="EditDeal()" type="primary" uk-toggle="target: #offcanvas-addDeal">Edit Deal!</el-button><br><br>
+            </div>
+
+            <div v-else class="uk-flex uk-flex-center">
+              <el-button @click="AddDeal()" type="primary" uk-toggle="target: #offcanvas-addDeal">Add Deal!</el-button><br><br>
             </div>
           </el-form>
         </el-col>
@@ -99,7 +110,7 @@
 import lib from '../lib'
 export default {
   name: 'AddEditDeal',
-  props: ['organization'],
+  props: ['organization', 'editDeal', 'deal'],
 
   data(){
     return{
@@ -117,7 +128,7 @@ export default {
         slide_deck: null,
         notes: null
       },
-      options: [
+      statusOptions: [
         {
           value: 'inProgress',
           label: 'In Progress'
@@ -135,7 +146,21 @@ export default {
           label: 'Other'
         }
       ],
-      status: ''
+      status: '',
+      interestOptions: [
+        {
+          value: 'High',
+          label: 'High'
+        },
+        {
+          value: 'Medium',
+          label: 'Medium'
+        },
+        {
+          value: 'Low',
+          label: 'Low'
+        }
+      ],
 
     }
   },
@@ -146,20 +171,36 @@ export default {
         : this.$router.push('/')
     },
     AddDeal(){
-      console.log(this.form);
-      this.form.organization_id = this.$parent.organization.organization_id
+      this.deal.organization_id = this.$parent.organization.organization_id
 
-      lib.postRequest('/deals', this.form, response => {
-        console.log(this.form);
+      console.log(this.deal);
+      lib.postRequest('/deals', this.deal, response => {
         console.log(response.data);
-        this.$parent.deals.push(response.data)
-
+        this.$parent.deals.push(response.data);
+        this.$parent.emptyCurrentDeal();
+        this.$parent.currentDeal = response.data;
 
       })
+
+
+
+    },
+    EditDeal(){
+      console.log(this.deal);
+      this.deal.organization_id = this.$parent.organization.organization_id
+
+      // lib.postRequest('/deals', this.form, response => {
+      //   console.log(this.form);
+      //   console.log(response.data);
+      //   this.$parent.deals.push(response.data)
+      //
+      //   goBack();
+      // })
+      this.$parent.editDeal = false;
     }
   },
-  mounted(){
-    console.log("STUFF");
+  created(){
+    console.log("MOUNTED");
   }
 }
 

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <el-button @click="logout();" class="uk-align-right " type="info">Logout</el-button>
+    <el-button v-if="authenticated" @click="logout();" class="uk-align-right " type="info">Logout</el-button>
     <Nav v-if="authenticated"></Nav>
     <router-view @authenticated="setAuthenticated"></router-view>
 

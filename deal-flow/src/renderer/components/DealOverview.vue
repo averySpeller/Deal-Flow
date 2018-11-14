@@ -4,9 +4,8 @@
       <el-col>
         <div class="uk-align-right uk-margin-right">
           <el-button @click="deleteDeal()" type="danger">Delete Deal</el-button>
-          <router-link :to="{ name:'EditOrganization', params: { id: organization.organization_id }}">
-            <el-button>Edit</el-button>
-          </router-link>
+
+          <el-button v-on:click="toggleEdit" uk-toggle="target: #offcanvas-addDeal">Edit</el-button>
         </div>
       </el-col>
     </el-row>
@@ -20,7 +19,7 @@
               <strong class="uk-align-right">Valuation:</strong>
             </el-col>
             <el-col :span="12">
-              {{organization.valuation}}
+              {{deal.valuation}}
             </el-col>
           </el-row>
           <el-row :gutter="15">
@@ -28,7 +27,7 @@
               <strong class="uk-align-right">Stock Symbol:</strong>
             </el-col>
             <el-col :span="12">
-              {{organization.stock_symbol}}
+              {{deal.stock_symbol}}
             </el-col>
           </el-row>
           <el-row :gutter="15">
@@ -36,7 +35,7 @@
               <strong class="uk-align-right">Revenue:</strong>
             </el-col>
             <el-col :span="12">
-              {{organization.revenue}}
+              {{deal.revenue}}
             </el-col>
           </el-row>
           <el-row :gutter="15">
@@ -44,7 +43,7 @@
               <strong class="uk-align-right">Revenue Model:</strong>
             </el-col>
             <el-col :span="12">
-              {{organization.revenue_model}}
+              {{deal.revenue_model}}
             </el-col>
           </el-row>
           <!-- <li><p><strong>Address: </strong>{{organization.address.street}} "Street, "{{organization.address.suite}}", "{{organization.address.city}}", "{{organization.address.zipcode}}</p></li> -->
@@ -128,10 +127,20 @@ export default {
 
   methods: {
     deleteDeal(){
-      console.log("TRYING TO DELETE: ".concat(this.deal.deal_id));
+      var dealIndex = this.$parent.deals.indexOf(this.deal)
+      console.log(dealIndex);
+      if (dealIndex > -1) {
+        this.$parent.deals.splice(dealIndex, 1);
+      }
+
+      console.log("Deleting Deal #".concat(this.deal.deal_id));
       lib.deleteRequest("/deals/".concat(this.deal.deal_id), response => {
         console.log(response);
       })
+    },
+    toggleEdit(){
+      this.$parent.editDeal = true;
+      console.log(this.$parent.editDeal);
     }
   }
 
