@@ -112,7 +112,7 @@ export default new Router({
       component: Deals
     },
     {
-      path: '/Tag',
+      path: '/Tag/:id',
       name: 'Tag',
       component: Tag
     },

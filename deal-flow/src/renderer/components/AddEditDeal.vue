@@ -194,18 +194,16 @@ export default {
       console.log(this.deal);
       this.deal.organization_id = this.$parent.organization.organization_id
 
-      // lib.postRequest('/deals', this.form, response => {
-      //   console.log(this.form);
+      // lib.postRequest('/deals', this.deal, response => {
       //   console.log(response.data);
       //   this.$parent.deals.push(response.data)
-      //
       //   goBack();
       // })
       this.$parent.editDeal = false;
     }
   },
   created(){
-    console.log("MOUNTED");
+    //CREATION
   }
 }
 

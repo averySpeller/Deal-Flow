@@ -230,12 +230,15 @@ export default {
   },
   created() {
     this.id = this.$route.params.id;
-    console.log("Getting contact info for contact #".concat(this.$route.params.id));
 
     lib.getRequest("/contacts/".concat(this.id), response => {
+      console.log("Request Completed: Contact");
+      console.log(response.data);
       this.contact = response.data;
 
       lib.getRequest("/organizations/".concat(this.contact.organization_id), response => {
+        console.log("Request Completed: Organization");
+        console.log(response.data);
         this.organization = response.data
       })
 
@@ -251,16 +254,15 @@ export default {
           tagIds = tagIds.concat(response.data[i].tag_id);
           tm[response.data[i].tag_id] = response.data[i].tagmapping_id;
         }
-        console.log(tm);
 
         if (tagIds !== "") {
           lib.getRequest('/tags?tag_id='.concat(tagIds), response => {
 
-            console.log(response.data);
-
             for (var i = 0; i < response.data.length; i++) {
               response.data[i].tagmapping_id = tm[response.data[i].tag_id]
             }
+
+            console.log("Request Completed: Tags");
             console.log(response.data);
             this.tags = response.data;
           })
@@ -269,6 +271,7 @@ export default {
 
       lib.getRequest('/tags', response => {
 
+        console.log("Request Completed: TagSuggestions");
         console.log(response.data);
 
         var myTagSuggestions = []

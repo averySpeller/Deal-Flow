@@ -44,7 +44,7 @@
                 :key="tag.tag_name"
                 closable
                 :disable-transitions="false"
-                @close="deleteTag(tag)">
+                @close="deleteTagMapping(tag)">
                 #{{tag.tag_name}}
               </el-tag>
             </div>
@@ -143,10 +143,6 @@ export default {
         ? this.$router.go(-1)
         : this.$router.push('/')
     },
-    loadIt(arg) {
-      this.loadSelect()
-      this.form.organization_id=arg
-    },
 
     emptyCurrentDeal() {
       this.emptyDeal.organization_id = this.organization.organization_id;
@@ -161,25 +157,11 @@ export default {
       this.emptyDeal.notes = null;
 
       this.currentDeal = this.emptyDeal
-      console.log(this.emptyDeal);
-      console.log(this.currentDeal);
     },
 
-    loadSelect() {
-      lib.getRequest('/organizations', response => {
-        console.log(response);
-        for(let item of response.data){
-          this.orgOptions.push({
-            'label': item.name,
-            'value': item.organization_id
-          })
-        }
-        this.loading = false;
-      })
-    },
 
     //Dynamic tag control methods.
-    deleteTag(tag) {
+    deleteTagMapping(tag) {
       lib.deleteRequest("/tagmappings/".concat(tag.tagmapping_id), response => {
         console.log(response.data);
         this.tags.splice(this.tags.indexOf(tag), 1);
@@ -194,16 +176,14 @@ export default {
 
     //tag submit
     handleTagConfirm(item) {
-      console.log("Handle input confirm");
-      console.log(item);
 
       if (item instanceof KeyboardEvent){
-        console.log("We have keyboard Event");
         //NEED to create New Tag
         let inputTag = this.inputTag;
         if (inputTag) {
           var newTag = {"tag_name": inputTag, "tag_color": "blue"}
           lib.postRequest("/tags", newTag, response => {
+            console.log("Request Completed: Post New Tag");
             console.log(response.data);
 
             this.tagSuggestions.push({"value": response.data.tag_name, "tag_id": response.data.tag_id, "tag_color": response.data.tag_color,})
@@ -253,13 +233,13 @@ export default {
     deleteCompany(){
       for (var i = 0; i < this.deals.length; i++) {
         lib.deleteRequest("/deals/".concat(this.deals[i].deal_id), response => {
-          console.log("deleted deal #".concat(this.deals[i].deal_id));
+          console.log("Request Completed: Delete Deal #".concat(this.deals[i].deal_id));
           console.log(response.data);
         })
 
       }
       lib.deleteRequest("/organization/".concat(this.organization.organization_id), response => {
-        console.log("deleted organization #".concat(this.organization.organization_id));
+        console.log("Request Completed: Delete Organization #".concat(this.organization.organization_id));
         console.log(response.data);
       })
     }
@@ -268,6 +248,7 @@ export default {
 
     lib.getRequest("/organizations/".concat(this.$route.params.id), response => {
       this.organization = response.data;
+      console.log("Request Completed: Organization");
       console.log(response.data);
 
       this.emptyDeal.organization_id = this.organization.organization_id;
@@ -277,6 +258,7 @@ export default {
 
       lib.getRequest("/deals?organization_id=".concat(this.organization.organization_id), response => {
         this.deals = response.data
+        console.log("Request Completed: Deals");
         console.log(response.data);
         this.loading = false;
       })
@@ -297,11 +279,11 @@ export default {
         if (tagIds !== "") {
           lib.getRequest('/tags?tag_id='.concat(tagIds), response => {
 
-            console.log(response.data);
 
             for (var i = 0; i < response.data.length; i++) {
               response.data[i].tagmapping_id = tm[response.data[i].tag_id]
             }
+            console.log("Request Completed: Tags");
             console.log(response.data);
             this.tags = response.data;
           })
@@ -311,6 +293,7 @@ export default {
 
       lib.getRequest("/contacts?organization_id=".concat(this.organization.organization_id), response => {
         this.contacts = response.data
+        console.log("Request Completed: Contacts");
         console.log(response.data);
       })
     })
@@ -318,6 +301,7 @@ export default {
 
     lib.getRequest('/tags', response => {
 
+      console.log("Request Completed: TagSuggestions");
       console.log(response.data);
 
       var myTagSuggestions = []

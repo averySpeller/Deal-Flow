@@ -1,14 +1,16 @@
 <template>
   <div id="app">
     <el-container v-if="authenticated">
-      <el-header class="topnav-container">
+      <el-header class="">
         <!-- <el-radio-group v-model="isCollapse" style="margin-bottom: 20px;">
           <el-radio-button :label="false">expand</el-radio-button>
           <el-radio-button :label="true">collapse</el-radio-button>
         </el-radio-group> -->
-        <el-menu :default-active="activeIndex" class="topnav-right" mode="horizontal" @select="handleSelect">
-          <el-menu-item index="1">Kevin</el-menu-item>
-          <el-menu-item index="2">Logout</el-menu-item>
+        <el-menu  mode="horizontal" @select="handleSelect">
+          <div class="topnav-right">
+            <el-menu-item  index="1">Kevin</el-menu-item>
+            <el-menu-item index="2">Logout</el-menu-item>
+          </div>
         </el-menu>
       </el-header>
       <el-container>
@@ -92,10 +94,11 @@
 
 <style>
   .topnav-right {
+    display: flex;
     float: right;
   }
   .topnav-container{
-    border-bottom: 3px;
-    border-color: black;
+
+    border: 1px solid black;
   }
 </style>
