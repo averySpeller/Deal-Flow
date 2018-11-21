@@ -22,7 +22,12 @@ class Contact(Model):
         'phone1': Property('Phone1', Type.string),
         'phone2': Property('Phone2', Type.string),
         'website': Property('Website', Type.string),
-        'notes': Property('Notes', Type.string, encrypt=True)
+        'notes': Property('Notes', Type.string, encrypt=True),
+        'skill1': Property('.', Type.string),
+        'skill2': Property('.', Type.string),
+        'skill3': Property('.', Type.string),
+        'skill4': Property('.', Type.string),
+        'skill5': Property('.', Type.string)
     }
 
 

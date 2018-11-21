@@ -30,9 +30,15 @@ class Deal(Model):
         'round': Property('.', Type.string, encrypt=True),
 
         'slide_deck': Property('.', Type.string),
-        'notes': Property('.', Type.string, encrypt=True)
+        'notes': Property('.', Type.string, encrypt=True),
         'date_added': Property('.', Type.datetime),
-        'date_viewed': Property('.', Type.datetime)
+        'date_viewed': Property('.', Type.datetime),
+
+        'skill1': Property('.', Type.string),
+        'skill2': Property('.', Type.string),
+        'skill3': Property('.', Type.string),
+        'skill4': Property('.', Type.string),
+        'skill5': Property('.', Type.string)
     }
     _documents = {
         # 'organization': Document(Organization, Relation.one_to_many)
