@@ -1,46 +1,139 @@
-<template>
-  <div id="wrapper">
-	<html>
-	  <body>
-	    <div id="example">
-	      <h1 v-if="variable">{{variable}}</h1>
-	      <h1 v-else>Welcome User!</h1>      
-	      <input v-model="variable" type="text">
-	      <button @click="somefunc()">Click me!</button>
-	    </div>
-	    <div>
-	    	Big Data List:
-    		<ul>
-    			<li v-for="item in bigdata">{{item.last}}, {{item.first}}</li>
-    		</ul>
-	    </div>
 
-	  </body>
-	</html>
-  </div>
+<template>
+    <div>
+        <canvas v-if="!target" ref="canvas" :width="width" :height="height"></canvas>
+
+        <div class="block">
+        <span class="demonstration">Persistence:</span>
+        <el-slider @change="change"
+          v-model="values.pesistence"
+          :step="1"
+          :max= "5"
+          show-stops>
+        </el-slider>
+        </div>
+        <div class="block">
+          <span class="demonstration">Leadership:</span>
+          <el-slider
+            v-model="values.leadership"
+            :step="1"
+            :max= "5"
+            show-stops>
+          </el-slider>
+        </div>
+        <div class="block">
+          <span class="demonstration">Confidence:</span>
+          <el-slider
+            v-model="values.confidence"
+            :step="1"
+            :max= "5"
+            show-stops>
+          </el-slider>
+        </div>
+        <div class="block">
+          <span class="demonstration">Knowledge:</span>
+          <el-slider
+            v-model="values.knowledge"
+            :step="1"
+            :max= "5"
+            show-stops>
+          </el-slider>
+        </div>
+        <div class="block">
+          <span class="demonstration">Charisma:</span>
+          <el-slider
+            v-model="values.charisma"
+            :step="1"
+            :max= "5"
+            show-stops>
+          </el-slider>
+        </div>
+    </div>
 </template>
 <script>
-  export default {
-    name: 'deals',
-    data() {
-    	return {
-    		variable: null,
-    		bigdata: [
-    			{ first: 'Carter', last: 'Bourette' },
-    			{ first: 'Avery', last: 'Speller' },
-    			{ first: 'Kevin', last: 'Prince' }
-    		]
-    	}
+export default {
+    mixins: [
+        VueCharts.core.default,
+    ],
+  mounted () {
+    this.renderChart(this.chartData, this.options)
+  },
+    props: {
+        pointbordercolor: {
+            default: () => "#fff",
+        },
+        pointbackgroundcolor: {
+            default: () => "rgba(179,181,198,1)",
+        },
+        data: {
+          default: () => [2,3,2,4,5],
+        }
     },
+    data() {
+        return {
+          values:{
+            pesistence: 20,
+            leadership: 3,
+            confidence: 2,
+            knowledge: 4,
+            charisma: 5,
+          },
+            type: 'radar',
+            chart_data: {
+              // pesistence: 2,
+              // leadership: 3,
+              // confidence: 2,
+              // knowledge: 4,
+              // charisma: 5,
+
+                labels: ['persistence','leadership','confidence','knowledge','charisma'],
+                datasets: [{
+                    label: 'Johnny Cash',
+                    backgroundColor: this.backgroundcolor,
+                    borderColor: this.bordercolor,
+                    pointBackgroundColor: this.pointbackgroundcolor,
+                    pointBorderColor: this.pointbordercolor,
+                    pointHoverBackgroundColor: "#fff",
+                    pointHoverBorderColor: "rgba(179,181,198,1)",
+                    data: this.data
+                    // data: []
+                    //  data: [this.persistence,this.leadership,this.confidence,this.knowledge,this.charisma]
+                    // data: [2,3,2,4,5]
+                }],
+            },
+            options: {
+              responsive: true,
+                scale: {
+                    reverse: false,
+                    ticks: {
+                        beginAtZero: this.beginzero
+                    }
+                },
+                title: {
+                  display: true,
+                  position: 'top',
+                  text: 'Skills Chart'
+                }
+            },
+        };
+    },
+    // created(){
+    //   this.chart_data.data.push[this.values];
+    // },
+    // mounted(){
+    //   this.renderChart()
+    // },
+    watch: {
+  chartData () {
+    this.$data._chart.update()
+  }
+},
     methods: {
-      open (link) {
-        this.$electron.shell.openExternal(link)
-      },
-      somefunc() {
-      	var splitty = this.variable.split(' ')
-      	this.bigdata.push({ first: splitty[0], last: splitty[1]})
-      	this.variable = ''
+      change() {
+        this.renderChart()
+        console.log("The value is: " + this.values.persistence);
+        //HERE I can't get "event.target"
       }
     }
-  }
+}
 </script>

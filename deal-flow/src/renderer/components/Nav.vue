@@ -55,6 +55,12 @@ export default {
           text: 'Settings',
           page:'/Settings'
         },
+        {
+          id: 5,
+          icon: 'icon: cog',
+          text: 'SkillChart',
+          page:'/deals'
+        }
       ]
     };
   },

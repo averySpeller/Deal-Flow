@@ -7,10 +7,10 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import axios from 'axios';
 import VueCarousel from 'vue-carousel';
-import VueCharts from 'vue-chartjs'
+// import VueCharts from 'vue-chartjs'
 import "chart.js";
 import "hchs-vue-charts";
-Vue.use(window.VueCharts);
+// Vue.use(window.VueCharts);
 
 //Pages
 import  Contacts from '@/pages/Contacts'
@@ -34,6 +34,7 @@ import  AddEditDeal from '@/components/AddEditDeal'
 import  DealOverview from '@/components/DealOverview'
 import  AddDeal from '@/components/AddDeal'
 import  Tag from '@/pages/Tag'
+import SkillChart from '@/components/SkillChart'
 // import SkillChart from @/components/SkillChart
 
 Vue.use(Router)
@@ -135,6 +136,11 @@ export default new Router({
       path: '../components/EditOrganization',
       name: 'EditOrganization',
       component: EditOrganization
+    },
+    {
+      path: '../components/SkillChart',
+      name: 'SkillChart',
+      component: SkillChart
     }
 
   ]

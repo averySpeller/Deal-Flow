@@ -22,9 +22,11 @@
         </div>
         <div class="title uk-flex uk-flex-center">
           <h4>{{organization.name}}</h4>
-          <!-- <router-link tag="h4" :to="{ name: 'Single-Organization', params: { id: contact.company }} ">
+          <!-- <router-link :to="{ name: 'Single-Organization', params: { id: organization.organization_id } }">{{organization.name}}</router-link> -->
+
+          <router-link tag="h4" :to="{ name: 'Single-Organization', params: { id: contact.company }} ">
             {{contact.company}}
-          </router-link> -->
+          </router-link>
         </div>
         <div class="title uk-flex uk-flex-center">
           <h4>{{this.myTest}}</h4>
@@ -85,7 +87,10 @@
         </el-col>
         <el-col  :xs="12" :sm="11" :md="10" :lg="9" :xl="9">
           <div class="uk-flex uk-flex-center uk-inline" >
-            <img src="static/imgs/sampleRadarChart.png" height="100" uk-img>
+            <!-- <img src="static/imgs/sampleRadarChart.png" height="100" uk-img> -->
+            <!-- <SkillChart></SkillChart> -->
+            <Deals></Deals>
+
           </div>
           <br><br>
       </ul>
@@ -119,8 +124,13 @@
 
 <script>
 import lib from '../lib'
+import Deals from './Deals';
+
 export default {
   name: 'Single-Contact',
+  components:{
+    'Deals': Deals
+  },
   data(){
     return {
       id: 0,
