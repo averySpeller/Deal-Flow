@@ -14,19 +14,15 @@ class Deal(Model):
     _properties = {
         'deal_id': Property('.', Type.uid),
         'organization_id': Property('.', Type.uid),
-
         'organization': Property('.', Type.string),
         'contacts': Property('.', Type.string),
-
         'interest': Property('.', Type.string),
         'status': Property('.', Type.string, encrypt=True),
-
         'valuation': Property('.', Type.string, encrypt=True),
         'raise_type': Property('.', Type.string, encrypt=True),
         'raise': Property('.', Type.string, encrypt=True),
         'revenue': Property('.', Type.string),
         'revenue_model': Property('.', Type.string),
-
         'round': Property('.', Type.string, encrypt=True),
 
         'slide_deck': Property('.', Type.string),

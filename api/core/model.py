@@ -176,6 +176,11 @@ class Model:
             map = self._parser.get_payload()
 
         for key,value in map.items():
+
+            # TODO: Added this as a fail-safe for missing sync between db and code
+            #        probably a better way of incorporating this in a performant way
+            if self.__class__._properties.get(key) is None: continue
+
             print('setting %s to %s' % (key,value))
             if encrypted and self.__class__._properties.get(key).encrypt:
                 setattr(self, key, Utils.decrypt(value))
