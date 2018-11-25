@@ -10,7 +10,8 @@
               :before-upload="beforeAvatarUpload"
               :thumbnail-mode="true"
               >
-              <img v-if="encoded" :src="encoded" class="avatar">
+              <img v-if="value" :src="value" class="avatar">
+              <img v-else-if="encoded" :src="encoded" class="avatar">
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
         <el-upload v-else

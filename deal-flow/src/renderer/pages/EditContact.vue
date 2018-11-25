@@ -5,9 +5,7 @@
         <el-col :xs="12" :sm="10" :md="8" :lg="6" :xl="6">
           <el-form ref="form" :model="form" label-width="70px">
             <br>
-            <div class="uk-flex uk-flex-center uk-inline" style="border-radius: 50%">
-              <img  class="avatar" v-bind:src ="form.avatar">
-            </div>
+            <FileUploader isImage="true" v-model="form.avatar"></FileUploader>
             <el-form-item label="Name:">
               <el-input
                 v-model="name"
@@ -117,7 +115,7 @@
 
 <script>
 import lib from '../lib'
-// import axios from 'axios'
+import FileUploader from '../components/FileUploader'
 import router from '../router'
 import AddOrganization from './AddOrganization';
 export default {
@@ -146,6 +144,9 @@ export default {
 
       }
     }
+  },
+  components:{
+    'FileUploader': FileUploader
   },
   created() {
     //~~~~~~~~~~~~~~~UNCOMMENT ONCE LIB IS CREATED~~~~~~~~~~~~~~~~~~~~~~~~~~//

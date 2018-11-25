@@ -8,9 +8,7 @@
           <el-col :span="18">
           <el-form ref="form" :model="form" label-width="125px">
             <br>
-            <div class="uk-flex uk-flex-center uk-inline" style="border-radius: 50%">
-              <img  class="avatar" v-bind:src ="form.logo">
-            </div>
+            <FileUploader isImage="true" v-model="form.logo"></FileUploader>
             <el-form-item label="Name:">
               <el-input
                 v-model="form.name"
@@ -142,7 +140,7 @@
 </template>
 <script>
 import lib from '../lib'
-// import axios from 'axios'
+import FileUploader from '../components/FileUploader'
 import router from '../router'
 export default {
   name: 'EditOrganization',
@@ -172,11 +170,15 @@ export default {
       }
     }
   },
+  components:{
+    'FileUploader': FileUploader
+  },
   created() {
     //~~~~~~~~~~~~~~~UNCOMMENT ONCE LIB IS CREATED~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
     lib.getRequest('/organizations/'.concat(this.$route.params.id), response => {
       this.contact = response.data
+      console.log("Request Completed: Organization");
       console.log(response.data);
        this.form.name = response.data['name'];
        this.form.stock_symbol = response.data['stock_symbol'];
@@ -195,7 +197,6 @@ export default {
        this.form.postal = response.data['postal'];
        this.form.website = response.data['website'];
        this.form.notes = response.data['notes'];
-      console.log(myRequest);
     })
 
 
@@ -236,36 +237,7 @@ export default {
         ? this.$router.go(-1)
         : this.$router.push('/')
       })
-      // axios.put('http://24.138.161.30:5000/contacts/'.concat(this.$route.params.id),this.form).then(response => {
-      //   console.log(response.data);
-      //   console.log(response.header);
-      //
-      //   window.history.length > 1
-      //     ? this.$router.go(-1)
-      //     : this.$router.push('/')
-      // })
-      // .catch(e => {
-      //   this.errors.push(e)
-      //   console.log(e);
-      //   console.log('i died');
-      // })
-
     },
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg';
-      const isLt2M = file.size / 1024 / 1024 < 2;
-
-      if (!isJPG) {
-        this.$message.error('Avatar picture must be JPG format!');
-      }
-      if (!isLt2M) {
-        this.$message.error('Avatar picture size can not exceed 2MB!');
-      }
-      return isJPG && isLt2M;
-    }
 
   }
 

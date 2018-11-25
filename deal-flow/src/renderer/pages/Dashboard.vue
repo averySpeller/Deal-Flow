@@ -116,31 +116,6 @@
         this.loading = false;
       })
 
-
-
-
-      // var requestFields = this.$parent.createGetRequest("organizations")
-      // console.log(requestFields.myRequest);
-      //
-      // axios.get(requestFields.myRequest, requestFields.auth).then(response => {
-      //   this.organizations = response.data
-      //   this.setStatistics();
-      //   this.loading = false
-      // })
-      // .catch(e => {
-      //   this.errors.push(e)
-      // })
-      //
-      // requestFields = this.$parent.createGetRequest("deals")
-      // console.log(requestFields.myRequest);
-      // axios.get(requestFields.myRequest, requestFields.auth).then(response => {
-      //   this.deals = response.data
-      //   this.setStatistics();
-      //   this.loading = false
-      // })
-      // .catch(e => {
-      //   this.errors.push(e)
-      // })
     },
     methods: {
       setStatistics(){
