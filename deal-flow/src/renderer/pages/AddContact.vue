@@ -1,6 +1,10 @@
 <template>
   <div class="">
     <div class="uk-margin">
+      <div v-on:click="toggleAutocomplete">
+        <el-switch v-model="autocompleteForm">
+        </el-switch>
+      </div>
       <el-row type="flex" class="row-bg" justify="center">
         <el-col :xs="12" :sm="10" :md="8" :lg="6" :xl="6">
           <el-form ref="form" :model="form" label-width="70px">
@@ -186,6 +190,7 @@ export default {
   data(){
     return{
       name: "",
+      autocompleteForm: false,
       imageUrl:'',
       form: {
         first: null,
@@ -286,6 +291,35 @@ export default {
       }
       this.loading = false;
     })
+  },
+  toggleAutocomplete() {
+    if (this.autocompleteForm) {
+      console.log("Autofill Fields: ON");
+      this.name= "John Snow"
+      this.form.first= "John"
+      this.form.last= "Snow"
+      this.form.email= "johnsnow@gmail.com"
+      this.form.phone1= "234 433 3344"
+      this.form.phone2= "234 433 5538"
+      this.form.website= "johnsnow.info"
+      this.form.avatar= ""
+      this.form.organization_id= 1
+      // this.form.title= null //UNCOMMENT TO SEND TITLE
+      this.form.notes= "Rightful heir to Winterfell. Has a dier wolf"
+    }
+    else {
+      console.log("Autofill Fields: OFF");
+      this.form.first= null
+      this.form.last= null
+      this.form.email= ""
+      this.form.phone1= ""
+      this.form.phone2= ""
+      this.form.website= ""
+      this.form.avatar= ""
+      this.form.organization_id= null
+      // this.form.title= null //UNCOMMENT TO SEND TITLE
+      this.form.notes= ""
+    }
   }
 },
 created() {

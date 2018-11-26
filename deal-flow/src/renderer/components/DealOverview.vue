@@ -102,11 +102,9 @@
     </el-row>
 <br><br>
     <el-row :gutter="50" type="flex" class="row-bg" justify="center">
-      <el-col :span="12">
+      <el-col :span="18" v-if="deal.slide_deck">
         PDF:
-        <!-- static/pdfs/Prototyping.pdf -->
-        <!-- <webview v-bind:src="deal.slide_deck" plugins></webview> -->
-        <webview v-bind:src="deal.slide_deck" plugins></webview>
+        <webview class="pdfViewer" v-bind:src="deal.slide_deck" plugins></webview>
       </el-col>
     </el-row>
 
@@ -143,6 +141,15 @@ export default {
 <style scoped>
   .grid-content {
     min-height: 36px;
+  }
+  .pdfViewer{
+    border-radius: 10%;
+    position: relative;
+    width: 100%
+  }
+  .pdfViewer:before{
+    content: "";
+    padding-top: 70%; 	/* initial ratio of 1:1*/
   }
 
 </style>
