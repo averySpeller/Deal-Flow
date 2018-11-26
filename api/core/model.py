@@ -156,9 +156,16 @@ class Model:
         # Iterate the property list and retrieve the values
         self._populate()
 
+        return_map = {}
+        for k,v in self._properties.items():
+            prop = self.__class__._properties[k]
+
+            if not prop.hidden or prop.hidden and k in self._parser.fields:
+                return_map[k] = v
+
         # HACK: hm, we retrieve all those values just to throw away the output
         #       and populate the instance _properties.
-        return self._properties
+        return return_map
 
 
     def _error(self, title=None, msg=None):
@@ -255,7 +262,7 @@ class ModelCollection:
         self._relation = self._data_model.__name__
 
     def _create_model(self):
-        self._model_list.append(self._data_model(from_map=self._dao.fetch_from_buffer()))
+        self._model_list.append(self._data_model(parser=self._parser, from_map=self._dao.fetch_from_buffer()))
 
     def is_error_state(self):
         pass
@@ -266,17 +273,14 @@ class ModelCollection:
 
         # create the models
         for item in self._dao.fetch_buffer():
-            self._model_list.append( self._data_model(from_map=item) )
+            self._model_list.append( self._data_model(parser=self._parser, from_map=item) )
 
 
     def serialize(self):
         print('serialize the collection')
         self.populate()
-        output = []
 
-        for model in self._model_list:
-            output.append(model.serialize())
-        return output
+        return [ model.serialize() for model in self._model_list ]
 
 #
 #   Type
@@ -299,7 +303,7 @@ class Type(Enum):
 #
 class Property:
 
-    def __init__(self, name, type, relation=None, document=None, encrypt=False, **kwargs):
+    def __init__(self, name, type, relation=None, document=None, encrypt=False, hidden=False, **kwargs):
         print('registering property: ' + name)
         self.document = document
         self.source = None
@@ -309,6 +313,7 @@ class Property:
         self.options = None
 
         self.encrypt = encrypt
+        self.hidden = hidden
 
     def get_document(self):
         return self.document

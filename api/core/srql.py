@@ -25,7 +25,7 @@ class SRQLParser:
         self.group = None
         self.limit = None
         self.page = 1
-        self.page_size = 30
+        self.page_size = 100
 
         self.url_query = Utils.fetch_query_string(request)
         self.payload = Utils.fetch_payload(request)
@@ -46,6 +46,11 @@ class SRQLParser:
         # Fetch the query string as a dictionary
         # self.url_query = Utils.fetch_query_string(req)
 
+        f_list = self.url_query.get('fields', None)
+        if f_list:
+            self.fields = f_list
+        else: self.fields = []
+
         # Step 1: Parse all parameters with reserved words
         # if 'word' in self.reserved:
 
@@ -55,9 +60,9 @@ class SRQLParser:
                 self.page = int(self.url_query['page'])
         except: pass
 
-        # Step 2: Parse all filters
-        for filter in self.url_query:
-            if filter in self.reserved: continue
+        # # Step 2: Parse all filters
+        # for filter in self.url_query:
+        #     if filter in self.reserved: continue
 
             # Parse filters
             # Rules:

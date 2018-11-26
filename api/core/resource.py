@@ -20,14 +20,15 @@ class Resource(object):
         pass
 
     def new_model(self, id, req):
-        return self.__class__.model(id=id, parser=SRQLParser(req))
+        return self.__class__.model(id=id, parser=SRQLParser(request=req))
 
     def new_model_collection(self, req):
-        return ModelCollection(model=self.__class__.model, parser=SRQLParser(req))
+        return ModelCollection(model=self.__class__.model, parser=SRQLParser(request=req))
 
     def default_response(self, req, res, id=None):
         # build the models HACK: we don't really want to check for POST
         #  but we also dont want to move the model instantiation into the functions.
+        print(req)
         if id or req.method == 'POST':
             model = self.new_model(id, req)
         else:
