@@ -59,11 +59,62 @@
               <el-col :span="4">
                 <el-button uk-toggle="target: #offcanvas-addOrganization" type="success" icon="el-icon-plus" plain></el-button>
               </el-col>
-
-
-
-           </el-row>
+            </el-row>
             </el-form-item>
+
+
+              <el-form-item label="skill1:">
+              <el-row>
+                <el-slider
+                  v-model="form.skill1"
+                  :step="1"
+                  :max= "5"
+                  show-stops>
+                </el-slider>
+              </el-row>
+               </el-form-item>
+               <el-form-item label="skill2:">
+               <el-row>
+                 <el-slider
+                   v-model="form.skill2"
+                   :step="1"
+                   :max= "5"
+                   show-stops>
+                 </el-slider>
+               </el-row>
+                </el-form-item>
+                <el-form-item label="skill3:">
+                <el-row>
+                  <el-slider
+                    v-model="form.skill3"
+                    :step="1"
+                    :max= "5"
+                    show-stops>
+                  </el-slider>
+                </el-row>
+                 </el-form-item>
+                 <el-form-item label="skill4:">
+                 <el-row>
+                   <el-slider
+                     v-model="form.skill4"
+                     :step="1"
+                     :max= "5"
+                     show-stops>
+                   </el-slider>
+                 </el-row>
+                  </el-form-item>
+                  <el-form-item label="skill5:">
+                  <el-row>
+                    <el-slider
+                      v-model="form.skill5"
+                      :step="1"
+                      :max= "5"
+                      show-stops>
+                    </el-slider>
+                  </el-row>
+                   </el-form-item>
+
+
             <el-form-item label="Notes:">
               <el-input
                 v-model="form.notes"
@@ -72,6 +123,14 @@
                 placeholder="Add Notes">
               </el-input>
             </el-form-item>
+
+
+
+
+
+
+
+
             <!-- <el-form-item label="Title:">
               <el-select
                 v-model="this.title"
@@ -138,8 +197,14 @@ export default {
         avatar: "",
         // notes: null,
         organization_id: null,
+        skill1: 0,
+        skill2: 0,
+        skill3: 0,
+        skill4: 0,
+        skill5: 0,
         // title: null, //UNCOMMENT TO SEND TITLE
         notes: ""
+
       },
       title: [],
       orgOptions: [],

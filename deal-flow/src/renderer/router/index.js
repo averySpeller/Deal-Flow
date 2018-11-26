@@ -35,6 +35,8 @@ import  DealOverview from '@/components/DealOverview'
 import  AddDeal from '@/components/AddDeal'
 import  Tag from '@/pages/Tag'
 import SkillChart from '@/components/SkillChart'
+import  Chart from '@/components/Chart'
+import  Radar from '@/components/Radar'
 // import SkillChart from @/components/SkillChart
 
 Vue.use(Router)
@@ -126,6 +128,16 @@ export default new Router({
       path: '../components/CompanyOverview',
       name: 'CompanyOverview',
       component: CompanyOverview
+    },
+    {
+      path: '../components/Chart',
+      name: 'Chart',
+      component: Chart
+    },
+    {
+      path: '../components/Radar',
+      name: 'Radar',
+      component: Radar
     },
     {
       path: '../components/AddDeal',
