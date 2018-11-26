@@ -25,7 +25,7 @@ class Deal(Model):
         'revenue_model': Property('.', Type.string),
         'round': Property('.', Type.string, encrypt=True),
 
-        'slide_deck': Property('.', Type.string),
+        'slide_deck': Property('.', Type.string, hidden=True),
         'notes': Property('.', Type.string, encrypt=True),
         'date_added': Property('.', Type.datetime),
         'date_viewed': Property('.', Type.datetime),

@@ -15,7 +15,7 @@ class Organization(Model):
         'organization_id': Property('OrganizationID', Type.uid),
         'name': Property('Name', Type.string),
         'stock_symbol': Property('StockSymbol', Type.string),
-        'logo': Property('Logo', Type.string),
+        'logo': Property('Logo', Type.string, hidden=True),
         'vision': Property('Vision', Type.string),
         'revenue_model': Property('RevenueModel', Type.string),
         'revenue': Property('Revenue', Type.string),
