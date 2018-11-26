@@ -28,7 +28,6 @@ class Resource(object):
     def default_response(self, req, res, id=None):
         # build the models HACK: we don't really want to check for POST
         #  but we also dont want to move the model instantiation into the functions.
-        print(req)
         if id or req.method == 'POST':
             model = self.new_model(id, req)
         else:

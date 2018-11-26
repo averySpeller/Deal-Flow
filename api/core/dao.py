@@ -111,20 +111,42 @@ class DAO:
 
             all_values = []
             # create the lookup filter query string
-            for key,value in parser.url_query.items():
+            for key,value in parser.filters.items():
+                # HACK: just a hack implementation
+                key_split = key.split(':')
+                if len(key_split) > 1:
+                    operator = {
+                        'like':' like ',
+                        'gt':' > ',
+                        'gte':' >= ',
+                        'lt': ' < ',
+                        'lte':' <= ',
+                        'ne': ' <> '
+                    }
+                    if isinstance(value, str):
+                        operation = operator[key_split[1].lower()]
+                        if operation == ' like ':
+                            all_values.append('%' + value + '%')
+                        else:
+                            all_values.append(value)
 
-                # TODO:
-                # this will allow us to fire search
-                # /contacts?first:like=search_data,last:like=search_data
-                # /organizations?name:like=search_data
-                # Returns search results in arraylist form [ {...}, {...} ] from the resource
+                        if len(all_values) > 1:
+                            where_condition = where_condition + ' or ' + key_split[0] + operation + '%s'
+                        else:
+                            where_condition = where_condition + ' where ' +key_split[0] + operation + '%s'
+                    else:
+                        for v in value:
+                            operation = operator[key_split[1].lower()]
+                            if operation == ' like ':
+                                all_values.append('%' + v + '%')
+                            else:
+                                all_values.append(v)
 
-                # split the key
-                # parse the second key word
-
-                # like, gt, lt, gte, lte, ne
-
-                # END --
+                            if len(all_values) > 1:
+                                where_condition = where_condition + ' or ' + key_split[0] + operation + '%s'
+                            else:
+                                where_condition = where_condition + ' where ' +key_split[0] + operation + '%s'
+                    continue
 
                 # Single
                 if isinstance(value, str):

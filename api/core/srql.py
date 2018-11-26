@@ -24,6 +24,7 @@ class SRQLParser:
         self.order = None
         self.group = None
         self.limit = None
+        self.filters = {}
         self.page = 1
         self.page_size = 100
 
@@ -43,6 +44,11 @@ class SRQLParser:
     # Purpose: Purpose.
     # Passed-in: (Request) the request object.
     def parse(self):
+
+        for k,v in self.url_query.items():
+            if k not in self.reserved:
+                self.filters[k] = v
+
         # Fetch the query string as a dictionary
         # self.url_query = Utils.fetch_query_string(req)
 

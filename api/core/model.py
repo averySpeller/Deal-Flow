@@ -51,7 +51,7 @@ class Model:
                 self.fields.append(property)
 
     def __init__(self, id=None, parser=None, auto_save=False, from_map=None):
-        print('instantiated ' + type(self).__name__)
+        # print('instantiated ' + type(self).__name__)
         self._dao = DAO(relation=type(self).__name__)
 
         self._id = id
@@ -85,14 +85,14 @@ class Model:
             if not internal_model.in_read_sync() or name not in self._properties:
 
                 if self._id is not None:
-                    print('would hit db for %s' % (name,))
+                    # print('would hit db for %s' % (name,))
 
                     # Use DAL to access the database
                     results = self._dao.read(doc, self._id)
 
                     # Handle the db response
                     if results == None:
-                        print('Not Found! id: ' + str(self._id))
+                        # print('Not Found! id: ' + str(self._id))
                         raise falcon.HTTPNotFound()
                         # self._error()
                     else:
@@ -141,8 +141,9 @@ class Model:
         else:
             # TODO: handle differently
             if name[0] is not '_':
+                pass
                 # raise KeyError
-                print('Property Not Found! Implement me')
+                # print('Property Not Found! Implement me')
                 # self._error()
             super().__setattr__(name, value)
 
@@ -268,7 +269,7 @@ class ModelCollection:
         pass
 
     def populate(self):
-        print('bulk read')
+        # print('bulk read')
         self._dao.bulk_read(self._relation, parser=self._parser)
 
         # create the models
@@ -277,7 +278,7 @@ class ModelCollection:
 
 
     def serialize(self):
-        print('serialize the collection')
+        # print('serialize the collection')
         self.populate()
 
         return [ model.serialize() for model in self._model_list ]

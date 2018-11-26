@@ -31,10 +31,10 @@ class Utils:
     def jwt_decode(encoded_jwt):
         try:
             a = jwt.decode(encoded_jwt, SECRET, algorithms=['HS256'])
-            print(a)
+            # print(a)
             return True
         except:
-            print('Not valid')
+            # print('Not valid')
             return False
 
 
