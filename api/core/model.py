@@ -96,7 +96,7 @@ class Model:
                         raise falcon.HTTPNotFound()
                         # self._error()
                     else:
-                        print('sending to decryptor')
+                        # print('sending to decryptor')
                         self.set_map(results, encrypted=True)
 
                     # Update the internal document state
@@ -181,7 +181,7 @@ class Model:
             #        probably a better way of incorporating this in a performant way
             if self.__class__._properties.get(key) is None: continue
 
-            print('setting %s to %s' % (key,value))
+            # print('setting %s to %s' % (key,value))
             if encrypted and self.__class__._properties.get(key).encrypt:
                 setattr(self, key, Utils.decrypt(value))
             else:

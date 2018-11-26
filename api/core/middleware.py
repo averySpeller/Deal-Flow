@@ -12,11 +12,12 @@ class AuthMiddleware(object):
 
         # TODO: Review security of allowing un auth-ed OPTIONS
         if req.path == '/auth' or req.method == 'OPTIONS':
-            print('in excepted ep')
+            # print('in excepted ep')
             return
         else:
-            print('required auth')
-            print(req.path)
+            pass
+            # print('required auth')
+            # print(req.path)
 
         token = req.get_header('Authorization')
 

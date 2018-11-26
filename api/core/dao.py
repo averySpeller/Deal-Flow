@@ -107,7 +107,7 @@ class DAO:
             page_size = parser.page_size
             current_page = parser.page
 
-            print(parser.url_query)
+            # print(parser.url_query)
 
             all_values = []
             # create the lookup filter query string
@@ -117,7 +117,7 @@ class DAO:
                 # this will allow us to fire search
                 # /contacts?first:like=search_data,last:like=search_data
                 # /organizations?name:like=search_data
-                # Returns search results in arraylist form [ {...}, {...} ] from the resource 
+                # Returns search results in arraylist form [ {...}, {...} ] from the resource
 
                 # split the key
                 # parse the second key word
