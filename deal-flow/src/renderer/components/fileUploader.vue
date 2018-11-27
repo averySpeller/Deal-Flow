@@ -15,13 +15,14 @@
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
         <el-upload v-else
-          class=""
+          class="myFileList"
           action=""
           drag
           :auto-upload="false"
           :on-change="getBase64"
           :before-upload="beforeUpload"
           :file-list="fileList"
+          limit="1"
           list-type="picture">
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
@@ -38,7 +39,7 @@ export default {
     data() {
         return {
             encoded: null,
-            fileList: [{name: "somefile.pdf", url: "static/pdfDefault.png"}]
+            fileList: []
         }
     },
     methods: {
@@ -56,7 +57,7 @@ export default {
                     resolve(
                         this.encoded='data:'+ file.raw.type +';base64,'+encoded,
                         this.$emit('input', this.encoded),
-                        this.fileList = [{name: file.raw.name, url: "static/pdfDefault.png"}]
+                        this.fileList = [{name: file.raw.name, url: "static/imgs/pdfDefault.png"}]
                     );
                 };
                 reader.onerror = error => reject(error);
@@ -92,4 +93,12 @@ export default {
 </script>
 
 <style lang="css">
+
+  .myFileList ul{
+    color: black;
+  }
+
+  body{
+    color: black
+  }
 </style>

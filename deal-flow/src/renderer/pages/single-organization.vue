@@ -3,7 +3,17 @@
     <el-row>
       <el-col>
         <div class="uk-align-right uk-margin-right">
-          <el-button @click="deleteCompany()" type="danger">Delete Organization</el-button>
+          <el-popover
+            placement="bottom"
+            width="160"
+            v-model="popoverVisible">
+            <p>Are you sure to delete the company and all pitches included?</p>
+            <div style="text-align: right; margin: 0">
+              <el-button size="mini" type="text" @click="popoverVisible = false">cancel</el-button>
+              <el-button type="primary" size="mini" @click="popoverVisible = false; deleteCompany()">confirm</el-button>
+            </div>
+            <el-button slot="reference" type="danger">Delete Organization</el-button>
+          </el-popover>
           <router-link :to="{ name:'EditOrganization', params: { id: organization.organization_id }}">
             <el-button>Edit</el-button>
           </router-link>
@@ -119,6 +129,7 @@ export default {
       errors: [],
       tags: [],
       tagSuggestions: [],
+      popoverVisible: false,
       inputVisible: false,
       inputTag: '',
       emptyDeal: {
@@ -231,17 +242,35 @@ export default {
       };
     },
     deleteCompany(){
+      //delete all pitches
       for (var i = 0; i < this.deals.length; i++) {
         lib.deleteRequest("/deals/".concat(this.deals[i].deal_id), response => {
           console.log("Request Completed: Delete Deal #".concat(this.deals[i].deal_id));
           console.log(response.data);
         })
-
       }
-      lib.deleteRequest("/organization/".concat(this.organization.organization_id), response => {
+      //update all contact bindings
+      var payload = {organization_id: null}
+
+      for (var i = 0; i < this.contacts.length; i++) {
+        lib.putRequest("/contacts/".concat(this.contacts[i].contact_id), payload, response => {
+          console.log("Request Completed: Updated organization in Contact #".concat(this.contacts[i].contact_id));
+          console.log(response.data);
+        })
+      }
+
+      //delete all tagmappings
+      for (var i = 0; i < this.tags.length; i++) {
+        this.deleteTagMapping(this.tags[i]);
+      }
+
+
+      lib.deleteRequest("/organizations/".concat(this.organization.organization_id), response => {
         console.log("Request Completed: Delete Organization #".concat(this.organization.organization_id));
         console.log(response.data);
+        this.goBack();
       })
+
     }
   },
   created() {
@@ -312,6 +341,7 @@ export default {
       this.tagSuggestions = myTagSuggestions;
 
     })
+
 
   }
 }

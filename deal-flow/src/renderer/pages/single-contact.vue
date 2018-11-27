@@ -143,11 +143,16 @@ export default {
     },
     deleteContact(){
 
-      lib.deleteRequest("/contacts/".concat(this.contact.contact_id), response => {
-        window.history.length > 1
-          ? this.$router.go(-1)
-          : this.$router.push('/')
+      //delete all tagmappings
+      for (var i = 0; i < this.tags.length; i++) {
+        this.deleteTagMapping(this.tags[i]);
+      }
 
+
+      lib.deleteRequest("/contacts/".concat(this.contact.contact_id), response => {
+        console.log("Request Completed: Deleted Contact #".concat(this.contact.contact_id));
+        console.log(response.data);
+        this.goBack();
       })
     },
 
@@ -231,10 +236,12 @@ export default {
   created() {
     this.id = this.$route.params.id;
 
-    lib.getRequest("/contacts/".concat(this.id), response => {
+    lib.getRequest("/contacts/".concat(this.id).concat('?fields=avatar'), response => {
       console.log("Request Completed: Contact");
       console.log(response.data);
       this.contact = response.data;
+
+
 
       lib.getRequest("/organizations/".concat(this.contact.organization_id), response => {
         console.log("Request Completed: Organization");
