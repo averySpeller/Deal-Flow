@@ -8,11 +8,10 @@
 # Use explicit package path so that modules may be imported from parent.
 # As per: https://docs.python.org/3/tutorial/modules.html#packages
 #
-import falcon
 import re
 from inspect import signature
 from api.core.model import *
-from api.core.rql import *
+from api.core.srql import *
 
 
 class Resource(object):
@@ -21,64 +20,73 @@ class Resource(object):
         pass
 
     def new_model(self, id, req):
-        return self.__class__.model(id=id, parser=RQLParser(req))
+        return self.__class__.model(id=id, parser=SRQLParser(request=req))
 
     def new_model_collection(self, req):
-        return ModelCollection(model=self.__class__.model, parser=RQLParser(req))
+        return ModelCollection(model=self.__class__.model, parser=SRQLParser(request=req))
 
     def default_response(self, req, res, id=None):
-        # build the models
-        if id:
-            model = new_model(id, req)
+        # build the models HACK: we don't really want to check for POST
+        #  but we also dont want to move the model instantiation into the functions.
+        if id or req.method == 'POST':
+            model = self.new_model(id, req)
         else:
-            model = new_model_collection(req)
-
-        # do some stuff with the models based on the resource verb
-        supported_methods = {
-            'GET': _default_get
-            'PUT': _default_put
-            'POST': _default_post
-            'DELETE': _default_delete
-        }
+            model = self.new_model_collection(req)
 
         def _default_get(req, res, model):
             res.media = model.serialize()
+            res.status = falcon.HTTP_OK
 
-            if not model.is_error_state():
-                res.status = falcon.HTTP_CREATED
-            else:
+            if model.is_error_state():
                 res.status = falcon.HTTP_NOT_FOUND
+                res.media = None
             return res
 
         def _default_put(req, res, model):
-            res.media = model.serialize()
+            # Update the model with the new data
+            model.set_map()
+            model.save()
 
-            if not model.is_error_state():
-                res.status = falcon.HTTP_OK
-            else:
+            res.media = model.serialize()
+            res.status = falcon.HTTP_OK
+
+            if model.is_error_state():
                 res.status = falcon.HTTP_NOT_FOUND
             return res
 
         def _default_post(req, res, model):
-            res.media = model.serialize()
+            # Create the model object using json payload
+            model.set_map()
+            model.save()
 
-            if not model.is_error_state():
-                res.status = falcon.HTTP_CREATED
-            else:
+            res.media = model.serialize()
+            res.status = falcon.HTTP_CREATED
+
+            if model.is_error_state():
                 res.status = falcon.HTTP_BAD_REQUEST
             return res
 
         def _default_delete(req, res, model):
-            res.media = model.serialize()
+            success = model.delete()
+            res.status = falcon.HTTP_NO_CONTENT
 
-            if not model.is_error_state():
-                res.status = falcon.HTTP_NO_CONTENT
-            else:
+            if not success or model.is_error_state():
                 res.status = falcon.HTTP_BAD_REQUEST
             return res
 
+        # do some stuff with the models based on the resource verb
+        supported_methods = {
+            'GET': _default_get,
+            'PUT': _default_put,
+            'POST': _default_post,
+            'DELETE': _default_delete
+        }
+
         # handle the given HTTP method
         res = supported_methods[req.method](req, res, model)
+
+        # print('method')
+        # print(req.method)
 
         return res
 
@@ -86,6 +94,9 @@ class Resource(object):
         # set the response
         res.media = model.serialize()
         res.status = falcon.HTTP_404
+
+    def definitions(self):
+        pass
 
     #
     # WARNING: Beware, this is some pretty pseudo magic
