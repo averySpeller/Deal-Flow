@@ -291,7 +291,7 @@ export default {
 
       this.currentDeal = this.emptyDeal
 
-      lib.getRequest("/deals?organization_id=".concat(this.organization.organization_id).concat('?fields=slide_deck'), response => {
+      lib.getRequest("/deals?organization_id=".concat(this.organization.organization_id).concat('&fields=slide_deck'), response => {
         this.deals = response.data
         console.log("Request Completed: Deals");
         console.log(response.data);
