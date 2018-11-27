@@ -3,7 +3,17 @@
     <el-row>
       <el-col>
         <div class="uk-align-right uk-margin-right">
-          <el-button @click="deleteCompany()" type="danger">Delete Organization</el-button>
+          <el-popover
+            placement="bottom"
+            width="160"
+            v-model="popoverVisible">
+            <p>Are you sure to delete the company and all pitches included?</p>
+            <div style="text-align: right; margin: 0">
+              <el-button size="mini" type="text" @click="popoverVisible = false">cancel</el-button>
+              <el-button type="primary" size="mini" @click="popoverVisible = false; deleteCompany()">confirm</el-button>
+            </div>
+            <el-button slot="reference" type="danger">Delete Organization</el-button>
+          </el-popover>
           <router-link :to="{ name:'EditOrganization', params: { id: organization.organization_id }}">
             <el-button>Edit</el-button>
           </router-link>
@@ -44,7 +54,7 @@
                 :key="tag.tag_name"
                 closable
                 :disable-transitions="false"
-                @close="deleteTag(tag)">
+                @close="deleteTagMapping(tag)">
                 #{{tag.tag_name}}
               </el-tag>
             </div>
@@ -119,6 +129,7 @@ export default {
       errors: [],
       tags: [],
       tagSuggestions: [],
+      popoverVisible: false,
       inputVisible: false,
       inputTag: '',
       emptyDeal: {
@@ -143,10 +154,6 @@ export default {
         ? this.$router.go(-1)
         : this.$router.push('/')
     },
-    loadIt(arg) {
-      this.loadSelect()
-      this.form.organization_id=arg
-    },
 
     emptyCurrentDeal() {
       this.emptyDeal.organization_id = this.organization.organization_id;
@@ -161,25 +168,11 @@ export default {
       this.emptyDeal.notes = null;
 
       this.currentDeal = this.emptyDeal
-      console.log(this.emptyDeal);
-      console.log(this.currentDeal);
     },
 
-    loadSelect() {
-      lib.getRequest('/organizations', response => {
-        console.log(response);
-        for(let item of response.data){
-          this.orgOptions.push({
-            'label': item.name,
-            'value': item.organization_id
-          })
-        }
-        this.loading = false;
-      })
-    },
 
     //Dynamic tag control methods.
-    deleteTag(tag) {
+    deleteTagMapping(tag) {
       lib.deleteRequest("/tagmappings/".concat(tag.tagmapping_id), response => {
         console.log(response.data);
         this.tags.splice(this.tags.indexOf(tag), 1);
@@ -194,16 +187,14 @@ export default {
 
     //tag submit
     handleTagConfirm(item) {
-      console.log("Handle input confirm");
-      console.log(item);
 
       if (item instanceof KeyboardEvent){
-        console.log("We have keyboard Event");
         //NEED to create New Tag
         let inputTag = this.inputTag;
         if (inputTag) {
           var newTag = {"tag_name": inputTag, "tag_color": "blue"}
           lib.postRequest("/tags", newTag, response => {
+            console.log("Request Completed: Post New Tag");
             console.log(response.data);
 
             this.tagSuggestions.push({"value": response.data.tag_name, "tag_id": response.data.tag_id, "tag_color": response.data.tag_color,})
@@ -249,12 +240,44 @@ export default {
       return (tagSuggestion) => {
         return (tagSuggestion.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
       };
+    },
+    deleteCompany(){
+      //delete all pitches
+      for (var i = 0; i < this.deals.length; i++) {
+        lib.deleteRequest("/deals/".concat(this.deals[i].deal_id), response => {
+          console.log("Request Completed: Delete Deal #".concat(this.deals[i].deal_id));
+          console.log(response.data);
+        })
+      }
+      //update all contact bindings
+      var payload = {organization_id: null}
+
+      for (var i = 0; i < this.contacts.length; i++) {
+        lib.putRequest("/contacts/".concat(this.contacts[i].contact_id), payload, response => {
+          console.log("Request Completed: Updated organization in Contact #".concat(this.contacts[i].contact_id));
+          console.log(response.data);
+        })
+      }
+
+      //delete all tagmappings
+      for (var i = 0; i < this.tags.length; i++) {
+        this.deleteTagMapping(this.tags[i]);
+      }
+
+
+      lib.deleteRequest("/organizations/".concat(this.organization.organization_id), response => {
+        console.log("Request Completed: Delete Organization #".concat(this.organization.organization_id));
+        console.log(response.data);
+        this.goBack();
+      })
+
     }
   },
   created() {
 
     lib.getRequest("/organizations/".concat(this.$route.params.id), response => {
       this.organization = response.data;
+      console.log("Request Completed: Organization");
       console.log(response.data);
 
       this.emptyDeal.organization_id = this.organization.organization_id;
@@ -264,6 +287,7 @@ export default {
 
       lib.getRequest("/deals?organization_id=".concat(this.organization.organization_id), response => {
         this.deals = response.data
+        console.log("Request Completed: Deals");
         console.log(response.data);
         this.loading = false;
       })
@@ -284,11 +308,11 @@ export default {
         if (tagIds !== "") {
           lib.getRequest('/tags?tag_id='.concat(tagIds), response => {
 
-            console.log(response.data);
 
             for (var i = 0; i < response.data.length; i++) {
               response.data[i].tagmapping_id = tm[response.data[i].tag_id]
             }
+            console.log("Request Completed: Tags");
             console.log(response.data);
             this.tags = response.data;
           })
@@ -298,6 +322,7 @@ export default {
 
       lib.getRequest("/contacts?organization_id=".concat(this.organization.organization_id), response => {
         this.contacts = response.data
+        console.log("Request Completed: Contacts");
         console.log(response.data);
       })
     })
@@ -305,6 +330,7 @@ export default {
 
     lib.getRequest('/tags', response => {
 
+      console.log("Request Completed: TagSuggestions");
       console.log(response.data);
 
       var myTagSuggestions = []
@@ -315,6 +341,7 @@ export default {
       this.tagSuggestions = myTagSuggestions;
 
     })
+
 
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="companies"  :data="companies">
+  <div v-if="companies" v-loading="loading" :data="companies">
     <el-row type="flex" class="row-bg" justify="center">
       <el-col :span="22">
         <h1 class="uk-margin">Dashboard</h1>
@@ -34,12 +34,12 @@
     </el-row>
     <br>
     <br>
-    <el-row type="flex" class="row-bg" justify="center">
+    <el-row v-if="ofInterest" type="flex" class="row-bg" justify="center">
       <el-col :span="22">
         <div id="slider2">
           <h2>Of Interest <i class="el-icon-star-on"></i></h2>
           <el-carousel :interval="10000" type="card" height="200px">
-            <el-carousel-item v-for="organization of organizations">
+            <el-carousel-item v-for="organization of ofInterest">
               <div class="uk-flex uk-flex-center uk-flex-middle uk-flex-column">
                 <router-link tag="div" :to="{ name: 'Single-Organization', params: { id: organization.organization_id }} ">
                   <img v-if="organization.logo"v-bind:src="organization.logo"/>
@@ -56,8 +56,8 @@
       <el-col :span="22">
         <div id="slider3">
           <h2>Jobs</h2>
-          <el-carousel id="Jobs" class="uk-margin" :interval="4000" type="card" height="200px">
-            <el-carousel-item class="uk-margin" v-for="organization of organizations">
+          <el-carousel id="Jobs" :interval="4000" type="card" height="200px">
+            <el-carousel-item v-for="organization of organizations">
               <div class="uk-flex uk-flex-center uk-flex-middle uk-flex-column">
                 <router-link tag="div" :to="{ name: 'Single-Organization', params: { id: organization.organization_id }} ">
                   <img v-if="organization.logo"v-bind:src="organization.logo"/>
@@ -82,12 +82,14 @@
       return {
         organizations:[],
         deals:[],
+        ofInterest: [],
         errors: [],
         variable: null,
         totalDeals: 0,
         fundedNum:0,
         notFundedNum: 0,
         inProgressNum: 0,
+        ofInterestIds: [],
         examplelogo: 'static/imgs/404.png',
         companies: [
           { logo: 'static/imgs/randomLogo1.jpg' },
@@ -99,7 +101,8 @@
           { logo: 'static/imgs/randomLogo6.png' },
           { logo: 'static/imgs/randomLogo7.png' },
         ],
-        loading:false
+        loading:true,
+        loading_interest:true
       }
     },
     mounted() {
@@ -107,40 +110,23 @@
       lib.getRequest("/deals", response => {
         this.deals = response.data
         console.log(response.data);
-        this.setStatistics();
+
+        lib.getRequest('/organizations'.concat('?fields=logo'), response => {
+          this.organizations = response.data
+          console.log(response.data);
+          this.setStatistics();
+
+          lib.getRequest('/tagmappings'.concat("?organization_id:gt=0"), response => {
+            this.tagmappings = response.data
+            console.log(response.data);
+            this.loading = false;
+            this.parseTags();
+          })
+        })
       })
 
-      lib.getRequest('/organizations', response => {
-        this.organizations = response.data
-        console.log(response.data);
-        this.loading = false;
-      })
 
 
-
-
-      // var requestFields = this.$parent.createGetRequest("organizations")
-      // console.log(requestFields.myRequest);
-      //
-      // axios.get(requestFields.myRequest, requestFields.auth).then(response => {
-      //   this.organizations = response.data
-      //   this.setStatistics();
-      //   this.loading = false
-      // })
-      // .catch(e => {
-      //   this.errors.push(e)
-      // })
-      //
-      // requestFields = this.$parent.createGetRequest("deals")
-      // console.log(requestFields.myRequest);
-      // axios.get(requestFields.myRequest, requestFields.auth).then(response => {
-      //   this.deals = response.data
-      //   this.setStatistics();
-      //   this.loading = false
-      // })
-      // .catch(e => {
-      //   this.errors.push(e)
-      // })
     },
     methods: {
       setStatistics(){
@@ -153,6 +139,22 @@
         for (var i = 0; i < this.deals.length; i++) {
           myDeal = this.deals[i]
           this.totalDeals += 1;
+
+          if (myDeal.interest == "High") {
+            if (!this.ofInterestIds.includes(myDeal.organization_id)) {
+              this.ofInterestIds.push(myDeal.organization_id);
+
+              var newOfInterest = null
+              newOfInterest = this.findOrg(myDeal.organization_id)
+              console.log("RETURN SEARCH interest");
+              console.log(newOfInterest);
+              if (newOfInterest) {
+                this.ofInterest.push(newOfInterest)
+                console.log("Found High interest");
+                console.log(newOfInterest);
+              }
+            }
+          }
 
           if (myDeal.status === "inProgress") {
             this.inProgressNum += 1;
@@ -173,11 +175,27 @@
         this.fundedNum = Math.round((this.fundedNum / this.totalDeals) * 100);
         this.notFundedNum = Math.round((this.notFundedNum / this.totalDeals) * 100);
 
-        console.log(this.inProgressNum);
-        console.log(this.notFundedNum);
-        console.log(this.fundedNum);
+      },
+      findOrg(orgId){
+
+        for (var i = 0; i < this.organizations.length; i++) {
+          if (parseInt(this.organizations[i].organization_id) == parseInt(orgId)){
+            console.log("FOUND");
+            console.log(this.organizations[i]);
+            return(this.organizations[i]);
+          }
+        }
+        return null;
+      },
+      parseTags(){
+        for (var i = 0; i < this.tagmappings.length; i++) {
+          this.tagmappings[i].organization_id
+        }
+      },
+      hashValue(){
 
       }
+
     }
   }
 </script>

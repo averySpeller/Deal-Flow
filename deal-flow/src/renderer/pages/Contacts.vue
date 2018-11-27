@@ -1,7 +1,7 @@
 <template>
-  <div id ="Contacts" v-loading="loading" :data="contacts">
+  <div id ="Contacts">
     <h1>Contacts</h1>
-    <div v-if="errors && contacts.length">
+    <div v-loading="loading" :data="contacts">
         <el-table
          :data="contacts"
          style="width: 100%">
@@ -27,7 +27,11 @@
               <router-link :to="{ name: 'Single-Contact', params: { id: scope.row.contact_id } }">
                 <el-button type="text" size="small">Detail</el-button>
               </router-link>
-            <el-button type="text" size="small">Edit</el-button>
+              <router-link :to="{ name: 'EditContact', params: { id: scope.row.contact_id } }">
+                <el-button type="text" size="small">Edit</el-button>
+              </router-link>
+              <el-button v-on:click="deleteContact(scope.row.contact_id)" type="text" size="small">Delete</el-button>
+
           </template>
         </el-table-column>
        </el-table>
@@ -57,11 +61,21 @@ export default {
     return {
       contacts:[],
       errors: [],
-      loading:false
+      loading:true
     }
   },
   methods:{
-
+    deleteContact(id){
+      for (var i = 0; i < this.contacts.length; i++) {
+        if(this.contacts[i].contact_id === id){
+           lib.deleteRequest("/contacts/".concat(id), response => {
+             console.log("Request Completed: Delete Contact #".concat(id));
+             console.log(response.data);
+             this.contacts.splice(i, 1);
+           })
+        }
+      }
+    }
   },
   created() {
     lib.getRequest('/contacts', response => {

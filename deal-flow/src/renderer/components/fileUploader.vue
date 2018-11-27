@@ -10,21 +10,24 @@
               :before-upload="beforeAvatarUpload"
               :thumbnail-mode="true"
               >
-              <img v-if="encoded" :src="encoded" class="avatar">
+              <img v-if="value" :src="value" class="avatar">
+              <img v-else-if="encoded" :src="encoded" class="avatar">
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
         <el-upload v-else
-          class="upload-demo"
-          drag
+          class="myFileList"
           action=""
+          drag
+          :auto-upload="false"
           :on-change="getBase64"
-          :before-upload="beforeUpload">
+          :before-upload="beforeUpload"
+          :file-list="fileList"
+          limit="1"
+          list-type="picture">
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
             <div class="el-upload__tip" slot="tip">jpg/png/pdf files with a size less than 50mb</div>
-            <div class="">
-                {{fileList}}
-            </div><br>
+            <br>
         </el-upload>
         <br>
     </div>
@@ -35,9 +38,8 @@ export default {
     props: ['isImage', 'value'],
     data() {
         return {
-            imageUrl: null,
             encoded: null,
-            fileList: null
+            fileList: []
         }
     },
     methods: {
@@ -51,17 +53,18 @@ export default {
                     if ((encoded.length % 4) > 0) {
                         encoded += '='.repeat(4 - (encoded.length % 4));
                     }
+                    console.log(file.raw.name);
                     resolve(
                         this.encoded='data:'+ file.raw.type +';base64,'+encoded,
-                        this.$emit('input', this.encoded)
+                        this.$emit('input', this.encoded),
+                        this.fileList = [{name: file.raw.name, url: "static/imgs/pdfDefault.png"}]
                     );
                 };
                 reader.onerror = error => reject(error);
+
             });
         },
         handleAvatarSuccess(res, file) {
-          this.imageUrl = "/static/" + file.raw.path.replace(/^.+static/,''); ;
-          // this.form.avatar = this.imageUrl;
           console.log(  "IMAGE PATH: "+this.form.avatar);
           console.log(file.raw.path);
         },
@@ -90,4 +93,12 @@ export default {
 </script>
 
 <style lang="css">
+
+  .myFileList ul{
+    color: black;
+  }
+
+  body{
+    color: black
+  }
 </style>

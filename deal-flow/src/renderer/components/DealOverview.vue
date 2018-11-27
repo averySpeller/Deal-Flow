@@ -46,43 +46,55 @@
               {{deal.revenue_model}}
             </el-col>
           </el-row>
+          <el-row :gutter="15">
+            <el-col :span="12">
+              <strong class="uk-align-right">Status:</strong>
+            </el-col>
+            <el-col :span="12">
+              {{deal.status}}
+            </el-col>
+          </el-row>
+          <el-row :gutter="15">
+            <el-col :span="12">
+              <strong class="uk-align-right">Raise:</strong>
+            </el-col>
+            <el-col :span="12">
+              {{deal.raise}}
+            </el-col>
+          </el-row>
+          <el-row :gutter="15">
+            <el-col :span="12">
+              <strong class="uk-align-right">Raise Type:</strong>
+            </el-col>
+            <el-col :span="12">
+              {{deal.raise_type}}
+            </el-col>
+          </el-row>
+          <el-row :gutter="15">
+            <el-col :span="12">
+              <strong class="uk-align-right">Round:</strong>
+            </el-col>
+            <el-col :span="12">
+              {{deal.round}}
+            </el-col>
+          </el-row>
           <!-- <li><p><strong>Address: </strong>{{organization.address.street}} "Street, "{{organization.address.suite}}", "{{organization.address.city}}", "{{organization.address.zipcode}}</p></li> -->
         </ul>
       </el-col>
       <el-col  :xs="12" :sm="11" :md="10" :lg="9" :xl="9">
         <el-row :gutter="15">
-          <el-col :span="12">
-            <strong class="uk-align-right">Status:</strong>
-          </el-col>
-          <el-col :span="12">
-            {{deal.status}}
-          </el-col>
+        <!--calling radar chart, pass isContact or isOrganization to determin the label names -->
+                    <Chart
+                      v-if="!loading"
+                      isDeal
+                      :id = "deal.deal_id"
+                      :skill1 = "deal.skill1"
+                      :skill2 = "deal.skill2"
+                      :skill3 = "deal.skill3"
+                      :skill4 = "deal.skill4"
+                      :skill5 = "deal.skill5">
+                    </Chart>
         </el-row>
-        <el-row :gutter="15">
-          <el-col :span="12">
-            <strong class="uk-align-right">Raise:</strong>
-          </el-col>
-          <el-col :span="12">
-            {{deal.raise}}
-          </el-col>
-        </el-row>
-        <el-row :gutter="15">
-          <el-col :span="12">
-            <strong class="uk-align-right">Raise Type:</strong>
-          </el-col>
-          <el-col :span="12">
-            {{deal.raise_type}}
-          </el-col>
-        </el-row>
-        <el-row :gutter="15">
-          <el-col :span="12">
-            <strong class="uk-align-right">Round:</strong>
-          </el-col>
-          <el-col :span="12">
-            {{deal.round}}
-          </el-col>
-        </el-row>
-
       </el-col>
       <el-col :xs="0" :sm="1" :md="2" :lg="3" :xl="3"><div class="grid-content bg-purple"></div></el-col>
     </el-row>
@@ -102,11 +114,9 @@
     </el-row>
 <br><br>
     <el-row :gutter="50" type="flex" class="row-bg" justify="center">
-      <el-col :span="12">
+      <el-col :span="18" v-if="deal.slide_deck">
         PDF:
-        <!-- static/pdfs/Prototyping.pdf -->
-        <!-- <webview v-bind:src="deal.slide_deck" plugins></webview> -->
-        <webview v-bind:src="deal.slide_deck" plugins></webview>
+        <webview class="pdfViewer" v-bind:src="deal.slide_deck" plugins></webview>
       </el-col>
     </el-row>
 
@@ -114,11 +124,19 @@
 </template>
 
 <script>
+import Chart from '../components/Chart';
 import lib from '../lib'
 export default {
   name: 'DealOverview',
   props: ['organization', 'deal'],
-
+  components:{
+    'Chart': Chart
+  },
+  data(){
+    return{
+      loading: false
+    }
+  },
   methods: {
     deleteDeal(){
       var dealIndex = this.$parent.deals.indexOf(this.deal)
@@ -143,6 +161,15 @@ export default {
 <style scoped>
   .grid-content {
     min-height: 36px;
+  }
+  .pdfViewer{
+    border-radius: 10%;
+    position: relative;
+    width: 100%
+  }
+  .pdfViewer:before{
+    content: "";
+    padding-top: 70%; 	/* initial ratio of 1:1*/
   }
 
 </style>

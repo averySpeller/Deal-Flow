@@ -90,7 +90,7 @@
             </el-form-item>
             <FileUploader v-model="deal.slide_deck"></FileUploader>
 
-            <div v-if="deal.editDeal" class="uk-flex uk-flex-center">
+            <div v-if="editDeal" class="uk-flex uk-flex-center">
               <el-button @click="EditDeal()" type="primary" uk-toggle="target: #offcanvas-addDeal">Edit Deal!</el-button><br><br>
             </div>
 
@@ -194,18 +194,15 @@ export default {
       console.log(this.deal);
       this.deal.organization_id = this.$parent.organization.organization_id
 
-      // lib.postRequest('/deals', this.form, response => {
-      //   console.log(this.form);
-      //   console.log(response.data);
-      //   this.$parent.deals.push(response.data)
-      //
-      //   goBack();
-      // })
-      this.$parent.editDeal = false;
+      lib.putRequest('/deals/'.concat(this.deal.deal_id), this.deal, response => {
+        console.log("Request Completed: Updated Deal #".concat(this.deal.deal_id));
+        console.log(response.data);
+        this.$parent.editDeal = false;
+      })
     }
   },
   created(){
-    console.log("MOUNTED");
+    //CREATION
   }
 }
 

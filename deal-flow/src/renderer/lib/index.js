@@ -21,7 +21,7 @@ export default{
     }
   },
   getRequest (end_point, callback, error_callback=null) {
-    console.log(this.getHeaders());
+    // console.log(this.getHeaders());
       axios.get(this.baseUrl + end_point, this.getHeaders()).then(response => {
         callback(response)
       }).catch(e => {

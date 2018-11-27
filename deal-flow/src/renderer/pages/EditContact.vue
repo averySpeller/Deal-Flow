@@ -5,9 +5,7 @@
         <el-col :xs="12" :sm="10" :md="8" :lg="6" :xl="6">
           <el-form ref="form" :model="form" label-width="70px">
             <br>
-            <div class="uk-flex uk-flex-center uk-inline" style="border-radius: 50%">
-              <img  class="avatar" v-bind:src ="form.avatar">
-            </div>
+            <FileUploader isImage="true" v-model="form.avatar"></FileUploader>
             <el-form-item label="Name:">
               <el-input
                 v-model="name"
@@ -117,7 +115,7 @@
 
 <script>
 import lib from '../lib'
-// import axios from 'axios'
+import FileUploader from '../components/FileUploader'
 import router from '../router'
 import AddOrganization from './AddOrganization';
 export default {
@@ -147,15 +145,16 @@ export default {
       }
     }
   },
+  components:{
+    'FileUploader': FileUploader
+  },
   created() {
-    //~~~~~~~~~~~~~~~UNCOMMENT ONCE LIB IS CREATED~~~~~~~~~~~~~~~~~~~~~~~~~~//
+
 
     lib.getRequest('/contacts/'.concat(this.$route.params.id), response => {
       this.contact = response.data
       console.log(response.data);
        this.name = response.data['first'] + ' ' + response.data['last'];
-       // this.form.first = response.data['first'];
-       // this.form.last = response.data['last'];
        this.form.email = response.data['email'];
        this.form.phone1 = response.data['phone1'];
        this.form.phone2 = response.data['phone2'];
@@ -165,34 +164,10 @@ export default {
        this.form.notes = response.data['notes'];
        this.form.avatar = response.data['avatar'];
        this.form.organization_id = response.data['organization_id'];
-
-
-
-
-
-
-
       console.log(myRequest);
     })
 
         this.loadSelect()
-    //
-    // var requestFields = this.$parent.createGetRequest("contacts/".concat(this.$route.params.id))
-    //
-    // axios.get(requestFields.myRequest, requestFields.auth).then(response => {
-    //   this.contact = response.data
-    //   console.log(response.data);
-    //    this.name = response.data['first'] + ' ' + response.data['last'];
-    //    this.form.email = response.data['email'];
-    //    this.form.phone1 = response.data['phone1'];
-    //    this.form.phone2 = response.data['phone2'];
-    //    this.form.website = response.data['website'];
-    //    this.form.notes = response.data['notes'];
-    //   console.log(myRequest);
-    // })
-    // .catch(e => {
-    //   this.errors.push(e)
-    // })
   },
   methods: {
     goBack () {
@@ -204,8 +179,6 @@ export default {
       var splitty = this.name.split(' ');
       this.form.first = splitty[0];
       this.form.last = splitty[1];
-
-      // console.log(splitty);
       console.log(this.form);
 
     lib.putRequest('/contacts/'.concat(this.$route.params.id), this.form, response => {
@@ -216,20 +189,6 @@ export default {
         ? this.$router.go(-1)
         : this.$router.push('/')
       })
-      // axios.put('http://24.138.161.30:5000/contacts/'.concat(this.$route.params.id),this.form).then(response => {
-      //   console.log(response.data);
-      //   console.log(response.header);
-      //
-      //   window.history.length > 1
-      //     ? this.$router.go(-1)
-      //     : this.$router.push('/')
-      // })
-      // .catch(e => {
-      //   this.errors.push(e)
-      //   console.log(e);
-      //   console.log('i died');
-      // })
-
     },
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);

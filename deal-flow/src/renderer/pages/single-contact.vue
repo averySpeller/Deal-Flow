@@ -21,10 +21,9 @@
           <h1>{{contact.first}} {{contact.last}}</h1>
         </div>
         <div class="title uk-flex uk-flex-center">
-          <h4>{{organization.name}}</h4>
-          <!-- <router-link tag="h4" :to="{ name: 'Single-Organization', params: { id: contact.company }} ">
-            {{contact.company}}
-          </router-link> -->
+          <router-link :to="{ name: 'Single-Organization', params: { id: contact.organization_id }} ">
+            {{organization.name}}
+          </router-link>
         </div>
         <div class="title uk-flex uk-flex-center">
           <h4>{{this.myTest}}</h4>
@@ -85,7 +84,18 @@
         </el-col>
         <el-col  :xs="12" :sm="11" :md="10" :lg="9" :xl="9">
           <div class="uk-flex uk-flex-center uk-inline" >
-            <img src="static/imgs/sampleRadarChart.png" height="100" uk-img>
+<!--calling radar chart, pass isContact or isOrganization to determin the label names -->
+            <Chart
+              v-if="!loading"
+              isContact
+              :id = "contact.contact_id"
+              :skill1 = "contact.skill1"
+              :skill2 = "contact.skill2"
+              :skill3 = "contact.skill3"
+              :skill4 = "contact.skill4"
+              :skill5 = "contact.skill5">
+            </Chart>
+
           </div>
           <br><br>
       </ul>
@@ -119,10 +129,17 @@
 
 <script>
 import lib from '../lib'
+import Deals from './Deals';
+import Chart from '../components/Chart';
+
 export default {
   name: 'Single-Contact',
+  components:{
+    'Chart': Chart
+  },
   data(){
     return {
+      // conID: null,
       id: 0,
       myTest:"WRONG",
       contact: {},
@@ -143,11 +160,16 @@ export default {
     },
     deleteContact(){
 
-      lib.deleteRequest("/contacts/".concat(this.contact.contact_id), response => {
-        window.history.length > 1
-          ? this.$router.go(-1)
-          : this.$router.push('/')
+      //delete all tagmappings
+      for (var i = 0; i < this.tags.length; i++) {
+        this.deleteTagMapping(this.tags[i]);
+      }
 
+
+      lib.deleteRequest("/contacts/".concat(this.contact.contact_id), response => {
+        console.log("Request Completed: Deleted Contact #".concat(this.contact.contact_id));
+        console.log(response.data);
+        this.goBack();
       })
     },
 
@@ -230,12 +252,17 @@ export default {
   },
   created() {
     this.id = this.$route.params.id;
-    console.log("Getting contact info for contact #".concat(this.$route.params.id));
 
-    lib.getRequest("/contacts/".concat(this.id), response => {
+    lib.getRequest("/contacts/".concat(this.id).concat('?fields=avatar'), response => {
+      console.log("Request Completed: Contact");
+      console.log(response.data);
       this.contact = response.data;
 
+
+
       lib.getRequest("/organizations/".concat(this.contact.organization_id), response => {
+        console.log("Request Completed: Organization");
+        console.log(response.data);
         this.organization = response.data
       })
 
@@ -251,16 +278,15 @@ export default {
           tagIds = tagIds.concat(response.data[i].tag_id);
           tm[response.data[i].tag_id] = response.data[i].tagmapping_id;
         }
-        console.log(tm);
 
         if (tagIds !== "") {
           lib.getRequest('/tags?tag_id='.concat(tagIds), response => {
 
-            console.log(response.data);
-
             for (var i = 0; i < response.data.length; i++) {
               response.data[i].tagmapping_id = tm[response.data[i].tag_id]
             }
+
+            console.log("Request Completed: Tags");
             console.log(response.data);
             this.tags = response.data;
           })
@@ -269,6 +295,7 @@ export default {
 
       lib.getRequest('/tags', response => {
 
+        console.log("Request Completed: TagSuggestions");
         console.log(response.data);
 
         var myTagSuggestions = []
