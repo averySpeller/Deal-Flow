@@ -7,7 +7,7 @@ References: Radar.vue
 props:{
   id: null,
   isContact: Boolean,
-  isOrganization: Boolean,
+  isDeal: Boolean,
   skill1:{
     default: 0
   },
@@ -87,7 +87,7 @@ props:{
     props:{
       id: null,
       isContact: Boolean,
-      isOrganization: Boolean,
+      isDeal: Boolean,
       skill1:{
         default: 0
       },
@@ -145,8 +145,8 @@ props:{
         this.skill3Name = 'Confidence'
         this.skill4Name = 'Knowledge'
         this.skill5Name = 'Charisma'
-      }else if(this.isOrganization){
-        this.labels = ['orgskill','orgskill2','orgskill3','orgskill4','orgskill5']
+      }else if(this.isDeal){
+        this.labels = ['dealkill','orgskill2','orgskill3','orgskill4','orgskill5']
         this.skill1Name = 'ORGSKILL1'
         this.skill2Name = 'ORGSKILL2'
         this.skill3Name = 'ORGSKILL3'
@@ -193,8 +193,8 @@ props:{
         }
         if(this.isContact){
           this.requestString = "/contacts/"
-        }else if(this.isOrganization){
-          this.requestString = "/organizations/"
+        }else if(this.isDeal){
+          this.requestString = "/deals/"
         }
         console.log("Put values are: "+this.values);
         lib.putRequest(this.requestString.concat(this.id), this.values, response => {
