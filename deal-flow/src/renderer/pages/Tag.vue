@@ -3,30 +3,36 @@
     <button @click="goBack()" class="uk-button uk-button-secondary uk-button-large uk-margin">GO BACK</button>
 
     <el-row type="flex" class="row-bg" justify="center">
-      <h1>{{this.tag}}</h1>
+      <h1>#{{this.tag.tag_name}}</h1>
     </el-row>
-    <el-row type="flex" class="row-bg" justify="center">
-      <h1>Companies</h1>
-    </el-row>
-    <div v-if="errors && organizations.length">
-      <ul v-for="organization of organizations">
-          <!-- {{organization.name}} -->
-          <router-link :to="{ name: 'Single-Organization', params: { id: organization.organization_id } }">
-            {{organization.name}}
-          </router-link>
-      </ul>
-    </div>
-    <el-row type="flex" class="row-bg" justify="center">
-      <h1>Contacts</h1>
-    </el-row>
+    <div>
+      <hr class="uk-divider-icon"/>
+      <el-row :gutter="40">
+        <el-col :xs="0" :sm="1" :md="2" :lg="3" :xl="3"><div class="grid-content bg-purple"></div></el-col>
+        <el-col :xs="12" :sm="11" :md="10" :lg="9" :xl="9">
+          <h3>Companies</h3>
+          <ul v-for="organization of organizations">
+              <router-link :to="{ name: 'Single-Organization', params: { id: organization.organization_id } }">
+                {{organization.name}}
+              </router-link>
+          </ul>
+        </el-col>
+        <el-col :xs="12" :sm="11" :md="10" :lg="9" :xl="9">
+          <h3>Contacts</h3>
+          <ul v-for="contact of contacts">
+              <router-link :to="{ name: 'Single-Contact', params: { id: contact.contact_id } }">
+                {{contact.first}} {{contact.last}}
+              </router-link>
+          </ul>
+          <ul v-if="contacts.length < 1">
+            No Contacts with this tag
+          </ul>
 
-    <div v-if="errors && contacts.length">
-      <ul v-for="contact of contacts">
-          <router-link :to="{ name: 'Single-Contact', params: { id: contact.contact_id } }">
-            {{contact.first}} {{contact.last}}
-          </router-link>
-      </ul>
+        </el-col>
+        <el-col :xs="0" :sm="1" :md="2" :lg="3" :xl="3"><div class="grid-content bg-purple"></div></el-col>
+      </el-row>
     </div>
+
     <ul v-if="errors && errors.length">
       <li v-for="error of errors">
         {{error.message}}
@@ -48,7 +54,7 @@ export default {
       organizations:[],
       contacts:[],
       errors: [],
-      loading:false
+      loading: true
     }
   },
   methods:{
@@ -100,7 +106,7 @@ export default {
   },
   created() {
     this.tagId = this.$route.params.id
-    lib.getRequest('/tag/'.concat(this.tagId), response => {
+    lib.getRequest('/tags/'.concat(this.tagId), response => {
       this.tag = response.data
       console.log("Request Completed: Tag");
       console.log(response.data);

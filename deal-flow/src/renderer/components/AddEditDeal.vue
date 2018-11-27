@@ -88,7 +88,7 @@
                 placeholder="Add Notes">
               </el-input>
             </el-form-item>
-            <FileUploader v-model="deal.slide_deck"></FileUploader>
+            <FileUploader v-model="deal.slide_deck" v-bind:fileList="this.fileList"></FileUploader>
 
             <div v-if="editDeal" class="uk-flex uk-flex-center">
               <el-button @click="EditDeal()" type="primary" uk-toggle="target: #offcanvas-addDeal">Edit Deal!</el-button><br><br>
@@ -112,7 +112,7 @@ import lib from '../lib'
 import FileUploader from './FileUploader'
 export default {
   name: 'AddEditDeal',
-  props: ['organization', 'editDeal', 'deal'],
+  props: ['organization', 'editDeal', 'deal', 'fileList'],
 
   data(){
     return{

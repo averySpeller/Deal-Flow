@@ -37,8 +37,8 @@
         </div>
         <el-row type="flex" class="row-bg" justify="center">
           <el-radio-group v-model="currentDeal">
-            <el-radio-button :label="emptyDeal">Overview</el-radio-button>
-            <el-radio-button v-for="(deal, key) in deals" :label="deal" >Pitch {{key+1}}</el-radio-button>
+            <el-radio-button  :label="emptyDeal">Overview</el-radio-button>
+            <el-radio-button v-for="(deal, key) in deals" v-on:click.native="setFileList()" :label="deal" >Pitch {{key+1}}</el-radio-button>
           </el-radio-group>
           <el-button @click="emptyCurrentDeal()" uk-toggle="target: #offcanvas-addDeal" type="success" plain  size="medium">Add Pitch</el-button>
         </el-row>
@@ -102,7 +102,7 @@
     <div id="offcanvas-addDeal" uk-offcanvas="mode: slide; overlay: true; flip: true">
       <div class="uk-offcanvas-bar">
         <button class="uk-offcanvas-close" type="button" uk-close></button>
-          <AddEditDeal v-bind:organization="this.organization" v-bind:editDeal="this.editDeal" v-bind:deal="this.currentDeal"></AddEditDeal>
+          <AddEditDeal v-bind:organization="this.organization" v-bind:editDeal="this.editDeal" v-bind:deal="this.currentDeal" v-bind:fileList="this.fileList"></AddEditDeal>
       </div>
     </div>
   </div>
@@ -128,6 +128,7 @@ export default {
       deals: [],
       errors: [],
       tags: [],
+      fileList: [],
       tagSuggestions: [],
       popoverVisible: false,
       inputVisible: false,
@@ -168,8 +169,13 @@ export default {
       this.emptyDeal.notes = null;
 
       this.currentDeal = this.emptyDeal
+      this.fileList = []
     },
 
+    setFileList(){
+      console.log("SETTING FILE list");
+      this.fileList = [{name: 'savedPdf.pdf', url: 'static/imgs/pdfDefault.png'}]
+    },
 
     //Dynamic tag control methods.
     deleteTagMapping(tag) {
@@ -275,7 +281,7 @@ export default {
   },
   created() {
 
-    lib.getRequest("/organizations/".concat(this.$route.params.id), response => {
+    lib.getRequest("/organizations/".concat(this.$route.params.id).concat('?fields=logo'), response => {
       this.organization = response.data;
       console.log("Request Completed: Organization");
       console.log(response.data);
@@ -285,7 +291,7 @@ export default {
 
       this.currentDeal = this.emptyDeal
 
-      lib.getRequest("/deals?organization_id=".concat(this.organization.organization_id), response => {
+      lib.getRequest("/deals?organization_id=".concat(this.organization.organization_id).concat('?fields=slide_deck'), response => {
         this.deals = response.data
         console.log("Request Completed: Deals");
         console.log(response.data);
@@ -293,7 +299,6 @@ export default {
       })
 
       lib.getRequest('/tagmappings?organization_id='.concat(this.organization.organization_id), response => {
-
         var tagIds = "";
         var tm = {};
 

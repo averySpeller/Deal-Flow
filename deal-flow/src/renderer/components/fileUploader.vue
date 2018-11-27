@@ -22,7 +22,6 @@
           :on-change="getBase64"
           :before-upload="beforeUpload"
           :file-list="fileList"
-          limit="1"
           list-type="picture">
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
@@ -35,11 +34,11 @@
 <script>
 export default {
     name: 'FileUploader',
-    props: ['isImage', 'value'],
+    props: ['isImage', 'value', 'fileList'],
     data() {
         return {
             encoded: null,
-            fileList: []
+            fileList: null,
         }
     },
     methods: {

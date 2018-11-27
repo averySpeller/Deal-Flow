@@ -11,7 +11,7 @@
     </el-row>
     <h1>THIS: {{this.deal.deal_id}}</h1>
     <el-row :gutter="50">
-      <el-col :xs="0" :sm="1" :md="2" :lg="3" :xl="3"><div class="grid-content bg-purple"></div></el-col>
+      <el-col :xs="0" :sm="1" :md="2" :lg="3" :xl="3"><div></div></el-col>
       <el-col :xs="12" :sm="11" :md="10" :lg="9" :xl="9">
         <ul>
           <el-row :gutter="15">
@@ -112,7 +112,7 @@
         </el-input>
       </el-col>
     </el-row>
-<br><br>
+    <br><br>
     <el-row :gutter="50" type="flex" class="row-bg" justify="center">
       <el-col :span="18" v-if="deal.slide_deck">
         PDF:
