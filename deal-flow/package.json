@@ -23,8 +23,10 @@
   "dependencies": {
     "axios": "^0.18.0",
     "chart.js": "^2.7.3",
+    "echarts": "^4.2.0-rc.2",
     "element-ui": "^2.4.8",
     "hchs-vue-charts": "^1.2.8",
+    "v-charts": "^1.19.0",
     "vue": "^2.5.16",
     "vue-carousel": "^0.14.0",
     "vue-chartjs": "^3.4.0",
