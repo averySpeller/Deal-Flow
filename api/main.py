@@ -11,13 +11,18 @@
 from api.core.service import *
 
 # TODO: from api.services.data import *
+
+from api.services.data.tags import *
+from api.services.data.tm import *
 from api.services.data.contacts import *
 from api.services.data.deals import *
 from api.services.data.organizations import *
+from api.services.auth.auth import *
+from api.services.auth.users import *
 
 # Create the service
 monolith = Service('Monolith')
 
 # Register all of the resource models
-resources = [ Contacts(), Deals(), Organizations() ]
+resources = [ Auth(), Users(), Contacts(), Deals(), Organizations(), Tags(), TagMappings() ]
 monolith.register(resources)

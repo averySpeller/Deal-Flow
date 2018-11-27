@@ -9,12 +9,14 @@
 # As per: https://docs.python.org/3/tutorial/modules.html#packages
 #
 import falcon
-
+from api.core.middleware import *
 
 class Service:
 
     def __init__(self, service_name):
         self.app = falcon.API(middleware=[
+            CORSComponent(),
+            AuthMiddleware()
             # AuthMiddleware(),
             # RequireJSON(),
             # JSONTranslator(),
