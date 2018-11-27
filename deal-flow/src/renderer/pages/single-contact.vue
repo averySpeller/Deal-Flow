@@ -85,7 +85,16 @@
         <el-col  :xs="12" :sm="11" :md="10" :lg="9" :xl="9">
           <div class="uk-flex uk-flex-center uk-inline" >
 <!--calling radar chart, pass isContact or isOrganization to determin the label names -->
-            <Chart v-if="!loading" isContact :skill1 = "contact.skill1" :skill2 = "contact.skill2" :skill3 = "contact.skill3" :skill4 = "contact.skill4" :skill5 = "contact.skill5"></Chart>
+            <Chart
+              v-if="!loading"
+              isContact
+              :id = "contact.contact_id"
+              :skill1 = "contact.skill1"
+              :skill2 = "contact.skill2"
+              :skill3 = "contact.skill3"
+              :skill4 = "contact.skill4"
+              :skill5 = "contact.skill5">
+            </Chart>
 
           </div>
           <br><br>

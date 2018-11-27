@@ -1,8 +1,32 @@
+<!--~~~~~~~~~~~~~~~~~~~~~~Chart~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<!--
+Used to display skill radar chart for either contact or company (call using isContact or isCompany)
+saves/updates to eiter one on change. Label names hardcoded for con or org
+
+References: Radar.vue
+props:{
+  id: null,
+  isContact: Boolean,
+  isOrganization: Boolean,
+  skill1:{
+    default: 0
+  },
+  skill2:{
+    default: 0
+  },
+  skill3:{
+    default: 0
+  },
+  skill4:{
+    default: 0
+  },
+  skill5:{
+    default: 0
+  }
+-->
 <template>
   <div class="small">
     <Radar v-if="loaded" :chart-data="datacollection" :options="options" ></Radar>
-<!-- <p>props: {{skill1}},{{skill2}},{{skill3}},{{skill4}},{{skill5}} </p>
-<p>selectors: {{values.skill1}},{{values.skill2}},{{values.skill3}},{{values.skill4}},{{values.skill5}} </p> -->
     <div class="block">
     <span class="demonstration">{{skill1Name}}:</span>
     <el-slider @change="changeSkills"
@@ -54,13 +78,14 @@
 
 <script>
   import Radar from '../components/Radar.vue'
-
+  import lib from '../lib'
   export default {
     name: 'Chart',
     components: {
       Radar
     },
     props:{
+      id: null,
       isContact: Boolean,
       isOrganization: Boolean,
       skill1:{
@@ -98,12 +123,14 @@
           skill4: this.skill4,
           skill5: this.skill5
         },
+        requestString: null,
         options:{
             responsive: true,
             maintainAspectRatio: true,
             scale: {
                 ticks: {
                     beginAtZero: true,
+                    stepSize: 1,
                     max: 5
                 }
             }
@@ -111,14 +138,14 @@
       }
     },
     async mounted () {
-      if(this.isContact == true){
+      if(this.isContact){
         this.labels = ['Persistence','Leadership','Confidence','Knowledge','Charisma']
         this.skill1Name = 'Persistence'
         this.skill2Name = 'Leadership'
         this.skill3Name = 'Confidence'
         this.skill4Name = 'Knowledge'
         this.skill5Name = 'Charisma'
-      }else if(this.isOrganization= true ){
+      }else if(this.isOrganization){
         this.labels = ['orgskill','orgskill2','orgskill3','orgskill4','orgskill5']
         this.skill1Name = 'ORGSKILL1'
         this.skill2Name = 'ORGSKILL2'
@@ -155,7 +182,6 @@
       },
       changeSkills (){
         this.datacollection = {
-
           labels: this.labels,
           datasets: [
             {
@@ -165,6 +191,16 @@
              },
           ]
         }
+        if(this.isContact){
+          this.requestString = "/contacts/"
+        }else if(this.isOrganization){
+          this.requestString = "/organizations/"
+        }
+        console.log("Put values are: "+this.values);
+        lib.putRequest(this.requestString.concat(this.id), this.values, response => {
+          console.log(response.data);
+          console.log(response.header);
+        })
       },
       skillList (){
         return([parseInt(this.values.skill1),parseInt(this.values.skill2),parseInt(this.values.skill3),parseInt(this.values.skill4),parseInt(this.values.skill5),])
