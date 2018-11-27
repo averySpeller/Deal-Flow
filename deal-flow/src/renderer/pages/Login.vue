@@ -25,7 +25,7 @@
           <div class="uk-margin">
             <div class="uk-inline">
               <span class="uk-form-icon" uk-icon="icon: lock"></span>
-              <input v-if="passwordError" v-model="password" class="uk-input uk-form-width-medium uk-form-danger" type="text" >
+              <input v-if="passwordError" v-model="password" class="uk-input uk-form-width-medium uk-form-danger" type="password" >
               <input v-else v-model="password" class="uk-input uk-form-width-medium"  type="password" placeholder="password">
             </div>
           </div>
@@ -37,7 +37,7 @@
         <!-- <button @click="validateLoginCredentials()" class="uk-button uk-button-primary uk-button-large uk-margin">Log In</button> -->
       </form>
       <br>
-      <button @click="somefunc()"class="uk-button uk-button-secondary uk-button-small uk-margin-small" >Forgot Password</button>
+      <!-- <button @click="somefunc()"class="uk-button uk-button-secondary uk-button-small uk-margin-small" >Forgot Password</button> -->
       <h3 style="color:red"v-if="errors">{{errors}}</h3>
     </div>
   </div>
@@ -77,7 +77,6 @@
       finishLogging(){
         console.log(lib.baseUrl.concat('/auth'));
         lib.postRequest('/auth', { "username": this.username, "password": this.password }, response => {
-          console.log('here');
           if (response.data) {
             console.log(response.data);
             this.jwtAuth = response.data.token
@@ -110,10 +109,12 @@
         if (this.username == "") {
           this.usernameError = true;
           this.errors = this.errors + "username is empty\n";
+          this.loading= false;
         }
         if (this.password == "") {
           this.passwordError = true;
           this.errors = this.errors + "password is empty\n";
+          this.loading= false;
         }
 
         if (!(this.usernameError && this.passwordError)) {

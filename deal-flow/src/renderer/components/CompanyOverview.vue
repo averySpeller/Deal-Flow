@@ -10,7 +10,6 @@
         <p v-if="organization.line2"><strong>Address 2: </strong>{{organization.line2}}</p>
         <p><strong>Phone: </strong>{{organization.phone1}}</p>
         <p v-if="organization.phone2"><strong>Phone 2: </strong>{{organization.phone2}}</p>
-        <p><strong>Website: </strong>{{organization.website}}</p>
 
       <p><strong>Contacts: </strong></p>
       <ol>

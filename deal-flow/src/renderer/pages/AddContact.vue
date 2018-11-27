@@ -15,21 +15,35 @@
                 v-model="name"
                 type="text"
                 clearable
-                placeholder="FistName LastName">
+                placeholder="John Smith">
               </el-input>
+            </el-form-item>
+            <el-form-item label="Title:">
+              <el-select
+                v-model="form.title"
+                filterable
+                allow-create
+                placeholder="Select a title">
+                <el-option
+                  v-for="item in this.titleOptions"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
             </el-form-item>
             <el-form-item label="Email:">
               <el-input
                 v-model="form.email"
                 type="text"
                 clearable
-                placeholder="username@domain.com">
+                placeholder="name@mail.com">
               </el-input>
             </el-form-item>
             <el-form-item label="Phone1:">
               <el-input
                 v-model="form.phone1"
                 type="text"
+                placeholder="(123) 456-7890"
                 clearable>
               </el-input>
             </el-form-item>
@@ -37,6 +51,7 @@
               <el-input
                 v-model="form.phone2"
                 type="text"
+                placeholder="(123) 456-7890"
                 clearable>
               </el-input>
             </el-form-item>
@@ -44,7 +59,8 @@
               <el-input
                 v-model="form.website"
                 type="text"
-                clearable>
+                clearable
+                placeholder="www.domain.com">
               </el-input>
             </el-form-item>
 
@@ -52,8 +68,9 @@
             <el-row>
 
               <el-col :span="16">
-                <el-select @click="loadSelect()" v-model="form.organization_id" clearable placeholder="Select">
+                <el-select @click="loadSelect()" v-model="form.organization_id" clearable filterable placeholder="Select">
                     <el-option
+
                       v-for="item in this.orgOptions"
                       :label="item.label"
                       :value="item.value">
@@ -67,7 +84,7 @@
             </el-form-item>
 
 
-              <el-form-item label="skill1:">
+              <el-form-item label="Persistence:">
               <el-row>
                 <el-slider
                   v-model="form.skill1"
@@ -77,7 +94,7 @@
                 </el-slider>
               </el-row>
                </el-form-item>
-               <el-form-item label="skill2:">
+               <el-form-item label="Leadership:">
                <el-row>
                  <el-slider
                    v-model="form.skill2"
@@ -87,7 +104,7 @@
                  </el-slider>
                </el-row>
                 </el-form-item>
-                <el-form-item label="skill3:">
+                <el-form-item label="Confidence:">
                 <el-row>
                   <el-slider
                     v-model="form.skill3"
@@ -97,7 +114,7 @@
                   </el-slider>
                 </el-row>
                  </el-form-item>
-                 <el-form-item label="skill4:">
+                 <el-form-item label="Knowledge:">
                  <el-row>
                    <el-slider
                      v-model="form.skill4"
@@ -107,7 +124,7 @@
                    </el-slider>
                  </el-row>
                   </el-form-item>
-                  <el-form-item label="skill5:">
+                  <el-form-item label="Charisma:">
                   <el-row>
                     <el-slider
                       v-model="form.skill5"
@@ -120,43 +137,14 @@
 
 
             <el-form-item label="Notes:">
-              <el-input
-                v-model="form.notes"
-                type="textarea"
-                clearable
-                placeholder="Add Notes">
-              </el-input>
+              <Notes v-model="form.notes"></Notes>
             </el-form-item>
 
 
-
-
-
-
-
-
-            <!-- <el-form-item label="Title:">
-              <el-select
-                v-model="this.title"
-                multiple
-                filterable
-                allow-create
-                default-first-option
-                placeholder="Select a title">
-                <el-option
-                  v-for="item in this.titleOptions"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-form-item> -->
             <div class="uk-flex uk-flex-center ">
-              <el-button @click="addContact()" type="primary">Add contact!</el-button><br><br>
+              <el-button @click="addContact()" type="primary">Create</el-button><br><br>
             </div>
           </el-form>
-          <!-- <div class="uk-flex uk-flex-center ">
-            <el-button @click="goBack()" type="danger" plain>GO BACK</el-button>
-          </div> -->
         </el-col>
       </el-row>
 
@@ -181,11 +169,13 @@
 import lib from '../lib'
 import AddOrganization from './AddOrganization';
 import FileUploader from '../components/FileUploader'
+import Notes from '../components/Notes'
 export default {
   name: 'AddContact',
   components:{
-        'AddOrganization': AddOrganization,
-        'FileUploader': FileUploader
+    'AddOrganization': AddOrganization,
+    'FileUploader': FileUploader,
+    'Notes': Notes
   },
   data(){
     return{
@@ -196,6 +186,7 @@ export default {
         first: null,
         last: null,
         email: "",
+        title: null,
         phone1: "",
         phone2: "",
         website: "",
@@ -207,7 +198,7 @@ export default {
         skill3: 0,
         skill4: 0,
         skill5: 0,
-        // title: null, //UNCOMMENT TO SEND TITLE
+
         notes: ""
 
       },
@@ -299,16 +290,16 @@ export default {
       this.form.first= "John"
       this.form.last= "Snow"
       this.form.email= "johnsnow@gmail.com"
-      this.form.phone1= "234 433 3344"
-      this.form.phone2= "234 433 5538"
-      this.form.website= "johnsnow.info"
+      this.form.phone1= "(234) 433-3344"
+      this.form.phone2= "(234) 433-5538"
+      this.form.website= "www.johnsnow.info"
       this.form.avatar= ""
       this.form.organization_id= 1
-      // this.form.title= null //UNCOMMENT TO SEND TITLE
-      this.form.notes= "Rightful heir to Winterfell. Has a dier wolf"
+      this.form.notes= "Rightful heir to Winterfell."
     }
     else {
       console.log("Autofill Fields: OFF");
+      this.name= ""
       this.form.first= null
       this.form.last= null
       this.form.email= ""
@@ -317,7 +308,6 @@ export default {
       this.form.website= ""
       this.form.avatar= ""
       this.form.organization_id= null
-      // this.form.title= null //UNCOMMENT TO SEND TITLE
       this.form.notes= ""
     }
   }
