@@ -151,7 +151,7 @@ export default {
   created() {
 
 
-    lib.getRequest('/contacts/'.concat(this.$route.params.id), response => {
+    lib.getRequest('/contacts/'.concat(this.$route.params.id).concat("?fields=avatar"), response => {
       this.contact = response.data
       console.log(response.data);
        this.name = response.data['first'] + ' ' + response.data['last'];

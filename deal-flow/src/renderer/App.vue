@@ -7,7 +7,7 @@
           <el-radio-button :label="true">collapse</el-radio-button>
         </el-radio-group> -->
         <el-menu  mode="horizontal" @select="handleSelect">
-          <el-button class="uk-margin">
+          <el-button id="backButton" class="uk-margin">
             GO BACK
           </el-button>
           <div class="topnav-right">

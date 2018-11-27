@@ -174,7 +174,12 @@ export default {
 
     setFileList(){
       console.log("SETTING FILE list");
-      this.fileList = [{name: 'savedPdf.pdf', url: 'static/imgs/pdfDefault.png'}]
+      if (this.currentDeal.slide_deck) {
+        this.fileList = [{name: 'savedPdf.pdf', url: 'static/imgs/pdfDefault.png'}]
+      }
+      else {
+        this.fileList = []
+      }
     },
 
     //Dynamic tag control methods.
