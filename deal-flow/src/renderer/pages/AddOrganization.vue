@@ -1,18 +1,19 @@
 <template>
   <div class="">
     <div class="uk-margin">
-      <div v-on:click="toggleAutocomplete">
-        <el-switch v-model="autocompleteForm">
-        </el-switch>
-      </div>
       <el-row type="flex" class="row-bg" justify="center">
           <el-col :span="18">
           <el-form ref="form" :model="form" label-width="125px">
             <br>
-            <FileUploader isImage="true" v-model="form.logo"></FileUploader>
-            <el-row type="flex" class="row-bg" justify="center">
-              <h1>{{this.form.name}}</h1>
-            </el-row>
+            <el-upload
+              class="avatar-uploader uk-flex uk-flex-center uk-margin"
+              action="https://jsonplaceholder.typicode.com/posts/"
+              :show-file-list="false"
+              :on-success="handleAvatarSuccess"
+              :before-upload="beforeAvatarUpload">
+              <img v-if="imageUrl" :src="imageUrl" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
             <el-form-item label="Name:">
               <el-input
                 v-model="form.name"
@@ -145,38 +146,33 @@
 <script>
 // import axios from 'axios';
 import lib from '../lib'
-import FileUploader from '../components/FileUploader'
 export default {
   name: 'AddOrganization',
   data(){
     return{
       name: null,
-      autocompleteForm: false,
       imageUrl:'',
       form: {
-        name: "",
-        stock_symbol: "",
-        logo: "",
-        vision: "",
-        revenue_model: "",
-        revenue: "",
-        valuation: "",
-        phone1: "",
-        phone2: "",
-        line1: "", //addres1
+        name: "Bobs Supply Co",
+        stock_symbol: "BOB",
+        logo: "/static/imgs/UoG.png",
+        vision: "Bob's got your back",
+        revenue_model: "I fix stuff and get payed",
+        revenue: "$100, 000",
+        valuation: "$1,000,000",
+        phone1: "(519)-351-3511",
+        phone2: "(519)-351-3511",
+        line1: "123 Road Street", //addres1
         line2: null, //address2
-        city: "",
-        state: "",
-        country: "",
-        postal: "",
-        website: "",
-        notes: ""
+        city: "Guelph",
+        state: "Ontario",
+        country: "Canada",
+        postal: "A1A 1A1",
+        website: "bobsmith.com",
+        notes: "Great organization we should really invest in this."
       },
 
     }
-  },
-  components: {
-      'FileUploader': FileUploader
   },
   methods: {
     goBack () {
@@ -192,51 +188,29 @@ export default {
         console.log(response.data);
         this.organization_id = response.data.organization_id
         this.$emit('addOrg', this.organization_id)
-
-        this.$router.replace({ name: 'Single-Organization', params: { id: this.organization_id }})
+        alert("company '"+this.form.name+"' added");
+        // window.history.length > 1
+        //   ? this.$router.go(-1)
+        //   : this.$router.push('/')
       })
     },
-    toggleAutocomplete() {
-      if (this.autocompleteForm) {
-        console.log("Autofill Fields: ON");
-        this.form.name= "Google"
-        this.form.stock_symbol= "GOOG"
-        this.form.logo=""
-        this.form.revenue_model= "Ad Revenue"
-        this.form.revenue= "$90 Billion"
-        this.form.valuation= "$714 Billion"
-        this.form.phone1= "123 456 7890"
-        this.form.phone2= "098 765 4321"
-        this.form.line1= "1600 Amphitheatre Parkway, Mountain View, California, U.S." //addres1
-        this.form.line2= null //address2
-        this.form.city= "Mountain View"
-        this.form.state= "California"
-        this.form.country= "USA"
-        this.form.postal= "35421"
-        this.form.website= "google.com"
-        this.form.notes= "Google LLC is an American multinational technology company that specializes in Internet-related services and products, which include online advertising technologies, search engine, cloud computing, software, and hardware."
-        console.log(this.form);
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = "/static/" + file.raw.path.replace(/^.+static/,''); ;
+      this.form.logo = this.imageUrl;
+      console.log(  "IMAGE PATH: "+this.form.avatar);
+      console.log(file.raw.path);
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg';
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error('Avatar picture must be JPG format!');
       }
-      else {
-        console.log("Autofill Fields: OFF");
-        this.form.name= ""
-        this.form.stock_symbol= ""
-        this.form.logo= ""
-        this.form.vision= ""
-        this.form.revenue_model= ""
-        this.form.revenue= ""
-        this.form.valuation= ""
-        this.form.phone1= ""
-        this.form.phone2= ""
-        this.form.line1= "" //addres1
-        this.form.line2= null //address2
-        this.form.city= ""
-        this.form.state= ""
-        this.form.country= ""
-        this.form.postal= ""
-        this.form.website= ""
-        this.form.notes= ""
+      if (!isLt2M) {
+        this.$message.error('Avatar picture size can not exceed 2MB!');
       }
+      return isJPG && isLt2M;
     }
   },
 }
