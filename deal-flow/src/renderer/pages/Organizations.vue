@@ -140,10 +140,10 @@ export default {
       }
       if (newList.length > 0) {
         console.log(this.organizations);
-        if (this.organizations.length = 0) {
-          console.log("THIS IS AN EMPTY LIST");
-          this.organizations = [this.newList]
-        }
+        // if (this.organizations.length = 0) {
+        //   console.log("THIS IS AN EMPTY LIST");
+        //   this.organizations = [this.newList]
+        // }
         this.organizations.push(newList)
         newList = [];
       }
