@@ -14,11 +14,49 @@
         </el-row>
         <el-row type="flex" class="row-bg" justify="center">
           <el-col :span="22">
-            <div v-loading="loading" :data="organizations">
+            <div v-loading="loading" :data="currentOrganizations">
+              <el-table
+               :data="currentOrganizations"
+               style="width: 100%"
+               @cell-click="organizationRowClick">
+                 <el-table-column
+                   prop="name"
+                   label="Name">
+                 </el-table-column>
+                 <el-table-column
+                   prop="valuation"
+                   label="Valuation">
+                 </el-table-column>
+                 <el-table-column
+                   prop="website"
+                   label="Website">
+                 </el-table-column>
+                 <el-table-column
+                  fixed="right"
+                  label="Operations"
+                  width="120">
+                  <template slot-scope="scope">
+                      <router-link :to="{ name: 'EditOrganization', params: { id: scope.row.organization_id } }">
+                        <el-button type="primary" icon="el-icon-edit" circle></el-button>
+                      </router-link>
+                      <el-button v-on:click="deleteContact(scope.row.organization_id)" type="danger" icon="el-icon-delete" circle></el-button>
+                  </template>
+                </el-table-column>
+               </el-table>
               <ul v-for="organization in organizations">
                   <router-link :to="{ name: 'Single-Organization', params: { id: organization.organization_id } }">{{organization.name}}</router-link>
               </ul>
             </div>
+            <br>
+            <el-row type="flex" class="row-bg" justify="center">
+              <el-pagination
+                :page-size="maxOrganizationsPerPage"
+                :pager-count="11"
+                layout="prev, pager, next"
+                :total="maxOrganizations"
+                @current-change="changePage">
+              </el-pagination>
+            </el-row>
           </el-col>
         </el-row>
       </el-col>
@@ -39,19 +77,84 @@ export default {
   data(){
     return {
       organizations:[],
+      currentOrganizations:[],
       errors: [],
+      maxOrganizations: 1,
+      maxOrganizationsPerPage: 9,
       loading: true
     }
   },
   methods:{
-
+    deleteOrganization(id){
+      var i;
+      for (i = 0; i < this.currentOrganizations.length; i++) {
+        console.log(i);
+        if(this.currentOrganizations[i].organization_id === id){
+           break;
+        }
+      }
+      lib.deleteRequest("/organizations/".concat(id), response => {
+        console.log("Request Completed: Delete organization #".concat(id));
+        console.log(response.data);
+        console.log("splicing #".concat(i));
+        this.currentOrganizations.splice(i, 1);
+        console.log(this.currentOrganizations);
+      })
+    },
+    organizationRowClick(row, col, cell, e){
+      console.log(row);
+      console.log(col);
+      if (col.label == "Operations") {
+        // dont do anything
+      }
+      else {
+        this.$router.push({ name: 'Single-Organization', params: { id: row.organization_id }})
+      }
+    },
+    changePage(page){
+      this.currentOrganizations = this.organizations[page-1]
+    }
   },
   created() {
 
     this.$emit('backButton', false);
     lib.getRequest('/organizations', response => {
-      this.organizations = response.data
-      console.log(response.data);
+
+      console.log(response.data.length)
+      this.maxOrganizations = response.data.length
+
+      var myIndex = 1;
+      var newList = [];
+      var newNumber = 1;
+
+      for (var i = 0; i < response.data.length; i++) {
+        newNumber = Math.ceil((i+1)/this.maxOrganizationsPerPage)
+
+        if (myIndex < newNumber) {
+          this.organizations.push(newList)
+          newList = [];
+          myIndex = newNumber;
+        }
+
+        newList.push(response.data[i])
+
+      }
+      if (newList.length > 0) {
+        console.log(this.organizations);
+        if (this.organizations.length = 0) {
+          console.log("THIS IS AN EMPTY LIST");
+          this.organizations = [this.newList]
+        }
+        this.organizations.push(newList)
+        newList = [];
+      }
+
+      console.log(this.organizations);
+      this.currentOrganizations = this.organizations[0]
+
+      console.log("Current Contacts");
+      console.log(this.currentOrganizations);
+
       this.loading = false;
     })
   }

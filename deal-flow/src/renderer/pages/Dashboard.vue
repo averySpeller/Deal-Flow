@@ -39,8 +39,6 @@
     </el-row>
 
 
-
-
     <hr data-v-6b294509="" class="uk-divider-icon">
     <el-row v-if="recentlyAdded" type="flex" class="row-bg" justify="center">
       <el-col :span="24">
@@ -61,10 +59,6 @@
         </div>
       </el-col>
     </el-row>
-
-
-
-
 
 
     <hr data-v-6b294509="" class="uk-divider-icon">
@@ -124,6 +118,7 @@
         organizations:[],
         deals:[],
         ofInterest: [],
+        ofInterestIds: [],
         recentlyAdded: [],
         recentlyAddedIds: [],
         errors: [],
@@ -132,7 +127,6 @@
         fundedNum:0,
         notFundedNum: 0,
         inProgressNum: 0,
-        ofInterestIds: [],
         examplelogo: 'static/imgs/404.png',
         companies: [
           { logo: 'static/imgs/randomLogo1.jpg' },
@@ -187,12 +181,8 @@
 
               var newOfInterest = null
               newOfInterest = this.findOrg(myDeal.organization_id)
-              console.log("RETURN SEARCH interest");
-              console.log(newOfInterest);
               if (newOfInterest) {
                 this.ofInterest.push(newOfInterest)
-                console.log("Found High interest");
-                console.log(newOfInterest);
               }
             }
           }
@@ -211,11 +201,20 @@
           }
         }
 
-          for (var i = this.deals.length; i < (this.deals.length - 10); i--) {
-            myDeal = this.deals[i]
+
+        for (var i = this.deals.length - 1; i > (this.deals.length - 10); i--) {
+          if(i == -1){
+            break;
+          }
+          myDeal = this.deals[i]
+          if (!this.recentlyAddedIds.includes(myDeal.organization_id)) {
             this.recentlyAddedIds.push(myDeal.organization_id);
             this.recentlyAdded.push(this.findOrg(myDeal.organization_id));
           }
+        }
+
+        console.log("RECENTLY ADDED");
+        console.log(this.recentlyAdded);
 
 
         this.inProgressNum = Math.round((this.inProgressNum / this.totalDeals) * 100);
@@ -227,8 +226,6 @@
 
         for (var i = 0; i < this.organizations.length; i++) {
           if (parseInt(this.organizations[i].organization_id) == parseInt(orgId)){
-            console.log("FOUND");
-            console.log(this.organizations[i]);
             return(this.organizations[i]);
           }
         }

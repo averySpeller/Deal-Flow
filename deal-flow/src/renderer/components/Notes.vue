@@ -27,12 +27,12 @@ export default {
           theme: 'snow'
       })
       this.quill.root.addEventListener("blur", this.writeData)
-
     },
     methods: {
         writeData() {
             console.log('write data');
             if (this.id != null) {
+                console.log('in here');
                 var resource = ''
                 if (this.isDeal) resource = '/deals'
                 else if (this.isContact) resource = '/contacts'
@@ -40,21 +40,40 @@ export default {
 
                 lib.putRequest(resource.concat('/').concat(this.id), { 'notes': JSON.stringify(this.quill.getContents()) }, response => {
                     console.log('Successful write');
+                }, err => {
+                    console.log('failed');
                 })
             }
             this.myValue = JSON.stringify(this.quill.getContents())
         }
     },
     watch: {
-       myValue: function(newVal, oldVal) {
-         console.log('Writing value to quill');
-         console.log(this.myValue);
-         this.quill.setContents(JSON.parse(this.myValue))
-       }
+       quill:function(newVal, oldVal) {
+           console.log('setting val');
+           console.log(this.myValue);
+           try {
+               var obj = JSON.parse(this.myValue)
+               this.quill.setContents(obj)
+           } catch (e) {
+               this.quill.setContents()
+           }
+       },
+       myValue:function(newVal, oldVal) {
+           console.log('setting val');
+           console.log(this.myValue);
+           try {
+               var obj = JSON.parse(this.myValue)
+               this.quill.setContents(obj)
+           } catch (e) {
+               this.quill.setContents()
+           }
+         }
    },
     computed: {
       myValue: {
         get() {
+          console.log('Loading val from prop');
+          console.log(this.value);
           return this.value;
         },
         set(v) {
