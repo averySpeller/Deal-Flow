@@ -1,148 +1,151 @@
 <template>
   <div class="">
     <div class="uk-margin">
-      <div v-on:click="toggleAutocomplete">
+      <div v-if="!editContactBool" v-on:click="toggleAutocomplete">
         <el-switch v-model="autocompleteForm">
         </el-switch>
       </div>
       <el-row type="flex" class="row-bg" justify="center">
-        <el-col :xs="12" :sm="10" :md="8" :lg="6" :xl="6">
+        <el-col :xs="22" :sm="22" :md="18" :lg="16" :xl="12">
           <el-form ref="form" :model="form" label-width="70px">
             <br>
-            <FileUploader isImage="true" v-model="form.avatar"></FileUploader>
-            <el-form-item label="Name:">
-              <el-input
-                v-model="name"
-                type="text"
-                clearable
-                placeholder="John Smith">
-              </el-input>
-            </el-form-item>
-            <el-form-item label="Title:">
-              <el-select
-                v-model="form.title"
-                filterable
-                allow-create
-                placeholder="Select a title">
-                <el-option
-                  v-for="item in this.titleOptions"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="Email:">
-              <el-input
-                v-model="form.email"
-                type="text"
-                clearable
-                placeholder="name@mail.com">
-              </el-input>
-            </el-form-item>
-            <el-form-item label="Phone1:">
-              <el-input
-                v-model="form.phone1"
-                type="text"
-                placeholder="(123) 456-7890"
-                clearable>
-              </el-input>
-            </el-form-item>
-            <el-form-item label="Phone2:">
-              <el-input
-                v-model="form.phone2"
-                type="text"
-                placeholder="(123) 456-7890"
-                clearable>
-              </el-input>
-            </el-form-item>
-            <el-form-item label="Website:">
-              <el-input
-                v-model="form.website"
-                type="text"
-                clearable
-                placeholder="www.domain.com">
-              </el-input>
-            </el-form-item>
+            <el-row type="flex" class="row-bg" justify="center">
+              <el-col :xs="16" :sm="14" :md="12" :lg="10" :xl="10">
 
-            <el-form-item label="Company:">
-            <el-row>
-
-              <el-col :span="16">
-                <el-select @click="loadSelect()" v-model="form.organization_id" clearable filterable placeholder="Select">
+                <FileUploader isImage="true" v-model="form.avatar"></FileUploader>
+                <el-form-item label="Name:">
+                  <el-input
+                    v-model="name"
+                    type="text"
+                    clearable
+                    placeholder="John Smith">
+                  </el-input>
+                </el-form-item>
+                <el-form-item label="Title:">
+                  <el-select
+                    v-model="form.title"
+                    filterable
+                    allow-create
+                    placeholder="Select a title">
                     <el-option
-
-                      v-for="item in this.orgOptions"
+                      v-for="item in this.titleOptions"
                       :label="item.label"
                       :value="item.value">
                     </el-option>
-                </el-select >
-              </el-col>
-              <el-col :span="4">
-                <el-button uk-toggle="target: #offcanvas-addOrganization" type="success" icon="el-icon-plus" plain></el-button>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="Email:">
+                  <el-input
+                    v-model="form.email"
+                    type="text"
+                    clearable
+                    placeholder="name@mail.com">
+                  </el-input>
+                </el-form-item>
+                <el-form-item label="Phone1:">
+                  <el-input
+                    v-model="form.phone1"
+                    type="text"
+                    placeholder="(123) 456-7890"
+                    clearable>
+                  </el-input>
+                </el-form-item>
+                <el-form-item label="Phone2:">
+                  <el-input
+                    v-model="form.phone2"
+                    type="text"
+                    placeholder="(123) 456-7890"
+                    clearable>
+                  </el-input>
+                </el-form-item>
+                <el-form-item label="Website:">
+                  <el-input
+                    v-model="form.website"
+                    type="text"
+                    clearable
+                    placeholder="www.domain.com">
+                  </el-input>
+                </el-form-item>
+
+                <el-form-item label="Company:">
+                <el-row>
+                  <el-col :span="16">
+                    <el-select @click="loadSelect()" v-model="form.organization_id" filterable placeholder="Select">
+                        <el-option
+
+                          v-for="item in this.orgOptions"
+                          :label="item.label"
+                          :value="item.value">
+                        </el-option>
+                    </el-select >
+                  </el-col>
+                  <el-col :span="4">
+                    <el-button uk-toggle="target: #offcanvas-addOrganization" type="success" icon="el-icon-plus" plain></el-button>
+                  </el-col>
+                </el-row>
+                </el-form-item>
+
               </el-col>
             </el-row>
-            </el-form-item>
 
-
-              <el-form-item label="Persistence:">
+            <!-- <el-form-item label="Persistence:">
+            <el-row>
+              <el-slider
+                v-model="form.skill1"
+                :step="1"
+                :max= "5"
+                show-stops>
+              </el-slider>
+            </el-row>
+             </el-form-item>
+             <el-form-item label="Leadership:">
+             <el-row>
+               <el-slider
+                 v-model="form.skill2"
+                 :step="1"
+                 :max= "5"
+                 show-stops>
+               </el-slider>
+             </el-row>
+              </el-form-item>
+              <el-form-item label="Confidence:">
               <el-row>
                 <el-slider
-                  v-model="form.skill1"
+                  v-model="form.skill3"
                   :step="1"
                   :max= "5"
                   show-stops>
                 </el-slider>
               </el-row>
                </el-form-item>
-               <el-form-item label="Leadership:">
+               <el-form-item label="Knowledge:">
                <el-row>
                  <el-slider
-                   v-model="form.skill2"
+                   v-model="form.skill4"
                    :step="1"
                    :max= "5"
                    show-stops>
                  </el-slider>
                </el-row>
                 </el-form-item>
-                <el-form-item label="Confidence:">
+                <el-form-item label="Charisma:">
                 <el-row>
                   <el-slider
-                    v-model="form.skill3"
+                    v-model="form.skill5"
                     :step="1"
                     :max= "5"
                     show-stops>
                   </el-slider>
                 </el-row>
-                 </el-form-item>
-                 <el-form-item label="Knowledge:">
-                 <el-row>
-                   <el-slider
-                     v-model="form.skill4"
-                     :step="1"
-                     :max= "5"
-                     show-stops>
-                   </el-slider>
-                 </el-row>
-                  </el-form-item>
-                  <el-form-item label="Charisma:">
-                  <el-row>
-                    <el-slider
-                      v-model="form.skill5"
-                      :step="1"
-                      :max= "5"
-                      show-stops>
-                    </el-slider>
-                  </el-row>
-                   </el-form-item>
-
-
-            <el-form-item label="Notes:">
-              <Notes v-model="form.notes"></Notes>
-            </el-form-item>
+                 </el-form-item> -->
+              <el-form-item label="Notes:">
+                <Notes v-model="form.notes"></Notes>
+              </el-form-item>
 
 
             <div class="uk-flex uk-flex-center ">
-              <el-button @click="addContact()" type="primary">Create</el-button><br><br>
+              <el-button v-if="!editContactBool"  @click="addContact()" type="primary">Create</el-button>
+              <el-button v-else @click="editContact()" type="primary">Edit</el-button><br><br>
             </div>
           </el-form>
         </el-col>
@@ -181,6 +184,7 @@ export default {
     return{
       name: "",
       autocompleteForm: false,
+      editContactBool: false,
       imageUrl:'',
       form: {
         first: null,
@@ -244,10 +248,24 @@ export default {
       // var requestFields = this.$parent.$parent.createGetRequest("contacts")
         lib.postRequest('/contacts', this.form, response => {
         console.log(response.data);
-p0
         this.$router.replace({ name: 'Single-Contact', params: { id: this.response.data.contact_id }})
       })
 
+    },
+    editContact(){
+      var splitty = this.name.split(' ');
+      this.form.first = splitty[0];
+      this.form.last = splitty[1];
+      console.log(this.form);
+
+    lib.putRequest('/contacts/'.concat(this.$route.params.id), this.form, response => {
+      console.log(response.data);
+      console.log(response.header);
+
+      window.history.length > 1
+        ? this.$router.go(-1)
+        : this.$router.push('/')
+      })
     },
     handleAvatarSuccess(res, file) {
       this.imageUrl = "/static/" + file.raw.path.replace(/^.+static/,''); ;
@@ -315,6 +333,23 @@ p0
   }
 },
 created() {
+
+  this.$emit('backButton', true);
+
+  console.log("IN ADD CONTACT");
+  console.log(this.$route.params.id);
+
+  if (this.$route.params.id) {
+    this.editContactBool = true;
+    lib.getRequest('/contacts/'.concat(this.$route.params.id).concat("?fields=avatar"), response => {
+      this.contact = response.data
+      console.log(response.data);
+       this.name = response.data['first'] + ' ' + response.data['last'];
+       this.form = response.data;
+      console.log(myRequest);
+    })
+  }
+
   this.loadSelect()
 }
 }

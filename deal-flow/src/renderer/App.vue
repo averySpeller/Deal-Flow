@@ -1,12 +1,12 @@
 <template>
   <div id="app">
-    <el-container v-if="authenticated">
+    <el-container v-if="authenticated" height="100%">
       <el-header class="">
-        <!-- <el-radio-group v-model="isCollapse" style="margin-bottom: 20px;">
-          <el-radio-button :label="false">expand</el-radio-button>
-          <el-radio-button :label="true">collapse</el-radio-button>
-        </el-radio-group> -->
         <el-menu  mode="horizontal" @select="handleSelect">
+          <!-- <el-radio-group v-model="isCollapse" style="margin-bottom: 20px;">
+            <el-radio-button :label="false">expand</el-radio-button>
+            <el-radio-button :label="true">collapse</el-radio-button>
+          </el-radio-group> -->
           <el-button v-if="backButtonVisible" type="primary" @click="goBack()" class="uk-margin">
             Go Back
           </el-button>
