@@ -1,7 +1,7 @@
 <template>
     <div class="">
         <div id="editor">
-          <p></p>
+          <p>{{myValue}}</p>
         </div>
     </div>
 </template>
@@ -21,10 +21,26 @@ export default {
     },
     methods: {
 
-    }
+    },
+    computed: {
+      myValue: {
+        get() {
+          return this.value;
+        },
+        set(v) {
+          this.$emit('input', v)
+        }
+      }
+}
+
 }
 </script>
 
 <style lang="css">
+
+    #editor {
+        min-height: 125px;
+        max-height: 300px;
+    }
 
 </style>

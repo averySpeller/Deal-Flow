@@ -1,18 +1,8 @@
 <template>
   <div class="uk-position-center uk-inline">
     <img src="static/imgs/logo.jpg">
+    <center><h1>DealFlow</h1></center>
     <div id="loginForm" class="uk-align-center uk-text-center">
-      <!-- <el-form ref="form" :model="form">
-        <el-form-item label="Username">
-          <el-input v-model="form.name" placeholder="username"></el-input>
-        </el-form-item>
-        <el-form-item label="Password">
-          <el-input type="password" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="onSubmit">Create</el-button>
-        </el-form-item>
-      </el-form> -->
       <form v-on:submit.prevent="validateLoginCredentials()">
         <div v-if="!loading" id="textInputs">
           <div class="uk-margin">

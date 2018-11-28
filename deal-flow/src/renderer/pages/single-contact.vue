@@ -13,20 +13,19 @@
 
     <el-row type="flex" class="row-bg" justify="center">
       <el-col :span="8">
-        <div class="uk-flex uk-flex-center uk-inline" style="border-radius: 50%">
-          <img  class="avatar" v-bind:src ="contact.avatar">
-        </div>
-
-        <div class="title uk-flex uk-flex-center">
-          <h1>{{contact.first}} {{contact.last}}</h1>
+        <div class="uk-flex uk-flex-center uk-inline" style="border-radius:50%">
+          <img class="avatar" v-bind:src ="contact.avatar">
         </div>
         <div class="title uk-flex uk-flex-center">
-          <router-link :to="{ name: 'Single-Organization', params: { id: contact.organization_id }} ">
-            {{organization.name}}
-          </router-link>
+            <h1 class="no-bottom-margin">{{contact.first}} {{contact.last}}</h1>
         </div>
         <div class="title uk-flex uk-flex-center">
-          <h4>{{this.myTest}}</h4>
+            <h3 class="no-bottom-margin">{{contact.title}}</h3>
+        </div>
+        <div class="title uk-flex uk-flex-center">
+            <router-link :to="{ name: 'Single-Organization', params: { id: contact.organization_id }} ">
+              <h3>{{organization.name}}</h3>
+            </router-link>
         </div>
 
       </el-col>
@@ -45,8 +44,6 @@
             </el-tag>
           </div>
         </router-link>
-
-
 
         <el-autocomplete
           class="inline-input input-new-tag"
@@ -74,17 +71,21 @@
 
       <el-row :gutter="50">
         <el-col :xs="0" :sm="1" :md="2" :lg="3" :xl="3"><div class="grid-content bg-purple"></div></el-col>
-        <el-col :xs="12" :sm="11" :md="10" :lg="9" :xl="9">
-          <ul>
+        <el-col :xs="24" :sm="24" :md="10" :lg="9" :xl="9">
             <br><br>
-            <li><p><strong>Email: </strong>{{contact.email}}</p></li>
-            <li><p><strong>Phone: </strong>{{contact.phone1}}</p></li>
-            <li><p><strong>Website: </strong>{{contact.website}}</p></li>
-          </ul>
+            <p v-if="contact.title"><em>Title:</em> {{contact.title}}</p>
+            <p><em>Email:</em> <a>{{contact.email}}</a></p>
+            <p><em>Website:</em> <a>{{contact.website}}</a></p>
+            <p><em>Phone: </em>{{contact.phone1}}</p>
+            <p v-if="contact.phone2"><em>Phone: </em>{{contact.phone2}}</p>
+
+            <br><br>
+            <em>Notes:</em>
+            <Notes v-model="organization.notes"></Notes>
         </el-col>
-        <el-col  :xs="12" :sm="11" :md="10" :lg="9" :xl="9">
+        <el-col  :xs="24" :sm="24" :md="10" :lg="9" :xl="9">
           <div class="uk-flex uk-flex-center uk-inline" >
-<!--calling radar chart, pass isContact or isOrganization to determin the label names -->
+            <!--calling radar chart, pass isContact or isOrganization to determin the label names -->
             <Chart
               v-if="!loading"
               isContact
@@ -98,27 +99,10 @@
 
           </div>
           <br><br>
-      </ul>
-      <el-row type="flex" class="row-bg" justify="center">
-        <el-col :span="20">
-          Notes:
-          <el-input
-                      v-model="contact.notes"
-                      type="textarea"
-                      :autosize="{ minRows: 4, maxRows: 8}"
-                      placeholder="Additional Notes" >
-                    </el-input>
-        </el-col>
-      </el-row>
-
-
         </el-col>
         <el-col :xs="0" :sm="1" :md="2" :lg="3" :xl="3"><div class="grid-content bg-purple"></div></el-col>
       </el-row>
     </div>
-    <br>
-    <button @click="goBack()" class="uk-button uk-button-secondary uk-button-large uk-margin">GO BACK</button>
-
     <ul v-if="errors && errors.length">
       <li v-for="error of errors">
         {{error.message}}
@@ -131,17 +115,18 @@
 import lib from '../lib'
 import Deals from './Deals';
 import Chart from '../components/Chart';
+import Notes from '../components/Notes'
 
 export default {
   name: 'Single-Contact',
   components:{
-    'Chart': Chart
+    'Chart': Chart,
+    'Notes': Notes
   },
   data(){
     return {
       // conID: null,
       id: 0,
-      myTest:"WRONG",
       contact: {},
       errors: [],
       organization: {},
@@ -353,6 +338,10 @@ export default {
   .input-new-tag {
     width: 150px;
     margin-left: 10px;
+  }
+
+  .no-bottom-margin {
+      margin-bottom:0.05em;
   }
 
 </style>

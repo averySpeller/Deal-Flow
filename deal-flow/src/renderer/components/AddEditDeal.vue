@@ -11,7 +11,6 @@
             <el-form-item label="Name:">
               <el-input
                 type="text"
-                clearable
                 disabled
                 v-bind:value="organization.name">
               </el-input>
@@ -40,12 +39,24 @@
                 </el-option>
               </el-select>
             </el-form-item>
+            <el-form-item label="Round:">
+              <el-select
+                v-model="deal.round"
+                placeholder="Select a round">
+                <el-option
+                  v-for="round in rounds"
+                  :key="round.value"
+                  :label="round.label"
+                  :value="round.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
             <el-form-item label="Raise:">
               <el-input
                 v-model="deal.raise"
                 type="text"
                 clearable
-                placeholder="ABC">
+                placeholder="$xx Million (USD)">
               </el-input>
             </el-form-item>
             <el-form-item label="Valuation:">
@@ -53,7 +64,7 @@
                 v-model="deal.valuation"
                 type="text"
                 clearable
-                placeholder="1 Billion">
+                placeholder="$xx Million (USD)">
               </el-input>
             </el-form-item>
             <el-form-item label="Revenue:">
@@ -61,7 +72,7 @@
                 v-model="deal.revenue"
                 type="text"
                 clearable
-                placeholder="1 Billion">
+                placeholder="$xx Million (USD)">
               </el-input>
             </el-form-item>
             <el-form-item label="Revenue Model:">
@@ -69,15 +80,7 @@
                 v-model="deal.revenue_model"
                 type="text"
                 clearable
-                placeholder="1 Billion">
-              </el-input>
-            </el-form-item>
-            <el-form-item label="Round:">
-              <el-input
-                v-model="deal.round"
-                type="text"
-                clearable
-                placeholder="1 Billion">
+                placeholder="SaaS, License, Retail, etc">
               </el-input>
             </el-form-item>
             <el-form-item label="Notes:">
@@ -90,12 +93,9 @@
             </el-form-item>
             <FileUploader v-model="deal.slide_deck" v-bind:fileList="this.fileList"></FileUploader>
 
-            <div v-if="editDeal" class="uk-flex uk-flex-center">
-              <el-button @click="EditDeal()" type="primary" uk-toggle="target: #offcanvas-addDeal">Edit Deal!</el-button><br><br>
-            </div>
-
-            <div v-else class="uk-flex uk-flex-center">
-              <el-button @click="AddDeal()" type="primary" uk-toggle="target: #offcanvas-addDeal">Add Deal!</el-button><br><br>
+            <div class="uk-flex uk-flex-center">
+              <el-button v-if="editDeal" @click="EditDeal()" type="primary" uk-toggle="target: #offcanvas-addDeal">Save</el-button>
+              <el-button v-else @click="AddDeal()" type="primary" uk-toggle="target: #offcanvas-addDeal">Save</el-button><br><br>
             </div>
           </el-form>
         </el-col>
@@ -130,17 +130,24 @@ export default {
         slide_deck: null,
         notes: null
       },
+      rounds: [
+          { value: 'Seed', label: 'Seed' },
+          { value: 'Angel', label: 'Angel' },
+          { value: 'Series A', label: 'Series A' },
+          { value: 'Series B', label: 'Series B' },
+          { value: 'Series C', label: 'Series C' },
+      ],
       statusOptions: [
         {
-          value: 'inProgress',
+          value: 'In Progress',
           label: 'In Progress'
         },
         {
-          value: 'funded',
+          value: 'Funded',
           label: 'Funded'
         },
         {
-          value: 'notFunded',
+          value: 'Not Funded',
           label: 'Not Funded'
         },
         {
@@ -150,18 +157,9 @@ export default {
       ],
       status: '',
       interestOptions: [
-        {
-          value: 'High',
-          label: 'High'
-        },
-        {
-          value: 'Medium',
-          label: 'Medium'
-        },
-        {
-          value: 'Low',
-          label: 'Low'
-        }
+        { value: 'High', label: 'High'},
+        { value: 'Medium', label: 'Medium' },
+        { value: 'Low', label: 'Low' }
       ],
 
     }
@@ -186,9 +184,6 @@ export default {
         this.$parent.currentDeal = response.data;
 
       })
-
-
-
     },
     EditDeal(){
       console.log(this.deal);

@@ -3,20 +3,20 @@
     <el-row>
       <el-col>
         <div class="uk-align-right uk-margin-right">
-          <el-popover
-            placement="bottom"
-            width="160"
-            v-model="popoverVisible">
-            <p>Are you sure to delete the company and all pitches included?</p>
-            <div style="text-align: right; margin: 0">
-              <el-button size="mini" type="text" @click="popoverVisible = false">cancel</el-button>
-              <el-button type="primary" size="mini" @click="popoverVisible = false; deleteCompany()">confirm</el-button>
-            </div>
-            <el-button slot="reference" type="danger">Delete Organization</el-button>
-          </el-popover>
-          <router-link :to="{ name:'EditOrganization', params: { id: organization.organization_id }}">
-            <el-button>Edit</el-button>
-          </router-link>
+            <router-link :to="{ name:'EditOrganization', params: { id: organization.organization_id }}">
+              <el-button>Edit</el-button>
+            </router-link>
+            <el-popover
+                placement="bottom"
+                width="160"
+                v-model="popoverVisible">
+                <p>Are you sure to delete the company and all pitches included?</p>
+                <div style="text-align: right; margin: 0">
+                    <el-button size="mini" type="text" @click="popoverVisible = false">cancel</el-button>
+                    <el-button type="primary" size="mini" @click="popoverVisible = false; deleteCompany()">confirm</el-button>
+                </div>
+                <el-button slot="reference" type="danger">Delete</el-button>
+            </el-popover>
         </div>
       </el-col>
     </el-row>
@@ -24,7 +24,7 @@
     <el-row type="flex" class="row-bg" justify="center">
       <el-col >
         <div class="uk-flex uk-flex-center uk-inline">
-          <img  class="avatar" v-bind:src ="organization.logo">
+          <img class="avatar" v-bind:src ="organization.logo">
         </div>
         <div class="title uk-flex uk-flex-center">
           <h1>{{organization.name}}</h1>
@@ -359,9 +359,9 @@ export default {
   }
   img {
     margin: 0 auto;
-      border-radius: 15%;
-      height:250px;
-      width:250px;
+    border-radius: 15%;
+    height:175px;
+    width:175px;
   }
   .uk-offcanvas-bar{
     width: 50%;

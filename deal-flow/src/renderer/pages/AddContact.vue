@@ -206,16 +206,20 @@ export default {
       orgOptions: [],
       titleOptions:[
         {
-          value: 'CEO',
+          value: 'Chief Executive Officer',
           label: 'CEO'
         },
         {
-          value: 'CFO',
+          value: 'Chief Financial Officer',
           label: 'CFO'
         },
         {
-          value: 'CTO',
+          value: 'Chief Technology Officer',
           label: 'CTO'
+        },
+        {
+          value: 'Chief Operations Officer',
+          label: 'COO'
         },
         {
           value: 'Other',

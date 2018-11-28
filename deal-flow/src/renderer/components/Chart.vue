@@ -146,12 +146,12 @@ props:{
         this.skill4Name = 'Knowledge'
         this.skill5Name = 'Charisma'
       }else if(this.isDeal){
-        this.labels = ['dealkill','orgskill2','orgskill3','orgskill4','orgskill5']
-        this.skill1Name = 'ORGSKILL1'
-        this.skill2Name = 'ORGSKILL2'
-        this.skill3Name = 'ORGSKILL3'
-        this.skill4Name = 'ORGSKILL4'
-        this.skill5Name = 'ORGSKILL5'
+        this.labels = ['Potential','People','Risk','Management','Recognition']
+        this.skill1Name = 'Potential'
+        this.skill2Name = 'People'
+        this.skill3Name = 'Risk'
+        this.skill4Name = 'Management'
+        this.skill5Name = 'Recognition'
       }
 
       this.loaded = false
@@ -211,7 +211,15 @@ props:{
 
 <style>
   .small {
-    max-width: 600px;
-    margin:  150px auto;
+    max-width: 325px;
+    margin:  0 auto;
+
+  }
+  .demonstration {
+    font-size: 13px !important;
+  }
+  .block {
+      margin-top: -6px;
+      margin-bottom: -6px;
   }
 </style>

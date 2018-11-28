@@ -16,6 +16,9 @@
                 {{organization.name}}
               </router-link>
           </ul>
+          <ul v-if="organizations.length < 1">
+            No companies with this tag
+          </ul>
         </el-col>
         <el-col :xs="12" :sm="11" :md="10" :lg="9" :xl="9">
           <h3>Contacts</h3>
@@ -25,7 +28,7 @@
               </router-link>
           </ul>
           <ul v-if="contacts.length < 1">
-            No Contacts with this tag
+            No contacts with this tag
           </ul>
 
         </el-col>
