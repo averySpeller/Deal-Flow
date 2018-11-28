@@ -39,7 +39,6 @@
                       <router-link :to="{ name: 'EditOrganization', params: { id: scope.row.organization_id } }">
                         <el-button type="primary" icon="el-icon-edit" circle></el-button>
                       </router-link>
-                      <el-button v-on:click="deleteContact(scope.row.organization_id)" type="danger" icon="el-icon-delete" circle></el-button>
                   </template>
                 </el-table-column>
                </el-table>
@@ -80,7 +79,7 @@ export default {
       currentOrganizations:[],
       errors: [],
       maxOrganizations: 1,
-      maxOrganizationsPerPage: 9,
+      maxOrganizationsPerPage: 7,
       loading: true
     }
   },

@@ -186,18 +186,19 @@
               }
             }
           }
-          if (myDeal.status === "inProgress") {
+          if (myDeal.status === "In Progress") {
             this.inProgressNum += 1;
           }
-          else if (myDeal.status === "funded") {
+          else if (myDeal.status === "Funded") {
             this.fundedNum += 1;
           }
-          else if (myDeal.status === "notFunded") {
+          else if (myDeal.status === "Not Funded") {
             this.notFundedNum += 1;
           }
           else {
             console.log("Error: Deal without a status");
             console.log(myDeal.deal_id);
+            console.log(myDeal.statusOptions);
           }
         }
 

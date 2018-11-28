@@ -159,7 +159,7 @@
         <div class="title uk-flex uk-flex-center">
             <h1>Add Company</h1>
         </div>
-          <AddOrganization v-on:addOrg="loadIt($event)"></AddOrganization>
+          <AddOrganization v-bind:continueAddingContact="true" v-on:addOrg="loadIt($event)"></AddOrganization>
       </div>
     </div>
 
@@ -310,6 +310,7 @@ export default {
       this.name= "John Snow"
       this.form.first= "John"
       this.form.last= "Snow"
+      this.form.title= "CFO"
       this.form.email= "johnsnow@gmail.com"
       this.form.phone1= "(234) 433-3344"
       this.form.phone2= "(234) 433-5538"
@@ -326,6 +327,7 @@ export default {
       this.form.email= ""
       this.form.phone1= ""
       this.form.phone2= ""
+      this.form.title= ""
       this.form.website= ""
       this.form.avatar= ""
       this.form.organization_id= null
