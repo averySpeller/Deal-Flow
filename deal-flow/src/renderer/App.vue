@@ -7,8 +7,8 @@
           <el-radio-button :label="true">collapse</el-radio-button>
         </el-radio-group> -->
         <el-menu  mode="horizontal" @select="handleSelect">
-          <el-button id="backButton" class="uk-margin">
-            GO BACK
+          <el-button v-if="backButtonVisible" type="primary" @click="goBack()" class="uk-margin">
+            Go Back
           </el-button>
           <div class="topnav-right">
             <el-menu-item  index="1">Kevin</el-menu-item>
@@ -21,7 +21,7 @@
           <Nav v-bind:isCollapse="this.isCollapse"></Nav>
         </el-aside>
         <el-main>
-          <router-view></router-view>
+          <router-view v-on:backButton="setBackButton($event)"></router-view>
         </el-main>
       </el-container>
     </el-container>
@@ -45,6 +45,7 @@
       return{
         isCollapse: false,
         authenticated: false,
+        backButtonVisible: false,
         Authorization: "",
         mockAccount: {
           username: "kevin",
@@ -62,8 +63,16 @@
       }
     },
     methods: {
+      goBack () {
+        window.history.length > 1
+          ? this.$router.go(-1)
+          : this.$router.push('/')
+      },
       checkForToken() {
         this.authenticated = true;
+      },
+      setBackButton(arg){
+        this.backButtonVisible = arg;
       },
       setAuthenticated(status) {
         this.authenticated = status;

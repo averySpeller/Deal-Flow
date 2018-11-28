@@ -91,9 +91,6 @@
                   <el-button @click="editContact()" type="primary">Edit contact!</el-button><br>
             </div>
           </el-form>
-          <div class="uk-flex uk-flex-center ">
-            <el-button @click="goBack()" type="danger" plain>GO BACK</el-button>
-          </div>
         </el-col>
       </el-row>
 
@@ -150,7 +147,7 @@ export default {
   },
   created() {
 
-
+    this.$emit('backButton', true);
     lib.getRequest('/contacts/'.concat(this.$route.params.id).concat("?fields=avatar"), response => {
       this.contact = response.data
       console.log(response.data);

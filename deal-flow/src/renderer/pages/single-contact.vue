@@ -117,7 +117,6 @@
       </el-row>
     </div>
     <br>
-    <button @click="goBack()" class="uk-button uk-button-secondary uk-button-large uk-margin">GO BACK</button>
 
     <ul v-if="errors && errors.length">
       <li v-for="error of errors">
@@ -251,6 +250,7 @@ export default {
     }
   },
   created() {
+    this.$emit('backButton', true);
     this.id = this.$route.params.id;
 
     lib.getRequest("/contacts/".concat(this.id).concat('?fields=avatar'), response => {
