@@ -12,12 +12,12 @@
         <el-col :xs="0" :sm="1" :md="2" :lg="1" :xl="1"><div class="grid-content bg-purple"></div></el-col>
         <el-col :xs="24" :sm="24" :md="10" :lg="12" :xl="12">
             <div style="padding:0.5em;float:left;">
-                <p v-if=""><em>Revenue:</em> {{deal.revenue}}</p>
+                <p v-if=""><em>Revenue:</em> ${{deal.revenue}} <font color="lightgrey">(Million)</font></p>
                 <p><em>Revenue Model:</em> {{deal.revenue_model}}</p>
-                <p><em>Valuation:</em> {{deal.valuation}}</p>
+                <p><em>Valuation:</em> ${{deal.valuation}} <font color="lightgrey">(Million)</font></p>
             </div>
             <div style="padding:0.5em; padding-left:4em;float:left;">
-                <p><em>Raise:</em> {{deal.raise}}</p>
+                <p><em>Raise:</em> ${{deal.raise}} <font color="lightgrey">(Million)</font></p>
                 <p><em>Round:</em> {{deal.round}}</p>
                 <p><em>Interest:</em> {{deal.interest}}<span v-if="deal.status">({{deal.status}})</span></p>
             </div>
@@ -99,6 +99,9 @@ export default {
 <style scoped>
   .grid-content {
     min-height: 36px;
+  }
+  .million{
+    color: blue
   }
   .pdfViewer{
     border-radius: 10%;

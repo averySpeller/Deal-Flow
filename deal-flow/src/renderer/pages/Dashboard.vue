@@ -2,8 +2,10 @@
   <div v-if="companies" v-loading="loading" :data="companies">
     <el-row type="flex" class="row-bg" justify="center">
       <el-col :span="20">
-          <br><br>
-        <h1 class="uk-margin">Deal Flow Overview</h1>
+          <div class="uk-flex uk-flex-center uk-inline">
+            <img src="static/imgs/logo.jpg">
+          </div>
+        <h1 class="uk-flex uk-flex-center uk-inline">Deal Flow</h1>
       </el-col>
     </el-row>
     <br>
@@ -35,8 +37,39 @@
       </el-col>
       <el-col :span="1"></el-col>
     </el-row>
+
+
+
+
+    <hr data-v-6b294509="" class="uk-divider-icon">
+    <el-row v-if="recentlyAdded" type="flex" class="row-bg" justify="center">
+      <el-col :span="24">
+        <div id="slider4">
+          <br>
+          <h2><i class="el-icon-date"></i> Recently Added Pitches</h2>
+          <el-carousel :interval="10000" type="card" width="100%" height="200px">
+            <el-carousel-item v-for="organization of recentlyAdded">
+              <div class="uk-flex uk-flex-center uk-flex-middle uk-flex-column">
+                <router-link tag="div" :to="{ name: 'Single-Organization', params: { id: organization.organization_id }} ">
+                  <img v-if="organization.logo"v-bind:src="organization.logo"/>
+                  <img v-else v-bind:src="examplelogo"/>
+                </router-link>
+                {{organization.name}}
+              </div>
+            </el-carousel-item>
+          </el-carousel>
+        </div>
+      </el-col>
+    </el-row>
+
+
+
+
+
+
+    <hr data-v-6b294509="" class="uk-divider-icon">
     <el-row v-if="ofInterest" type="flex" class="row-bg" justify="center">
-      <el-col :span="16">
+      <el-col :span="24">
         <div id="slider2">
           <br>
           <h2><i class="el-icon-star-on"></i> High Interest Pitches</h2>
@@ -54,10 +87,11 @@
         </div>
       </el-col>
     </el-row>
+    <hr data-v-6b294509="" class="uk-divider-icon">
     <el-row type="flex" class="row-bg" justify="center">
-      <el-col :span="16">
+      <el-col :span="24">
         <div id="slider3">
-          <h2>Companies</h2>
+          <h2><i class="el-icon-menu"></i> All Companies</h2>
           <el-carousel id="Jobs" :interval="4000" type="card" height="200px">
             <el-carousel-item v-for="organization of organizations">
               <div class="uk-flex uk-flex-center uk-flex-middle uk-flex-column">
@@ -90,6 +124,8 @@
         organizations:[],
         deals:[],
         ofInterest: [],
+        recentlyAdded: [],
+        recentlyAddedIds: [],
         errors: [],
         variable: null,
         totalDeals: 0,
@@ -109,7 +145,8 @@
           { logo: 'static/imgs/randomLogo7.png' },
         ],
         loading:true,
-        loading_interest:true
+        loading_interest:true,
+        loading_recent: true
       }
     },
     mounted() {
@@ -159,7 +196,6 @@
               }
             }
           }
-
           if (myDeal.status === "inProgress") {
             this.inProgressNum += 1;
           }
@@ -174,6 +210,13 @@
             console.log(myDeal.deal_id);
           }
         }
+
+          for (var i = this.deals.length; i < (this.deals.length - 10); i--) {
+            myDeal = this.deals[i]
+            this.recentlyAddedIds.push(myDeal.organization_id);
+            this.recentlyAdded.push(this.findOrg(myDeal.organization_id));
+          }
+
 
         this.inProgressNum = Math.round((this.inProgressNum / this.totalDeals) * 100);
         this.fundedNum = Math.round((this.fundedNum / this.totalDeals) * 100);
