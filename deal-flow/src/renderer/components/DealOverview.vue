@@ -29,7 +29,7 @@
                 </div>
                 <div v-else>
                     <em>Notes:</em>
-                    <Notes v-model="deal.notes"></Notes>
+                    <Notes v-model="deal.notes" :id="deal.deal_id" isDeal></Notes>
                 </div>
             </div>
       </el-col>
@@ -52,7 +52,7 @@
           <el-col :span="15">
               <br>
             <em>Notes:</em>
-            <Notes v-model="deal.notes"></Notes>
+            <Notes v-model="deal.notes" :id="deal.deal_id" isDeal></Notes>
           </el-col>
     </el-row>
   </div>
