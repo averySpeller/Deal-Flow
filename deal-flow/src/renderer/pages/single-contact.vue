@@ -81,7 +81,7 @@
 
             <br><br>
             <em>Notes:</em>
-            <Notes v-model="organization.notes"></Notes>
+            <Notes v-model="contact.notes" :id="contact.contact_id" isContact></Notes>
         </el-col>
         <el-col  :xs="24" :sm="24" :md="10" :lg="9" :xl="9">
           <div class="uk-flex uk-flex-center uk-inline" >

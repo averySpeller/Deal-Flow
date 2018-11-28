@@ -21,14 +21,16 @@
               <p><em>Website: </em><a>{{organization.website}}</a></p>
               <p v-if="organization.phone1"><em>Phone: </em>{{organization.phone1}}</p>
               <p v-if="organization.phone2"><em>Phone 2: </em>{{organization.phone2}}</p>
-            <em>Contacts: </em>
-            <ol>
-              <li v-for="contact in contacts">
-                <router-link :to="{ name: 'Single-Contact', params: { id: contact.contact_id} }">
-                  {{contact.first}} {{contact.last}} <span v-if="contact.title">({{contact.title}})</span>
-                </router-link>
-              </li>
-            </ol>
+              <div v-if="contacts.length > 0">
+                  <em>Contacts: </em>
+                  <ol>
+                    <li v-for="contact in contacts">
+                      <router-link :to="{ name: 'Single-Contact', params: { id: contact.contact_id} }">
+                        {{contact.first}} {{contact.last}} <span v-if="contact.title">({{contact.title}})</span>
+                      </router-link>
+                    </li>
+                  </ol>
+              </div>
           </el-col>
           <el-col  :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
               <div v-if="organization.line1||organization.city||organization.country">

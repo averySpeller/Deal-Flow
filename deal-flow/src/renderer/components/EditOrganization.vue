@@ -93,7 +93,7 @@
                 v-model="form.postal"
                 type="text"
                 clearable
-                placeholder="A1A-1A1">
+                placeholder="A1A 1A1">
               </el-input>
             </el-form-item>
             <el-form-item label="Phone1:">
@@ -127,7 +127,7 @@
             </el-form-item>
 
             <div class="uk-flex uk-flex-center ">
-              <el-button @click="EditOrganization()">Edit Company!</el-button><br>
+              <el-button @click="EditOrganization()">Save</el-button><br>
             </div>
           </el-form>
         </el-col>

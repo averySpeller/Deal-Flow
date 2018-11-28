@@ -27,7 +27,10 @@
           <img class="avatar" v-bind:src ="organization.logo">
         </div>
         <div class="title uk-flex uk-flex-center">
-          <h1>{{organization.name}}</h1>
+          <h1 class="no-bottom-margin">{{organization.name}}</h1>
+        </div>
+        <div class="title uk-flex uk-flex-center">
+            <h3 v-if="organization.stock_symbol" class="no-bottom-margin">{{organization.stock_symbol}}</h3>
         </div>
         <div class="title uk-flex uk-flex-center">
           <h5><strong>{{organization.vision}}</strong></h5>
@@ -393,6 +396,10 @@ export default {
   .input-new-tag {
     width: 150px;
     margin-left: 10px;
+  }
+
+  .no-bottom-margin {
+      margin-bottom:0.05em;
   }
 
 </style>
