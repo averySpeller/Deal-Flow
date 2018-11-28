@@ -1,0 +1,20 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+requests = "*"
+gunicorn = "*"
+falcon = {git = "git://github.com/falconry/falcon.git"}
+mysql = "*"
+mysql-connector = "*"
+pyjwt = "*"
+passlib = "*"
+bcrypt = "*"
+cryptography = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.7"
