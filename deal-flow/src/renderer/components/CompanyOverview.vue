@@ -43,7 +43,7 @@
         <el-row :gutter="50" type="flex" class="row-bg" justify="center">
               <el-col :span="15">
                 <em>Notes:</em>
-                <Notes v-model="organization.notes"></Notes>
+                <Notes v-model="organization.notes" :id="organization.organization_id" isOrganization></Notes>
               </el-col>
         </el-row>
     </div>

@@ -2,14 +2,15 @@
   <div id="app">
     <el-container v-if="authenticated" height="100%">
       <el-header class="">
-        <el-menu  mode="horizontal" @select="handleSelect">
+        <el-menu  style="position: relative;" mode="horizontal" @select="handleSelect">
           <!-- <el-radio-group v-model="isCollapse" style="margin-bottom: 20px;">
             <el-radio-button :label="false">expand</el-radio-button>
             <el-radio-button :label="true">collapse</el-radio-button>
           </el-radio-group> -->
-          <el-button v-if="backButtonVisible" type="primary" @click="goBack()" class="uk-margin">
-            Go Back
+          <el-button style="position: absolute; top: 50%; transform: translateY(-50%);" icon="el-icon-d-arrow-left"  v-if="backButtonVisible" type="primary" @click="goBack()" class="uk-margin">
+            Back
           </el-button>
+
           <div class="topnav-right">
             <el-menu-item  index="1">Kevin</el-menu-item>
             <el-menu-item index="2">Logout</el-menu-item>

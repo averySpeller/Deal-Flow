@@ -31,19 +31,24 @@ export default {
     },
     methods: {
         writeData() {
-            // console.log('in blur');
-            var resource = ''
-            if (this.isDeal) resource = '/deals'
-            else if (this.isContact) resource = '/contacts'
-            else if (this.isOrganization) resource = '/organizations'
+            console.log('write data');
+            if (this.id != null) {
+                var resource = ''
+                if (this.isDeal) resource = '/deals'
+                else if (this.isContact) resource = '/contacts'
+                else if (this.isOrganization) resource = '/organizations'
 
-            lib.putRequest(resource.concat('/').concat(this.id), { 'notes': JSON.stringify(this.quill.getContents()) }, response => {
-                console.log('Successful write');
-            })
+                lib.putRequest(resource.concat('/').concat(this.id), { 'notes': JSON.stringify(this.quill.getContents()) }, response => {
+                    console.log('Successful write');
+                })
+            }
+            this.myValue = JSON.stringify(this.quill.getContents())
         }
     },
     watch: {
        myValue: function(newVal, oldVal) {
+         console.log('Writing value to quill');
+         console.log(this.myValue);
          this.quill.setContents(JSON.parse(this.myValue))
        }
    },

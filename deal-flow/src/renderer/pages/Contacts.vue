@@ -13,10 +13,10 @@
           </el-col>
         </el-row>
         <div v-loading="loading" :data="currentContacts">
-            <el-table
-             :data="currentContacts"
-             style="width: 100%"
-             @cell-click="contactRowClick">
+          <el-table
+           :data="currentContacts"
+           style="width: 100%"
+           @cell-click="contactRowClick">
              <el-table-column
                prop="contact_name"
                label="Name">
