@@ -75,7 +75,7 @@ export default {
       organizations:[],
       orgDict: {},
       maxContacts: 1,
-      maxContactsPerPage: 9,
+      maxContactsPerPage: 7,
       errors: [],
       loading:true
     }
