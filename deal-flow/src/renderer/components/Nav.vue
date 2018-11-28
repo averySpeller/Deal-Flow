@@ -39,15 +39,21 @@ export default {
         },
         {
           id: 1,
-          icon: 'icon: user',
+          icon: 'icon: users',
           text: 'Contacts',
           page:'/Contacts'
         },
         {
           id: 2,
           icon: 'icon: grid',
-          text: 'Deals',
+          text: 'Organizations',
           page:'/Organizations'
+        },
+        {
+          id: 3,
+          icon: 'icon: search',
+          text: 'Search',
+          page:'/Search'
         },
         {
           id: 4,

@@ -249,7 +249,7 @@ export default {
       // var requestFields = this.$parent.$parent.createGetRequest("contacts")
         lib.postRequest('/contacts', this.form, response => {
         console.log(response.data);
-
+p0
         this.$router.replace({ name: 'Single-Contact', params: { id: this.response.data.contact_id }})
       })
 

@@ -26,6 +26,7 @@ import  AddOrganization from '@/pages/AddOrganization' //NOT PAGE ----------- MO
 import  EditContact from '@/pages/EditContact'
 import  AddOrganizationPage from '@/pages/AddOrganizationPage'
 import  AddContactPage from '@/pages/AddContactPage'
+import  Search from '@/pages/Search'
 import  EditOrganization from '@/components/EditOrganization'
 
 //Components
@@ -123,6 +124,11 @@ export default new Router({
       path: '/Dashboard',
       name: 'Dashboard',
       component: Dashboard
+    },
+    {
+      path: '/Search',
+      name: 'Search',
+      component: Search
     },
     {
       path: '../components/CompanyOverview',
