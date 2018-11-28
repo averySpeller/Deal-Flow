@@ -88,6 +88,7 @@ export default {
       })
     },
     toggleEdit(){
+      this.$parent.scrollToTop();
       this.$parent.editDeal = true;
       console.log(this.$parent.editDeal);
     }

@@ -91,8 +91,6 @@
       <DealOverview v-else v-bind:organization="this.organization" v-bind:deal="this.currentDeal" ></DealOverview>
     </div>
 
-    <button @click="goBack()" class="uk-button uk-button-secondary uk-button-large uk-margin">GO BACK</button>
-
     <ul v-if="errors && errors.length">
       <li v-for="error of errors">
         {{error.message}}
@@ -155,8 +153,11 @@ export default {
         ? this.$router.go(-1)
         : this.$router.push('/')
     },
-
+    scrollToTop() {
+      window.scrollTo(0,0);
+    },
     emptyCurrentDeal() {
+      this.scrollToTop();
       this.emptyDeal.organization_id = this.organization.organization_id;
       this.emptyDeal.interest = null;
       this.emptyDeal.status = null;
@@ -174,7 +175,12 @@ export default {
 
     setFileList(){
       console.log("SETTING FILE list");
-      this.fileList = [{name: 'savedPdf.pdf', url: 'static/imgs/pdfDefault.png'}]
+      if (this.currentDeal.slide_deck) {
+        this.fileList = [{name: 'savedPdf.pdf', url: 'static/imgs/pdfDefault.png'}]
+      }
+      else {
+        this.fileList = []
+      }
     },
 
     //Dynamic tag control methods.
@@ -280,6 +286,7 @@ export default {
     }
   },
   created() {
+    this.$emit('backButton', true);
 
     lib.getRequest("/organizations/".concat(this.$route.params.id).concat('?fields=logo'), response => {
       this.organization = response.data;

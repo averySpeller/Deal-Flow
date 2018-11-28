@@ -1,6 +1,5 @@
 <template>
   <div id ="Tag" v-loading="loading" :data="tagMappings">
-    <button @click="goBack()" class="uk-button uk-button-secondary uk-button-large uk-margin">GO BACK</button>
 
     <el-row type="flex" class="row-bg" justify="center">
       <h1>#{{this.tag.tag_name}}</h1>
@@ -61,11 +60,6 @@ export default {
     }
   },
   methods:{
-    goBack () {
-      window.history.length > 1
-        ? this.$router.go(-1)
-        : this.$router.push('/')
-    },
     loadData(){
       var orgIds = "";
       var contactIds = "";
@@ -108,6 +102,8 @@ export default {
     }
   },
   created() {
+    this.$emit('backButton', true);
+
     this.tagId = this.$route.params.id
     lib.getRequest('/tags/'.concat(this.tagId), response => {
       this.tag = response.data

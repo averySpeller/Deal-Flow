@@ -103,6 +103,7 @@
         <el-col :xs="0" :sm="1" :md="2" :lg="3" :xl="3"><div class="grid-content bg-purple"></div></el-col>
       </el-row>
     </div>
+    <br>
     <ul v-if="errors && errors.length">
       <li v-for="error of errors">
         {{error.message}}
@@ -236,6 +237,7 @@ export default {
     }
   },
   created() {
+    this.$emit('backButton', true);
     this.id = this.$route.params.id;
 
     lib.getRequest("/contacts/".concat(this.id).concat('?fields=avatar'), response => {

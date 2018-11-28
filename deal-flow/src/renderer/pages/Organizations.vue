@@ -31,6 +31,8 @@ export default {
 
   },
   created() {
+
+    this.$emit('backButton', false);
     lib.getRequest('/organizations', response => {
       this.organizations = response.data
       console.log(response.data);

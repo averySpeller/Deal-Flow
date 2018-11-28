@@ -14,8 +14,11 @@ export default {
   },
   data() {
     return{
-      
+
     }
+  },
+  mounted(){
+    this.$emit('backButton', true);
   }
 }
 

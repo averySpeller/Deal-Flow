@@ -113,7 +113,7 @@
       }
     },
     mounted() {
-
+      this.$emit('backButton', false);
       lib.getRequest("/deals", response => {
         this.deals = response.data
         console.log(response.data);

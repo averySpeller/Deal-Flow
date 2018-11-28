@@ -78,6 +78,8 @@ export default {
     }
   },
   created() {
+    this.$emit('backButton', false);
+
     lib.getRequest('/contacts', response => {
       this.contacts = response.data
       console.log(response.data);

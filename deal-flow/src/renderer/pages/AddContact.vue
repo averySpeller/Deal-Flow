@@ -243,11 +243,9 @@ export default {
       console.log(this.form);
       // var requestFields = this.$parent.$parent.createGetRequest("contacts")
         lib.postRequest('/contacts', this.form, response => {
-        console.log(this.form);
         console.log(response.data);
-        window.history.length > 1
-          ? this.$router.go(-1)
-          : this.$router.push('/')
+p0
+        this.$router.replace({ name: 'Single-Contact', params: { id: this.response.data.contact_id }})
       })
 
     },

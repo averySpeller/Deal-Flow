@@ -10,6 +10,9 @@
           <el-form ref="form" :model="form" label-width="125px">
             <br>
             <FileUploader isImage="true" v-model="form.logo"></FileUploader>
+            <el-row type="flex" class="row-bg" justify="center">
+              <h1>{{this.form.name}}</h1>
+            </el-row>
             <el-form-item label="Name:">
               <el-input
                 v-model="form.name"
@@ -189,10 +192,8 @@ export default {
         console.log(response.data);
         this.organization_id = response.data.organization_id
         this.$emit('addOrg', this.organization_id)
-        alert("company '"+this.form.name+"' added");
-        // window.history.length > 1
-        //   ? this.$router.go(-1)
-        //   : this.$router.push('/')
+
+        this.$router.replace({ name: 'Single-Organization', params: { id: this.organization_id }})
       })
     },
     toggleAutocomplete() {

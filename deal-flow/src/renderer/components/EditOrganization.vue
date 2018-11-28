@@ -128,7 +128,6 @@
 
             <div class="uk-flex uk-flex-center ">
               <el-button @click="EditOrganization()">Edit Company!</el-button><br>
-              <el-button @click="goBack()" class="uk-button uk-button-secondary uk-button-large uk-margin">GO BACK</el-button>
             </div>
           </el-form>
         </el-col>
@@ -174,9 +173,9 @@ export default {
     'FileUploader': FileUploader
   },
   created() {
-    //~~~~~~~~~~~~~~~UNCOMMENT ONCE LIB IS CREATED~~~~~~~~~~~~~~~~~~~~~~~~~~//
+    this.$emit('backButton', true);
 
-    lib.getRequest('/organizations/'.concat(this.$route.params.id), response => {
+    lib.getRequest('/organizations/'.concat(this.$route.params.id).concat("?fields=logo"), response => {
       this.contact = response.data
       console.log("Request Completed: Organization");
       console.log(response.data);
