@@ -151,17 +151,8 @@ export default {
     lib.getRequest('/contacts/'.concat(this.$route.params.id).concat("?fields=avatar"), response => {
       this.contact = response.data
       console.log(response.data);
-       this.name = response.data['first'] + ' ' + response.data['last'];
-       this.form.email = response.data['email'];
-       this.form.phone1 = response.data['phone1'];
-       this.form.phone2 = response.data['phone2'];
-       this.form.website = response.data['website'];
-       this.form.first = response.data['first'];
-       this.form.last = response.data['last'];
-       this.form.notes = response.data['notes'];
-       this.form.avatar = response.data['avatar'];
-       this.form.organization_id = response.data['organization_id'];
-      console.log(myRequest);
+      this.name = response.data['first'] + ' ' + response.data['last'];
+      this.form = response.data;
     })
 
         this.loadSelect()

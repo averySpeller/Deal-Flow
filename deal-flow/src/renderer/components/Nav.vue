@@ -1,6 +1,6 @@
 <template>
-  <div style="z-index: 2500;" class="uk-margin">
-    <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
+  <div style="height: 100%" class="">
+    <el-menu style="height: 100%" default-active="2" class="el-menu-vertical-demo" height="100%" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
       <router-link
         v-for="routes in links"
         v-bind:key="routes.id"
