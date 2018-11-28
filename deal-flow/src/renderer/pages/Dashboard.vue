@@ -181,12 +181,8 @@
 
               var newOfInterest = null
               newOfInterest = this.findOrg(myDeal.organization_id)
-              console.log("RETURN SEARCH interest");
-              console.log(newOfInterest);
               if (newOfInterest) {
                 this.ofInterest.push(newOfInterest)
-                console.log("Found High interest");
-                console.log(newOfInterest);
               }
             }
           }
@@ -205,7 +201,11 @@
           }
         }
 
+
         for (var i = this.deals.length - 1; i > (this.deals.length - 10); i--) {
+          if(i == -1){
+            break;
+          }
           myDeal = this.deals[i]
           if (!this.recentlyAddedIds.includes(myDeal.organization_id)) {
             this.recentlyAddedIds.push(myDeal.organization_id);
@@ -226,8 +226,6 @@
 
         for (var i = 0; i < this.organizations.length; i++) {
           if (parseInt(this.organizations[i].organization_id) == parseInt(orgId)){
-            console.log("FOUND");
-            console.log(this.organizations[i]);
             return(this.organizations[i]);
           }
         }
