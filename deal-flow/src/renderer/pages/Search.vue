@@ -104,6 +104,9 @@ export default {
         this.loadingTags = false;
       })
     }
+  },
+  mounted(){
+    this.$refs.searchBar.focus();
   }
 }
 </script>

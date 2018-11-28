@@ -108,6 +108,7 @@ props:{
     data () {
       return {
         labels: ['skil1','skill2','skill3','skill4','skill5'],
+        backgroundColor: null,
         loaded: false,
         chartdata: null,
         skill1Name: 'skill1',
@@ -145,6 +146,7 @@ props:{
         this.skill3Name = 'Confidence'
         this.skill4Name = 'Knowledge'
         this.skill5Name = 'Charisma'
+        this.backgroundColor = 'rgba(0,255,255,0.3)'
       }else if(this.isDeal){
         this.labels = ['Potential','People','Risk','Management','Recognition']
         this.skill1Name = 'Potential'
@@ -152,6 +154,7 @@ props:{
         this.skill3Name = 'Risk'
         this.skill4Name = 'Management'
         this.skill5Name = 'Recognition'
+        this.backgroundColor = 'rgba(255, 111, 117,0.3)'
       }
 
       this.loaded = false
@@ -173,7 +176,7 @@ props:{
             {
               label: 'Skills',
               // backgroundColor: '#f87979',
-              backgroundColor: 'rgba(0,255,255,0.3)',
+              backgroundColor: this.backgroundColor,
               data: this.skillList()
              },
           ],
@@ -186,7 +189,7 @@ props:{
           datasets: [
             {
               label: 'Skills',
-              backgroundColor: 'rgba(0,255,255,0.3)',
+              backgroundColor: this.backgroundColor,
               data: this.skillList(),
              },
           ]

@@ -83,14 +83,14 @@
                 placeholder="SaaS, License, Retail, etc">
               </el-input>
             </el-form-item>
-            <el-form-item label="Notes:">
+            <!-- <el-form-item label="Notes:">
               <el-input
                 v-model="deal.notes"
                 type="textarea"
                 clearable
                 placeholder="Add Notes">
               </el-input>
-            </el-form-item>
+            </el-form-item> -->
             <FileUploader v-model="deal.slide_deck" v-bind:fileList="this.fileList"></FileUploader>
 
             <div class="uk-flex uk-flex-center">
@@ -175,7 +175,7 @@ export default {
     },
     AddDeal(){
       this.deal.organization_id = this.$parent.organization.organization_id
-
+      this.deal.date_added = new Date()
       console.log(this.deal);
       lib.postRequest('/deals', this.deal, response => {
         console.log(response.data);
