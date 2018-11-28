@@ -144,8 +144,8 @@
 
 
             <div class="uk-flex uk-flex-center ">
-              <el-button v-if="!editContactBool"  @click="addContact()" type="primary">Create</el-button>
-              <el-button v-else @click="editContact()" type="primary">Edit</el-button><br><br>
+              <el-button v-if="!editContactBool"  @click="addContact()" type="primary">Save</el-button>
+              <el-button v-else @click="editContact()" type="primary">Save</el-button><br><br>
             </div>
           </el-form>
         </el-col>
@@ -346,7 +346,6 @@ created() {
       console.log(response.data);
        this.name = response.data['first'] + ' ' + response.data['last'];
        this.form = response.data;
-      console.log(myRequest);
     })
   }
 

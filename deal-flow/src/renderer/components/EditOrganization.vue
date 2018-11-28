@@ -117,14 +117,14 @@
                 clearable>
               </el-input>
             </el-form-item>
-            <el-form-item label="Notes:">
+            <!-- <el-form-item label="Notes:">
               <el-input
                 v-model="form.notes"
                 type="textarea"
                 clearable
                 placeholder="Add Notes">
               </el-input>
-            </el-form-item>
+            </el-form-item> -->
 
             <div class="uk-flex uk-flex-center ">
               <el-button @click="EditOrganization()">Save</el-button><br>
