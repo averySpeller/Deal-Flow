@@ -7,7 +7,7 @@
       </div>
       <el-row type="flex" class="row-bg" justify="center">
         <el-col :xs="22" :sm="22" :md="18" :lg="16" :xl="12">
-          <el-form ref="form" :model="form" label-width="70px">
+          <el-form v-loading="editLoading" ref="form" :model="form" label-width="70px">
             <br>
             <el-row type="flex" class="row-bg" justify="center">
               <el-col :xs="16" :sm="14" :md="12" :lg="10" :xl="10">
@@ -185,6 +185,7 @@ export default {
       name: "",
       autocompleteForm: false,
       editContactBool: false,
+      editLoading: false,
       imageUrl:'',
       form: {
         first: null,
@@ -341,11 +342,13 @@ created() {
 
   if (this.$route.params.id) {
     this.editContactBool = true;
+    this.editLoading = true;
     lib.getRequest('/contacts/'.concat(this.$route.params.id).concat("?fields=avatar"), response => {
+      this.editLoading = false;
       this.contact = response.data
       console.log(response.data);
-       this.name = response.data['first'] + ' ' + response.data['last'];
-       this.form = response.data;
+      this.name = response.data['first'] + ' ' + response.data['last'];
+      this.form = response.data;
       console.log(myRequest);
     })
   }

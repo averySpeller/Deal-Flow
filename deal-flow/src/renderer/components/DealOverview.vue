@@ -3,8 +3,8 @@
     <el-row>
       <el-col>
         <div class="uk-align-right uk-margin-right">
-            <el-button v-on:click="toggleEdit" uk-toggle="target: #offcanvas-addDeal">Edit</el-button>
-            <el-button @click="deleteDeal()" type="danger">Delete</el-button>
+            <el-button type="primary" icon="el-icon-edit" circle v-on:click="toggleEdit" uk-toggle="target: #offcanvas-addDeal"></el-button>
+            <el-button type="danger" icon="el-icon-delete" circle @click="deleteDeal()"></el-button>
         </div>
       </el-col>
     </el-row>
