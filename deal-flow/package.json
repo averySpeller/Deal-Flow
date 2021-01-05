@@ -21,7 +21,7 @@
     "postinstall": ""
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "chart.js": "^2.7.3",
     "echarts": "^4.2.0-rc.2",
     "element-ui": "^2.4.8",
